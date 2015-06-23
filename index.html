@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SilesNet Network</title
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="css/vendor/bootstrap-3.3.5.css">
+    <link rel="stylesheet" href="css/app.css">
+
+  </head>
+  <body>
+    <div id='app'><div>
+
+    <script type="text/x-handlebars">
+      <p>URL: {{target.url}}</p>
+      <p>{{model.user.name}}|{{model.user.operation_country}}</p>
+      {{outlet}}
+    </script>
+
+    <script type="text/x-handlebars" id="services">
+      <h1>Network</h1>
+      Search service: {{input type="text" value=model.query placeholder="Customer or Agreement" autofocus="true"}}
+      {{customer-services services=model.services}}
+    </script>
+
+    <script type="text/x-handlebars" id="components/customer-services">
+      {{outlet}}
+      {{#if services}}
+        <h2>Services</h2>
+      {{/if}}
+      {{#each services key="id" as |service|}}
+        {{customer-service service=service}}
+      {{/each}}
+    </script>
+
+    <script type="text/x-handlebars" id="components/customer-service">
+      <p>{{service.name}} {{#link-to 'service' service}}Edit{{/link-to}}</p>
+    </script>
+
+    <script type="text/x-handlebars" id="service">
+      <h3>{{model.id}} {{model.name}}</h3>
+
+    </script>
+
+    <script src="js/vendor/jquery-2.1.4.min.js"></script>
+    <script src="js/vendor/ember-1.13.0.js"></script>
+    <script src="js/vendor/ember-template-compiler-1.13.0.js"></script>
+    <!--<script src="js/vendor/ember-data-1.13.2.js"></script>-->
+    <script src="js/vendor/bootstrap-3.3.5.js"></script>
+    <script src="js/app.js"></script>
+
+  </body>
+</html>

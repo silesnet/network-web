@@ -1,56 +1,68 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SilesNet Network</title
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="css/vendor/bootstrap-3.3.5.css">
-    <link rel="stylesheet" href="css/app.css">
-
+    <title>SilesNet IS</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
   </head>
   <body>
-    <div id='app'><div>
+    <div id='app'></div>
 
     <script type="text/x-handlebars">
-      <p>URL: {{target.url}}</p>
-      <p>{{model.user.name}}|{{model.user.operation_country}}</p>
-      {{outlet}}
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+          <a class="navbar-brand" href="#">Zpět</a>
+          <a class="navbar-brand" href="#/services">Služby</a>
+          <div class="navbar-right navbar-brand">
+            <span class='glyphicon glyphicon-user'></span>
+            {{model.user.name}}|{{model.user.operation_country}}
+          </div>
+        </div>
+      </nav>
+      <div class="content">
+        <div class="container">
+          {{outlet}}
+        </div>
+      </div>
     </script>
 
     <script type="text/x-handlebars" id="services">
-      <h1>Network</h1>
-      Search service: {{input type="text" value=model.query placeholder="Customer or Agreement" autofocus="true"}}
+      <div class="input-group">
+        {{input id="service_search" class="form-control" type="text" value=model.query placeholder="Customer or Agreement" autofocus="true"}}
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+      </div>
       {{customer-services services=model.services}}
     </script>
 
     <script type="text/x-handlebars" id="components/customer-services">
-      {{outlet}}
       {{#if services}}
-        <h2>Services</h2>
+        <div class="panel panel-default">
+          <ul class="list-unstyled">
+            {{#each services key="id" as |service|}}
+              <li>{{service.name}} {{#link-to 'service' service}}Upravit{{/link-to}}</li>
+            {{/each}}
+          </ul>
+        </div>
       {{/if}}
-      {{#each services key="id" as |service|}}
-        {{customer-service service=service}}
-      {{/each}}
-    </script>
-
-    <script type="text/x-handlebars" id="components/customer-service">
-      <p>{{service.name}} {{#link-to 'service' service}}Edit{{/link-to}}</p>
     </script>
 
     <script type="text/x-handlebars" id="service">
-      <h3>{{model.id}} {{model.name}}</h3>
-
+      <h3>{{model.id}} {{model.name}} {{model.city}}</h3>
     </script>
 
-    <script src="js/vendor/jquery-2.1.4.min.js"></script>
-    <script src="js/vendor/ember-1.13.0.js"></script>
-    <script src="js/vendor/ember-template-compiler-1.13.0.js"></script>
-    <!--<script src="js/vendor/ember-data-1.13.2.js"></script>-->
-    <script src="js/vendor/bootstrap-3.3.5.js"></script>
-    <script src="js/app.js"></script>
-
+    <script type="text/javascript" language="JavaScript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" language="JavaScript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" language="JavaScript" src="js/jquery-ui-datepicker-cs.js"></script>
+    <script type="text/javascript" language="JavaScript" src="js/jquery-cookie.min.js"></script>
+    <script type="text/JavaScript" language="JavaScript" src="js/bootstrap.min.js"></script>
+    <script type="text/JavaScript" language="JavaScript" src="js/ember.js"></script>
+    <!--<script type="text/JavaScript" language="JavaScript" src="js/ember-data.js"></script>-->
+    <script type="text/JavaScript" language="JavaScript" src="js/ember-template-compiler.js"></script>
+    <script type="text/JavaScript" language="JavaScript" src="js/app.js"></script>
   </body>
 </html>

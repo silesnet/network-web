@@ -5,9 +5,8 @@ var App = Ember.Application.create({
 });
 
 App.Router.map(function() {
-  this.route('services', { path: '/services' }, function() {
-    this.resource('service', { path: '/:service_id' });
-  });
+  this.route('services', { path: '/services' }, function() {});
+  this.route('service', { path: '/services/:service_id' }, function() {});
 });
 
 App.ApplicationRoute = Ember.Route.extend({
@@ -39,9 +38,8 @@ App.ServicesRoute = Ember.Route.extend({
 
 App.ServiceRoute = Ember.Route.extend({
   model: function(params) {
-    console.log(params.service_id);
     return Ember.$.getJSON('http://localhost:8090/customers/' + params.service_id)
-      .then(function(data) { return data.customers });
+      .then(function(data) { return data.customer });
   }
 });
 

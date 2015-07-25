@@ -32,20 +32,20 @@ App.ServicesRoute = Ember.Route.extend({
     return {
       query: '',
       services: []
-    }
+    };
   }
 });
 
 App.ServiceRoute = Ember.Route.extend({
   model: function(params) {
-    return Ember.$.getJSON('http://localhost:8090/customers/' + params.service_id)
-      .then(function(data) { return data.customer });
+    return Ember.$.getJSON('http://localhost:8090/services/' + params.service_id)
+      .then(function(data) { return data; });
   }
 });
 
 App.ApplicationController = Ember.Controller.extend({
   updateCurrentPath: function() {
-    App.set('currentPath', this.get('currentPath'))
+    App.set('currentPath', this.get('currentPath'));
   }.observes('currentPath')
 });
 
@@ -61,9 +61,9 @@ App.ServicesController = Ember.Controller.extend({
     }
     if (query) {
       console.log('searching...' + query);
-      Ember.$.getJSON('http://localhost:8090/customers?q=' + query + '&country=' + country)
+      Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country)
         .then(function(data) {
-          services.setObjects(data.customers)
+          services.setObjects(data.services);
         });
     }
     else {

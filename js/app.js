@@ -11,9 +11,10 @@ App.Router.map(function() {
 
 App.ApplicationRoute = Ember.Route.extend({
   model: function() {
+    var sessionId = $.cookie('JSESSIONID') || 'test';
     return Ember.RSVP.hash({
-      user: Ember.$.getJSON('http://localhost:8090/users/current?session=test')
-              .then(function(data) { return data.users})
+      user: Ember.$.getJSON('http://localhost:8090/users/current?session=' + sessionId)
+              .then(function(data) { return data.users; })
     });
   },
   afterModel: function() {

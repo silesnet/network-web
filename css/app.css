@@ -1,4 +1,9 @@
 body {font-size: 13px;}
+
+tr.clickable:hover {
+  color: blue;
+  cursor: pointer;
+}
 .ds-none {display: none !important;}
 
 .navbar {margin-bottom: 10px; min-height: 40px;}

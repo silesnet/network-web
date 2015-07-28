@@ -30,10 +30,10 @@ App.ServicesRoute = Ember.Route.extend({
     this._super(controller, model);
   },
   model: function() {
-    return {
-      query: '',
+    return Ember.RSVP.hash({
+      query: App.get('query'),
       services: []
-    };
+    }); 
   }
 });
 
@@ -61,6 +61,7 @@ App.ServicesController = Ember.Controller.extend({
       this.transitionToRoute('/services');
     }
     if (query) {
+      App.set('query', this.model.query);
       console.log('searching...' + query);
       Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country)
         .then(function(data) {
@@ -70,5 +71,15 @@ App.ServicesController = Ember.Controller.extend({
     else {
       services.setObjects([]);
     }
-  }.observes('model.query')
+  }.observes('model.query'),
+  actions: {
+    editService: function(service) {
+      console.log('editing service... ' + this.model.query);
+      this.transitionToRoute('/services/' + service.service_id);
+    }
+  }
+});
+
+App.ServiceController = Ember.Controller.extend({
+  needs: 'services'
 });

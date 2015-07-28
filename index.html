@@ -36,37 +36,32 @@
           <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
         </div>
       </div>
-      {{customer-services services=model.services}}
-    </script>
-
-    <script type="text/x-handlebars" id="components/customer-services">
-      {{#if services}}
-        <div class="panel panel-default">
+      {{#if model.services}}
             <table class="table table-striped">
             <tbody>
-            {{#each services as |service|}}
-              <tr>
-                <td>{{service.agreement}}</td>
-                <td>{{service.customer_name}}</td>
-                <td>{{service.customer_info}}</td>
+            {{#each model.services as |service|}}
+              <tr {{action 'editService' service}} class="clickable">
                 <td>{{service.service_id}}</td>
+                <td>{{service.customer_name}}</td>
                 <td>{{service.service_name}}</td>
                 <td>{{service.download}}/{{service.upload}} Mbps</td>
-                <td>{{service.price}}</td>
+                <td>{{service.agreement}}</td>
                 <td>{{service.street}}</td>
                 <td>{{service.city}}</td>
+                <!--<td>{{service.customer_info}}</td>-->
                 <td>{{service.service_info}}</td>
-                <td>{{#link-to 'service' service}}Upravit{{/link-to}}</td>
+                <!--<td>{{#link-to 'service' service.service_id}}Upravit{{/link-to}}</td>-->
               </tr>
             {{/each}}
             </tbody>
           </table>
-        </div>
       {{/if}}
     </script>
 
     <script type="text/x-handlebars" id="service">
-      <h3>{{model.service_id}} {{model.service_name}} {{model.city}}</h3>
+      <h3>{{model.id}} {{model.name}} {{model.download}}/{{model.upload}} Mbs {{model.price}}</h3>
+      <p>{{model.info}}</p>
+      {{#link-to 'services'}}Zpět{{/link-to}}
     </script>
 
     <script type="text/javascript" language="JavaScript" src="js/jquery.min.js"></script>

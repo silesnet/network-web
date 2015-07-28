@@ -1,20 +1,7 @@
-body {font-size: 13px;}
-.ds-none {display: none !important;}
+.mdl-layout__header-row {max-width: 1250px; width: 100%; padding: 0; margin: 0 auto;}
+.mdl-main-content {max-width: 1250px; width: 100%; margin: 0 auto; display: block;}
+.mdl-data-table tbody td.name {width: 100%;}
+.mdl-button--fab.mdl-button--micro-fab {width: 28px; height: 28px; min-width: 28px;}
+.mdl-button--fab.mdl-button--micro-fab .material-icons {font-size: 18px;}
 
-.navbar {margin-bottom: 10px; min-height: 40px;}
-.navbar-brand {height: 40px; padding: 10px 15px;}
-
-.panel {margin-bottom: 10px;}
-
-.panel.panel-tab {border-top: none ; border-top-right-radius:0; border-top-left-radius:0;}
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
+.mdl-srch-textfield {width: 100%;}

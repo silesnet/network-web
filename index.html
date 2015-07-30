@@ -59,10 +59,12 @@
     </script>
 
     <script type="text/x-handlebars" id="service">
-      <h2>{{model.customer.name}}
+      <h2>{{model.customer.name}}<br />
         <span class="small">
-          &nbsp;{{model.customer.street}}, {{model.customer.postal_code}} {{model.customer.city}}
-          <a href="http://www.google.com/maps?q={{model.customer.street}}, {{model.customer.city}}" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
+          {{model.customer.street}}, {{model.customer.postal_code}} {{model.customer.city}}
+          <a href="http://www.google.com/maps?q={{model.customer.street}}, {{model.customer.city}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
+          &nbsp;{{model.customer.email}}
+          <a href="mailto:{{model.customer.email}}"><i class="glyphicon glyphicon-envelope"></i></a>
           &nbsp;{{model.customer.phone}} <i class="glyphicon glyphicon-phone"></i>
         </span>
       </h2>

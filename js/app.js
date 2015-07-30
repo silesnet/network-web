@@ -40,7 +40,15 @@ App.ServicesRoute = Ember.Route.extend({
 App.ServiceRoute = Ember.Route.extend({
   model: function(params) {
     return Ember.$.getJSON('http://localhost:8090/services/' + params.service_id)
-      .then(function(data) { return data; });
+      .then(function(service) {
+        return Ember.$.getJSON('http://localhost:8090/customers/' + service.customer_id)
+          .then(function(customer) {
+            return {
+              service: service,
+              customer: customer.customer
+            };
+          });
+      });
   }
 });
 

@@ -14,7 +14,7 @@
     <script type="text/x-handlebars">
       <nav class="navbar navbar-default" role="navigation">
         <div class="container">
-          <a class="navbar-brand" href="..">Zpět</a>
+          <a class="navbar-brand" href="..">Home</a>
           <a class="navbar-brand" href="#/services">Služby</a>
           <div class="navbar-right navbar-brand">
             <span class='glyphicon glyphicon-user'></span>
@@ -59,8 +59,15 @@
     </script>
 
     <script type="text/x-handlebars" id="service">
-      <h3>{{model.id}} {{model.name}} {{model.download}}/{{model.upload}} Mbs {{model.price}}</h3>
-      <p>{{model.info}}</p>
+      <h2>{{model.customer.name}}
+        <span class="small">
+          &nbsp;{{model.customer.street}}, {{model.customer.postal_code}} {{model.customer.city}}
+          <a href="http://www.google.com/maps?q={{model.customer.street}}, {{model.customer.city}}" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
+          &nbsp;{{model.customer.phone}} <i class="glyphicon glyphicon-phone"></i>
+        </span>
+      </h2>
+      <h3>{{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h3>
+      <p>{{model.service.info}}</p>
       {{#link-to 'services'}}Zpět{{/link-to}}
     </script>
 

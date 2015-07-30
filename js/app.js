@@ -11,7 +11,7 @@ App.Router.map(function() {
 
 App.ApplicationRoute = Ember.Route.extend({
   model: function() {
-    var sessionId = $.cookie('JSESSIONID') || 'test';
+    var sessionId = cookie('JSESSIONID') || 'test';
     return Ember.RSVP.hash({
       user: Ember.$.getJSON('http://localhost:8090/users/current?session=' + sessionId)
               .then(function(data) { return data.users; })
@@ -83,3 +83,9 @@ App.ServicesController = Ember.Controller.extend({
 App.ServiceController = Ember.Controller.extend({
   needs: 'services'
 });
+
+function cookie(name) {
+  var value = '; ' + document.cookie;
+  var parts = value.split('; ' + name + '=');
+  if (parts.length == 2) return parts.pop().split(";").shift();
+}

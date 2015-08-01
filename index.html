@@ -68,11 +68,18 @@
           &nbsp;{{model.customer.phone}} <i class="glyphicon glyphicon-phone"></i>
         </span>
       </h2>
-      <h3>{{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h3>
       <p>{{model.service.info}}</p>
+      <h3>{{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h3>
       {{#if model.dhcp.port}}
         <div class="dhcp">
           <h4>DHCP {{model.dhcp.switch.name}}/{{model.dhcp.port}}</h4>
+        </div>
+      {{/if}}
+      {{#if model.pppoe.id}}
+        <div class="pppoe">
+          <h4>PPPoE {{model.pppoe.master}}/{{model.pppoe.interface}}</h4>
+          <p>{{model.pppoe.address}}/{{model.pppoe.mac}}</p>
+          <p>PPPoE {{model.pppoe.username}}/{{model.pppoe.password}}</p>
         </div>
       {{/if}}
       {{#link-to 'services'}}Zpět{{/link-to}}

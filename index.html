@@ -72,12 +72,14 @@
       <p>{{model.service.info}}</p>
       {{#if model.dhcp.port}}
         <div class="dhcp">
-          <h4>DHCP {{model.dhcp.switch.name}}/{{model.dhcp.port}}</h4>
+          <h4>DHCP</h4>
+          <p>Switch/Port {{model.dhcp.switch.name}}/{{model.dhcp.port}}</p>
         </div>
       {{/if}}
       {{#if model.pppoe.id}}
         <div class="pppoe">
-          <h4>PPPoE {{model.pppoe.master}}/{{model.pppoe.interface}}</h4>
+          <h4>PPPoE</h4>
+          <p>{{model.pppoe.master}}/{{model.pppoe.interface}}</p>
           <p>IP/MAC {{model.pppoe.address}}/{{model.pppoe.mac}}</p>
           <p>Uživatel/Heslo {{model.pppoe.username}}/{{model.pppoe.password}}</p>
         </div>

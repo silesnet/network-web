@@ -41,13 +41,21 @@ App.ServiceRoute = Ember.Route.extend({
   model: function(params) {
     return Ember.$.getJSON('http://localhost:8090/services/' + params.service_id)
       .then(function(service) {
-        return Ember.$.getJSON('http://localhost:8090/customers/' + service.customer_id)
-          .then(function(customer) {
-            return {
-              service: service,
-              customer: customer.customer
-            };
-          });
+        return Ember.RSVP.hash({
+          service: service,
+          customer: Ember.$.getJSON('http://localhost:8090/customers/' + service.customer_id)
+            .then(function(customer) { return customer.customer; }),
+          dhcp: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/dhcp')
+            .then(function(dhcp) {
+              return Ember.$.getJSON('http://localhost:8090/networks/devices/' + dhcp.dhcp.network_id)
+                .then(function(device) {
+                  dhcp.dhcp['switch'] = device.devices;
+                  return dhcp.dhcp;
+                });
+            }),
+          pppoe: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/pppoe')
+            .then(function(pppoe) { return pppoe.pppoe; })
+        });
       });
   }
 });

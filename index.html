@@ -70,9 +70,9 @@
       </h2>
       <h3>{{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h3>
       <p>{{model.service.info}}</p>
-      {{#if model.dhcp}}
+      {{#if model.dhcp.port}}
         <div class="dhcp">
-          <p>DHCP {{model.dhcp.switch.name}}/{{model.dhcp.port}}</p>
+          <h4>DHCP {{model.dhcp.switch.name}}/{{model.dhcp.port}}</h4>
         </div>
       {{/if}}
       {{#link-to 'services'}}Zpět{{/link-to}}

@@ -19,7 +19,24 @@ App.ApplicationRoute = Ember.Route.extend({
   },
   afterModel: function() {
     this.transitionTo('/services');
-  }
+  },
+  actions: {
+    openModal: function(name, model) {
+      console.log(name + ' ' + model.name);
+      this.controllerFor(name).set('model', model);
+      return this.render(name, {
+        into: 'application',
+        outlet: 'modal'
+      });
+    },
+    closeModal: function() {
+      console.log('closing modal outlet...');
+      return this.disconnectOutlet({
+        outlet: 'modal',
+        parentView: 'application'
+      });
+    }
+  }  
 });
 
 App.ServicesRoute = Ember.Route.extend({
@@ -103,6 +120,24 @@ App.ServicesController = Ember.Controller.extend({
 App.ServiceController = Ember.Controller.extend({
   needs: 'services'
 });
+
+
+App.EditDhcpController = Ember.Controller.extend({
+  actions: {
+    close: function() {
+      return this.send('closeModal');
+    }
+  }  
+});
+
+App.ModalDialogComponent = Ember.Component.extend({
+  actions: {
+    close: function() {
+      return this.sendAction();
+    }
+  }  
+});
+
 
 function cookie(name) {
   var value = '; ' + document.cookie;

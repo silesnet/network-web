@@ -14,7 +14,10 @@ App.ApplicationRoute = Ember.Route.extend({
     var sessionId = cookie('JSESSIONID') || 'test';
     return Ember.RSVP.hash({
       user: Ember.$.getJSON('http://localhost:8090/users/current?session=' + sessionId)
-              .then(function(data) { return data.users; })
+              .then(function(data) {
+                App.set('user', data.users);
+                return data.users;
+              })
     });
   },
   afterModel: function() {
@@ -22,8 +25,9 @@ App.ApplicationRoute = Ember.Route.extend({
   },
   actions: {
     openModal: function(name, model) {
-      console.log(name + ' ' + model.name);
+      console.log(name + ' ' + model.service.name);
       this.controllerFor(name).set('model', model);
+      this.controllerFor(name).set('form', Ember.copy(model, true));
       return this.render(name, {
         into: 'application',
         outlet: 'modal'
@@ -75,7 +79,9 @@ App.ServiceRoute = Ember.Route.extend({
               }
             }),
           pppoe: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/pppoe')
-            .then(function(pppoe) { return pppoe.pppoe; })
+            .then(function(pppoe) { return pppoe.pppoe; }),
+          switches: Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
+            .then(function(switches) { return switches.devices})
         });
       });
   }

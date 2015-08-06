@@ -112,13 +112,13 @@
     <script type="text/x-handlebars" data-template-name="editDhcp">
       {{#modal-dialog action="close"}}
         <p>DEMO (nefunkční)</p>
-        <p>Upravit DHCP pro {{model.service.id}} {{model.service.name}}</p>
+        <p>Upravit DHCP pro {{form.service.id}} {{form.service.name}}</p>
         {{view "select"
-           content=model.switches
+           content=form.switches
            optionValuePath="content.id"
            optionLabelPath="content.name"
-           value=model.dhcp.switch.id}}
-        {{input value=model.dhcp.port type=number}}
+           value=form.dhcp.switch.id}}
+        {{input value=form.dhcp.port type=number}}
         <button {{action "close"}}>Zrušit</button>
       {{/modal-dialog}}
     </script>

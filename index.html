@@ -38,24 +38,24 @@
         </div>
       </div>
       {{#if model.services}}
-            <table class="table table-striped">
-            <tbody>
-            {{#each model.services as |service|}}
-              <tr {{action 'editService' service}} class="clickable">
-                <td>{{service.service_id}}</td>
-                <td>{{service.customer_name}}</td>
-                <td>{{service.service_name}}</td>
-                <td>{{service.download}}/{{service.upload}} Mbps</td>
-                <td>{{service.agreement}}</td>
-                <td>{{service.street}}</td>
-                <td>{{service.city}}</td>
-                <!--<td>{{service.customer_info}}</td>-->
-                <td>{{service.service_info}}</td>
-                <!--<td>{{#link-to 'service' service.service_id}}Upravit{{/link-to}}</td>-->
-              </tr>
-            {{/each}}
-            </tbody>
-          </table>
+        <table class="table table-striped">
+          <tbody>
+          {{#each model.services as |service|}}
+            <tr {{action 'editService' service}} class="clickable">
+              <td>{{service.service_id}}</td>
+              <td>{{service.customer_name}}</td>
+              <td>{{service.service_name}}</td>
+              <td>{{service.download}}/{{service.upload}} Mbps</td>
+              <td>{{service.agreement}}</td>
+              <td>{{service.street}}</td>
+              <td>{{service.city}}</td>
+              <!--<td>{{service.customer_info}}</td>-->
+              <td>{{service.service_info}}</td>
+              <!--<td>{{#link-to 'service' service.service_id}}Upravit{{/link-to}}</td>-->
+            </tr>
+          {{/each}}
+          </tbody>
+        </table>
       {{/if}}
     </script>
 
@@ -72,7 +72,8 @@
       <h3>{{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h3>
       <p>{{model.service.info}}</p>
       {{#if model.dhcp.port}}
-        <div class="row"><div class="col-md-4">
+        <div class="row">
+        <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title pull-left">DHCP</h3>
@@ -80,19 +81,20 @@
             <div class="clearfix"></div>
           </div>
           <div class="panel-body">
+          <div class="col-md-12">
             <div class="row">
-              <div class="col-md-4"><p class="text-right"><strong>Switch</strong></p></div>
-              <div class="col-md-6">{{model.dhcp.switch.name}}</div>
+              <div class="col-sm-2"><p class="text-right"><strong>Switch</strong></p></div>
+              <div class="col-sm-10">{{model.dhcp.switch.name}}</div>
             </div>
             <div class="row">
-              <div class="col-md-4"><p class="text-right"><strong>Port</strong></p></div>
-              <div class="col-md-6">{{model.dhcp.port}}</div>
+              <div class="col-sm-2"><p class="text-right"><strong>Port</strong></p></div>
+              <div class="col-sm-10">{{model.dhcp.port}}</div>
             </div>
+          </div>
           </div>
         </div>
         </div>
         </div>
-
       {{/if}}
       {{#if model.pppoe.id}}
         <div class="panel panel-default">

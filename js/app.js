@@ -129,8 +129,17 @@ App.ServiceController = Ember.Controller.extend({
 
 
 App.EditDhcpController = Ember.Controller.extend({
+  init: function() {
+    console.log('initializing edit DHCP form...');
+  },
   actions: {
-    close: function() {
+    cancel: function() {
+      console.log('form cancelled');
+      return this.send('closeModal');
+    },
+    submit: function() {
+      console.log('submitting form...' + this.get('form.dhcp.network_id'));
+      this.transitionToRoute('/services/' + this.get('model.service.id'));
       return this.send('closeModal');
     }
   }  
@@ -138,7 +147,10 @@ App.EditDhcpController = Ember.Controller.extend({
 
 App.ModalDialogComponent = Ember.Component.extend({
   actions: {
-    close: function() {
+    submit: function() {
+      return this.sendAction();
+    },
+    cancel: function() {
       return this.sendAction();
     }
   }  

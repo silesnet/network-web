@@ -117,9 +117,10 @@
            content=form.switches
            optionValuePath="content.id"
            optionLabelPath="content.name"
-           value=form.dhcp.switch.id}}
+           value=form.dhcp.network_id}}
         {{input value=form.dhcp.port type=number}}
-        <button {{action "close"}}>Zrušit</button>
+        <button {{action "cancel"}}>Zrušit</button>
+        <button {{action "submit"}}>Uložit</button>
       {{/modal-dialog}}
     </script>
 

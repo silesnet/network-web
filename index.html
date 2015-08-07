@@ -77,7 +77,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title pull-left">DHCP</h3>
-            <button class="btn btn-default pull-right" {{action 'openModal' 'editDhcp' model}}>Upravit</button>
+            <button class="btn btn-default pull-right" {{action 'openModal' 'formEditDhcp' model}}>Upravit</button>
             <div class="clearfix"></div>
           </div>
           <div class="panel-body">
@@ -109,29 +109,38 @@
       {{#link-to 'services'}}Zpět{{/link-to}}
     </script>
 
-    <script type="text/x-handlebars" data-template-name="editDhcp">
-      {{#modal-dialog action="close"}}
+    <script type="text/x-handlebars" data-template-name="formEditDhcp">
+      {{#modal-form title='Upravit' ok='submit' close='closeModal'}}
         <p>DEMO (nefunkční)</p>
-        <p>Upravit DHCP pro {{form.service.id}} {{form.service.name}}</p>
+        <p>Upravit DHCP pro {{model.form.service.id}} {{model.form.service.name}}</p>
         {{view "select"
-           content=form.switches
+           content=switches
            optionValuePath="content.id"
            optionLabelPath="content.name"
-           value=form.dhcp.network_id}}
-        {{input value=form.dhcp.port type=number}}
-        <button {{action "cancel"}}>Zrušit</button>
-        <button {{action "submit"}}>Uložit</button>
-      {{/modal-dialog}}
+           value=model.form.dhcp.network_id}}
+        {{input value=model.form.dhcp.port type=number}}
+      {{/modal-form}}
     </script>
 
-    <script type="text/x-handlebars" data-template-name="components/modal-dialog">
-      <div class="em-overlay"></div>
-      <div class="em-modal">
-        <div class="content">
-          {{yield}}
+    <script type="text/x-handlebars" data-template-name="components/modal-form">
+      <div class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">{{title}}</h4>
+            </div>
+            <div class="modal-body">
+              {{yield}}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Storno</button>
+              <button type="button" class="btn btn-primary" {{action 'ok'}}>Uložit</button>
+            </div>
+          </div>
         </div>
       </div>
-    </script>  
+    </script>    
 
     <script type="text/javascript" language="JavaScript" src="js/jquery.min.js"></script>
     <script type="text/javascript" language="JavaScript" src="js/jquery-ui.min.js"></script>

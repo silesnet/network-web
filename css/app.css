@@ -1,22 +1,5 @@
 body {font-size: 15px;}
 
-.em-modal {
-  position: relative;
-  margin: 10px auto;
-  width: 300px;
-  background-color: #fff;
-  padding: 1em;
-}
-
-.em-overlay {
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
 .panel-heading h3 {
     white-space: nowrap;
     overflow: hidden;

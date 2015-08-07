@@ -25,12 +25,15 @@ App.ApplicationRoute = Ember.Route.extend({
   },
   actions: {
     openModal: function(name, model) {
-      console.log(name + ' ' + model.service.name);
-      this.controllerFor(name).set('model', model);
-      this.controllerFor(name).set('form', Ember.copy(model, true));
+      console.log('openModal: ' + name);
+      var form = {};
+      if (name.substring(0, 4) === 'form') {
+        model.form = Ember.copy(model, true);
+      }
       return this.render(name, {
         into: 'application',
-        outlet: 'modal'
+        outlet: 'modal',
+        model: model
       });
     },
     closeModal: function() {
@@ -79,9 +82,10 @@ App.ServiceRoute = Ember.Route.extend({
               }
             }),
           pppoe: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/pppoe')
-            .then(function(pppoe) { return pppoe.pppoe; }),
-          switches: Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
-            .then(function(switches) { return switches.devices})
+            .then(function(pppoe) { return pppoe.pppoe; })
+          // ,
+          // switches: Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
+          //   .then(function(switches) { return switches.devices})
         });
       });
   }
@@ -127,35 +131,35 @@ App.ServiceController = Ember.Controller.extend({
   needs: 'services'
 });
 
-
-App.EditDhcpController = Ember.Controller.extend({
+App.FormEditDhcpController = Ember.Controller.extend({
   init: function() {
-    console.log('initializing edit DHCP form...');
+    var _this = this;
+    console.log('initializing edit DHCP 2 form...');
+    Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
+         .then(function(switches) { _this.set('switches', switches.devices); });
   },
   actions: {
-    cancel: function() {
-      console.log('form cancelled');
-      return this.send('closeModal');
-    },
     submit: function() {
-      console.log('submitting form...' + this.get('form.dhcp.network_id'));
-      this.transitionToRoute('/services/' + this.get('model.service.id'));
-      return this.send('closeModal');
+      console.log('submitting form...' + this.get('model.dhcp.network_id'));
+      // this.transitionToRoute('/services/' + this.get('model.service.id'));
+      // return this.send('closeModal');
     }
   }  
 });
 
-App.ModalDialogComponent = Ember.Component.extend({
+App.ModalFormComponent = Ember.Component.extend({
   actions: {
-    submit: function() {
-      return this.sendAction();
-    },
-    cancel: function() {
-      return this.sendAction();
+    ok: function() {
+      this.$('.modal').modal('hide');
+      this.sendAction('ok');
     }
-  }  
+  },
+  show: function() {
+    this.$('.modal').modal().on('hidden.bs.modal', function() {
+      this.sendAction('close');
+    }.bind(this));
+  }.on('didInsertElement')
 });
-
 
 function cookie(name) {
   var value = '; ' + document.cookie;

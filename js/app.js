@@ -132,17 +132,32 @@ App.ServiceController = Ember.Controller.extend({
 });
 
 App.FormEditDhcpController = Ember.Controller.extend({
+  switches: [],
   init: function() {
-    var _this = this;
-    console.log('initializing edit DHCP 2 form...');
+    var self = this;
     Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
-         .then(function(switches) { _this.set('switches', switches.devices); });
+         .then(function(switches) { self.set('switches', switches.devices); });
   },
   actions: {
     submit: function() {
-      console.log('submitting form...' + this.get('model.dhcp.network_id'));
-      // this.transitionToRoute('/services/' + this.get('model.service.id'));
-      // return this.send('closeModal');
+      var self = this,
+      currentDhcp = this.model.dhcp,
+      newDhcp = this.model.form.dhcp,
+      updateDhcp = {};
+      if (currentDhcp.network_id !== newDhcp.network_id ||
+          currentDhcp.port !== newDhcp.port) {
+        updateDhcp.network_id = newDhcp.network_id;
+        updateDhcp.port = newDhcp.port;
+        console.log('updating DHCP of '+ this.model.service.id + ': ' + JSON.stringify(updateDhcp, null, 2));
+        postJSON(
+          'http://localhost:8090/services/' + self.model.service.id,
+          { services: { dhcp: updateDhcp } })
+        .then(function(data) {
+          console.log('OK: ' + data);
+        }, function(err) {
+          console.log('fail: ' + err);
+        });
+      }
     }
   }  
 });
@@ -160,6 +175,21 @@ App.ModalFormComponent = Ember.Component.extend({
     }.bind(this));
   }.on('didInsertElement')
 });
+
+function postJSON(url, body) {
+  return new Ember.RSVP.Promise(function(resolve, reject) {
+    Ember.$.ajax({
+      type: 'POST',
+      url: url,
+      data: JSON.stringify(body, null, 2),
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      success: function(data) { resolve(data); },
+      error: function(err) { reject(err); }
+    });
+  });
+}
+
 
 function cookie(name) {
   var value = '; ' + document.cookie;

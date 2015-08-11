@@ -83,11 +83,14 @@ App.ServiceRoute = Ember.Route.extend({
             }),
           pppoe: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/pppoe')
             .then(function(pppoe) { return pppoe.pppoe; })
-          // ,
-          // switches: Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
-          //   .then(function(switches) { return switches.devices})
         });
       });
+  },
+  events: {
+    reload: function() {
+      console.log('reloading...');
+      this.refresh();
+    }
   }
 });
 
@@ -150,10 +153,11 @@ App.FormEditDhcpController = Ember.Controller.extend({
         updateDhcp.port = newDhcp.port;
         console.log('updating DHCP of '+ this.model.service.id + ': ' + JSON.stringify(updateDhcp, null, 2));
         postJSON(
-          'http://localhost:8090/services/' + self.model.service.id,
+          'http://localhost:8090/services/' + this.model.service.id,
           { services: { dhcp: updateDhcp } })
         .then(function(data) {
           console.log('OK: ' + data);
+          self.get('target').send('reload');
         }, function(err) {
           console.log('fail: ' + err);
         });
@@ -189,7 +193,6 @@ function postJSON(url, body) {
     });
   });
 }
-
 
 function cookie(name) {
   var value = '; ' + document.cookie;

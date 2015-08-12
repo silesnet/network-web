@@ -26,6 +26,14 @@
         <div class="container">
           {{outlet}}
           {{outlet 'modal'}}
+          <div class="notifications top-right">
+          {{#each flashes.queue as |flash|}}
+            {{#flash-message flash=flash}}
+              <h5>{{flash.type}}</h5>
+              <p>{{flash.message}}</p>
+            {{/flash-message}}
+          {{/each}}
+          </div>
         </div>
       </div>
     </script>
@@ -140,7 +148,15 @@
           </div>
         </div>
       </div>
-    </script>    
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="components/flash-message">
+      {{#if hasBlock}}
+        {{yield}}
+      {{else}}
+        {{flash.message}}
+      {{/if}}
+    </script>
 
     <script type="text/javascript" language="JavaScript" src="js/jquery.min.js"></script>
     <script type="text/javascript" language="JavaScript" src="js/jquery-ui.min.js"></script>

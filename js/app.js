@@ -9,6 +9,15 @@ App.Router.map(function() {
   this.route('service', { path: '/services/:service_id' }, function() {});
 });
 
+Ember.Application.initializer({
+  name: 'flash-messages',
+  initialize: function(container, application) {
+    application.register('service:flash-messages', application.FlashMessagesService, { singleton: true });
+    application.inject('controller', 'flashes', 'service:flash-messages');    application.inject('controller', 'flashes', 'service:flash-messages');
+    application.inject('route', 'flashes', 'service:flash-messages');
+  }
+});
+
 App.ApplicationRoute = Ember.Route.extend({
   model: function() {
     var sessionId = cookie('JSESSIONID') || 'test';
@@ -43,7 +52,7 @@ App.ApplicationRoute = Ember.Route.extend({
         parentView: 'application'
       });
     }
-  }  
+  }
 });
 
 App.ServicesRoute = Ember.Route.extend({
@@ -57,7 +66,7 @@ App.ServicesRoute = Ember.Route.extend({
     return Ember.RSVP.hash({
       query: App.get('query'),
       services: []
-    }); 
+    });
   }
 });
 
@@ -78,7 +87,7 @@ App.ServiceRoute = Ember.Route.extend({
                     return dhcp.dhcp;
                   });
               } else {
-                return dhcp.dhcp;                
+                return dhcp.dhcp;
               }
             }),
           pppoe: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/pppoe')
@@ -138,6 +147,7 @@ App.FormEditDhcpController = Ember.Controller.extend({
   switches: [],
   init: function() {
     var self = this;
+    this._super();
     Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
          .then(function(switches) { self.set('switches', switches.devices); });
   },
@@ -158,12 +168,14 @@ App.FormEditDhcpController = Ember.Controller.extend({
         .then(function(data) {
           console.log('OK: ' + data);
           self.get('target').send('reload');
+          self.get('flashes').success('OK');
         }, function(err) {
           console.log('fail: ' + err);
+          self.get('flashes').danger(err.message);
         });
       }
     }
-  }  
+  }
 });
 
 App.ModalFormComponent = Ember.Component.extend({
@@ -193,6 +205,64 @@ function postJSON(url, body) {
     });
   });
 }
+
+App.FlashMessagesService = Ember.Service.extend({
+  queue: Ember.A([]),
+  isEmpty: Ember.computed.equal('queue.length', 0),
+  defaultTimeout: 2000,
+  isStack: true,
+  success: function(message, timeout) {
+    this._add(message, 'success', timeout);
+  },
+  danger: function(message, timeout) {
+    this._add(message, 'danger', timeout);
+  },
+  _add: function(message, type, timeout) {
+    var flash;
+    timeout = (timeout === undefined) ? this.get('defaultTimeout') : timeout;
+    flash = this._newFlash(message, type, timeout);
+    if (this.get('isStack')) {
+      this.get('queue').insertAt(0, flash);
+    } else {
+      this.get('queue').pushObject(flash);
+    }
+    return flash;
+  },
+  _newFlash: function(message, type, timeout) {
+    var self = this;
+    return Ember.Object.create({
+      type: type,
+      message: message,
+      timer: null,
+      init: function() {
+        this.set('timer', Ember.run.later(this, 'destroyMessage', timeout));
+      },
+      destroyMessage: function() {
+        self.get('queue').removeObject(this);
+        this.destroy();
+      },
+      willDestroy: function() {
+        var timer = this.get('timer');
+        if (timer) {
+          Ember.run.cancel(timer);
+          this.set('timer', null);
+        }
+      }
+    });
+  }
+});
+
+App.FlashMessageComponent = Ember.Component.extend({
+  classNames: ['alert', 'flashMessage'],
+  classNameBindings: ['alertType'],
+  alertType: Ember.computed('flash.type', function() {
+    var flashType = this.get('flash.type');
+    return 'alert-' + flashType;
+  }),
+  click: function() {
+    this.get('flash').destroyMessage();
+  }
+});
 
 function cookie(name) {
   var value = '; ' + document.cookie;

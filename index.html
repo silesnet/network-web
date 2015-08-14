@@ -29,7 +29,6 @@
           <div class="notifications top-right">
           {{#each flashes.queue as |flash|}}
             {{#flash-message flash=flash}}
-              <h5>{{flash.type}}</h5>
               <p>{{flash.message}}</p>
             {{/flash-message}}
           {{/each}}

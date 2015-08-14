@@ -162,16 +162,15 @@ App.FormEditDhcpController = Ember.Controller.extend({
         updateDhcp.network_id = newDhcp.network_id;
         updateDhcp.port = newDhcp.port;
         console.log('updating DHCP of '+ this.model.service.id + ': ' + JSON.stringify(updateDhcp, null, 2));
-        postJSON(
+        putJSON(
           'http://localhost:8090/services/' + this.model.service.id,
           { services: { dhcp: updateDhcp } })
         .then(function(data) {
-          console.log('OK: ' + data);
           self.get('target').send('reload');
-          self.get('flashes').success('OK');
+          self.get('flashes').success('OK', 1000);
         }, function(err) {
-          console.log('fail: ' + err);
-          self.get('flashes').danger(err.message);
+          console.log(JSON.stringify(err));
+          self.get('flashes').danger(err.detail, 5000);
         });
       }
     }
@@ -192,6 +191,20 @@ App.ModalFormComponent = Ember.Component.extend({
   }.on('didInsertElement')
 });
 
+function putJSON(url, body) {
+  return new Ember.RSVP.Promise(function(resolve, reject) {
+    Ember.$.ajax({
+      type: 'PUT',
+      url: url,
+      data: JSON.stringify(body, null, 2),
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      success: function(data) { resolve(data); },
+      error: function(err) { reject(err.responseJSON.errors); }
+    });
+  });
+}
+
 function postJSON(url, body) {
   return new Ember.RSVP.Promise(function(resolve, reject) {
     Ember.$.ajax({
@@ -201,7 +214,7 @@ function postJSON(url, body) {
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       success: function(data) { resolve(data); },
-      error: function(err) { reject(err); }
+      error: function(err) { reject(err.responseJSON.errors); }
     });
   });
 }

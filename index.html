@@ -16,6 +16,7 @@
         <div class="container">
           <a class="navbar-brand" href="..">Home</a>
           <a class="navbar-brand" href="#/services">Služby</a>
+          <a class="navbar-brand" href="#/changelog"><span class="small">Sezam změn</span></a>
           <div class="navbar-right navbar-brand">
             <span class='glyphicon glyphicon-user'></span>
             {{model.user.name}}|{{model.user.operation_country}}
@@ -128,6 +129,20 @@
         <label>Port</label>
         {{input value=model.form.dhcp.port type=number}}
       {{/modal-form}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="changelog">
+      <h2>Seznam posledních změn aplikace</h2>
+      <table class="table">
+      <tbody>
+      {{#each model key="id" as |ticket|}}
+        <tr>
+          <td>{{date ticket.closed_at}}</td>
+          <td><a href="{{ticket.html_url}}" target="_blank"> <b>{{ticket.title}}</b></a></td>
+        </tr>
+      {{/each}}
+      </tbody>
+      </table>
     </script>
 
     <script type="text/x-handlebars" data-template-name="components/modal-form">

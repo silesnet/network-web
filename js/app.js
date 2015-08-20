@@ -7,6 +7,7 @@ var App = Ember.Application.create({
 App.Router.map(function() {
   this.route('services', { path: '/services' }, function() {});
   this.route('service', { path: '/services/:service_id' }, function() {});
+  this.route('changelog', { path: '/changelog' }, function() {});
 });
 
 Ember.Application.initializer({
@@ -100,6 +101,18 @@ App.ServiceRoute = Ember.Route.extend({
       console.log('reloading...');
       this.refresh();
     }
+  }
+});
+
+App.ChangelogRoute = Ember.Route.extend({
+  model: function() {
+    return Ember.$.getJSON('https://api.github.com/repos/silesnet/silesnet.github.io/issues?state=closed&sort=updated&direction=desc')
+      .then(function(issues) {
+        return issues;
+      }, function(err) {
+        console.log('unable to fetch list of closed issues from github: ' + err);
+        return [];
+      });
   }
 });
 
@@ -275,6 +288,12 @@ App.FlashMessageComponent = Ember.Component.extend({
   click: function() {
     this.get('flash').destroyMessage();
   }
+});
+
+Ember.Handlebars.helper('date', function(value, options) {
+  var date = new Date(value);
+  return new Ember.Handlebars.SafeString(
+    date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
 });
 
 function cookie(name) {

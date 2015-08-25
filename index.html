@@ -68,7 +68,11 @@
     </script>
 
     <script type="text/x-handlebars" id="service">
-      <h2>{{model.customer.name}}<br />
+      <h2>{{model.customer.name}}
+        {{#unless model.dhcp.port}}
+          <button class="btn btn-success pull-right" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-plus"></span>&#160;DHCP</button>
+        {{/unless}}
+        <br />
         <span class="small">
           {{model.customer.street}}, {{model.customer.postal_code}} {{model.customer.city}}
           <a href="http://www.google.com/maps?q={{model.customer.street}}, {{model.customer.city}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
@@ -81,11 +85,19 @@
       <p>{{model.service.info}}</p>
       {{#if model.dhcp.port}}
         <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-md-worel">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title pull-left">DHCP</h3>
-            <button class="btn btn-default pull-right" {{action 'openModal' 'formEditDhcp' model}}>Upravit</button>
+            <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
+            <button class="btn btn-danger pull-right btn-delete" {{action "confirm"}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
+            <div class="delete-confirm">
+              <p class="message">Chcete smazat zaznam?</p>
+              <div class="buttons">
+                <button class="btn btn-success" {{action "delete" model}}>Ano</button>
+                <button class="btn btn-danger" {{action "cancel"}}>Ne</button>
+              </div>
+            </div>
             <div class="clearfix"></div>
           </div>
           <div class="panel-body">
@@ -172,7 +184,7 @@
         {{flash.message}}
       {{/if}}
     </script>
-
+    
     <script type="text/javascript" language="JavaScript" src="js/jquery.min.js"></script>
     <script type="text/javascript" language="JavaScript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" language="JavaScript" src="js/jquery-ui-datepicker-cs.js"></script>

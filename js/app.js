@@ -52,6 +52,41 @@ App.ApplicationRoute = Ember.Route.extend({
         outlet: 'modal',
         parentView: 'application'
       });
+    },
+    confirm: function () {
+        var $btn, $confirm, el, height, offset, width;
+        el = this.get('element');
+        $btn = $('.btn-delete', el);
+        offset = $btn.offset();
+        $confirm = $btn.next();
+        height = $confirm.outerHeight();
+        width = $confirm.outerWidth();
+        $confirm.css('top', offset.top - height - 20);
+        $confirm.css('left', offset.left - width / 2 + 45);
+        return $confirm.fadeIn();
+    },
+    cancel: function () {
+        var $confirm, el;
+        el = this.get('element');
+        $confirm = $('.delete-confirm', el);
+        return $confirm.fadeOut();
+    },
+    delete: function (model) {
+        var self = this;
+        var $confirm, el;
+        el = this.get('element');
+        $confirm = $('.delete-confirm', el);
+        $confirm.fadeOut();
+        console.log ('delete DHCP for service ' + model.service.id);
+        deleteJSON(
+          'http://localhost:8090/services/' + model.service.id + "/dhcp")
+        .then(function(data) {
+          self.send('reload');
+          self.get('flashes').success('OK', 1000);
+        }, function(err) {
+          console.log(JSON.stringify(err));
+          self.get('flashes').danger(err.detail, 5000);
+        });
     }
   }
 });
@@ -222,6 +257,20 @@ function postJSON(url, body) {
   return new Ember.RSVP.Promise(function(resolve, reject) {
     Ember.$.ajax({
       type: 'POST',
+      url: url,
+      data: JSON.stringify(body, null, 2),
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      success: function(data) { resolve(data); },
+      error: function(err) { reject(err.responseJSON.errors); }
+    });
+  });
+}
+
+function deleteJSON(url, body) {
+  return new Ember.RSVP.Promise(function(resolve, reject) {
+    Ember.$.ajax({
+      type: 'DELETE',
       url: url,
       data: JSON.stringify(body, null, 2),
       contentType: 'application/json; charset=utf-8',

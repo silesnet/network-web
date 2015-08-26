@@ -78,13 +78,13 @@ App.ApplicationRoute = Ember.Route.extend({
         $confirm = $('.delete-confirm', el);
         $confirm.fadeOut();
         console.log ('delete DHCP for service ' + model.service.id);
-        deleteJSON(
-          'http://localhost:8090/services/' + model.service.id + "/dhcp")
+        putJSON(
+          'http://localhost:8090/services/' + model.service.id,
+          { services: { dhcp: {} } })
         .then(function(data) {
           self.send('reload');
           self.get('flashes').success('OK', 1000);
         }, function(err) {
-          console.log(JSON.stringify(err));
           self.get('flashes').danger(err.detail, 5000);
         });
     }

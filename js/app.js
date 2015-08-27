@@ -188,7 +188,25 @@ App.ServicesController = Ember.Controller.extend({
 });
 
 App.ServiceController = Ember.Controller.extend({
-  needs: 'services'
+  needs: 'services',
+});
+
+App.ConfirmDhcpRemovalController = Ember.Controller.extend({
+  actions: {
+    removeDhcp: function(service) {
+      var self = this;
+      console.log('removing dhcp for ' + this.model.service.id);
+      putJSON(
+        'http://localhost:8090/services/' + this.model.service.id,
+        { services: { dhcp: {} } })
+      .then(function(data) {
+        self.send('reload');
+        self.get('flashes').success('OK', 1000);
+      }, function(err) {
+        self.get('flashes').danger(err.detail, 5000);
+      });
+    }
+  }
 });
 
 App.FormEditDhcpController = Ember.Controller.extend({

@@ -90,14 +90,7 @@
           <div class="panel-heading">
             <h3 class="panel-title pull-left">DHCP</h3>
             <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
-            <button class="btn btn-danger pull-right btn-delete" {{action "confirm"}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
-            <div class="delete-confirm">
-              <p class="message">Chcete smazat zaznam?</p>
-              <div class="buttons">
-                <button class="btn btn-success" {{action "delete" model}}>Ano</button>
-                <button class="btn btn-danger" {{action "cancel"}}>Ne</button>
-              </div>
-            </div>
+            <button class="btn btn-danger pull-right btn-delete" {{action 'openModal' 'confirmDhcpRemoval' model}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
             <div class="clearfix"></div>
           </div>
           <div class="panel-body">
@@ -140,6 +133,12 @@
            value=model.form.dhcp.network_id}}
         <label>Port</label>
         {{input value=model.form.dhcp.port type=number}}
+      {{/modal-form}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="confirmDhcpRemoval">
+      {{#modal-form title='Odebrat DHCP' ok='removeDhcp' close='closeModal'}}
+        <p>Chcete opravdu odebrat DHCP pro {{model.service.id}} {{model.service.name}}?</p>
       {{/modal-form}}
     </script>
 

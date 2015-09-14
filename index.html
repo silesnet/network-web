@@ -150,7 +150,7 @@
       {{#each model key="id" as |ticket|}}
         <tr>
           <td>{{date ticket.closed_at}}</td>
-          <td><a href="{{ticket.html_url}}" target="_blank"> <b>{{ticket.title}}</b></a></td>
+          <td class="issue-closed"><a href="{{ticket.html_url}}" target="_blank"><b>{{ticket.title}}</b></a></td>
         </tr>
       {{/each}}
       </tbody>

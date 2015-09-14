@@ -1,5 +1,9 @@
 body {font-size: 15px;}
 
+.issue-closed a {
+  text-decoration: line-through;
+}
+
 .notifications {
   position: fixed;
   width: 30%;

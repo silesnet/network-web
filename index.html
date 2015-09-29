@@ -73,6 +73,9 @@
         {{#unless model.dhcp.port}}
           <button class="btn btn-success pull-right" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-plus"></span>&#160;DHCP</button>
         {{/unless}}
+        {{#unless model.pppoe.service_id}}
+          <button class="btn btn-success pull-right" {{action 'openModal' 'formEditPppoe' model}}><span class="glyphicon glyphicon-plus"></span>&#160;PPPoE</button>
+        {{/unless}}
         <br />
         <span class="small">
           {{model.customer.street}}, {{model.customer.postal_code}} {{model.customer.city}}
@@ -110,13 +113,13 @@
         </div>
         </div>
       {{/if}}
-      {{#if model.pppoe.id}}
+      {{#if model.pppoe.service_id}}
         <div class="panel panel-default">
           <div class="panel-heading">PPPoE</div>
           <div class="panel-body">
           <p>Master/Interface {{model.pppoe.master}}/{{model.pppoe.interface}}</p>
-          <p>IP/MAC {{model.pppoe.address}}/{{model.pppoe.mac}}</p>
-          <p>Uživatel/Heslo {{model.pppoe.username}}/{{model.pppoe.password}}</p>
+          <p>IP/MAC {{model.pppoe.ip}}/{{model.pppoe.mac.value}}</p>
+          <p>Uživatel/Heslo {{model.pppoe.login}}/{{model.pppoe.password}}</p>
           </div>
         </div>
       {{/if}}
@@ -136,6 +139,21 @@
         {{input value=model.form.dhcp.port type=number}}
       {{/modal-form}}
     </script>
+
+    <script type="text/x-handlebars" data-template-name="formEditPppoe">
+      {{#modal-form title='Upravit' ok='submit' close='closeModal'}}
+        <p>PPPoE pro {{model.form.service.id}} {{model.form.service.name}}</p>
+        <label>Switch</label>
+        {{view "select"
+           content=switches
+           optionValuePath="content.id"
+           optionLabelPath="content.name"
+           value=model.form.dhcp.network_id}}
+        <label>Port</label>
+        {{input value=model.form.dhcp.port type=number}}
+      {{/modal-form}}
+    </script>
+
 
     <script type="text/x-handlebars" data-template-name="confirmDhcpRemoval">
       {{#modal-form title='Odebrat DHCP' ok='removeDhcp' close='closeModal'}}

@@ -71,10 +71,10 @@
     <script type="text/x-handlebars" id="service">
       <h2>{{model.customer.name}}
         {{#unless model.dhcp.port}}
-          <button class="btn btn-success pull-right" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-plus"></span>&#160;DHCP</button>
+          <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-plus"></span>&#160;DHCP</button></div>
         {{/unless}}
         {{#unless model.pppoe.service_id}}
-          <button class="btn btn-success pull-right" {{action 'openModal' 'formEditPppoe' model}}><span class="glyphicon glyphicon-plus"></span>&#160;PPPoE</button>
+          <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formEditPppoe' model}}><span class="glyphicon glyphicon-plus"></span>&#160;PPPoE</button></div>
         {{/unless}}
         <br />
         <span class="small">
@@ -100,11 +100,15 @@
           <div class="panel-body">
           <div class="col-md-12">
             <div class="row">
-              <div class="col-sm-2"><p class="text-right"><strong>Switch</strong></p></div>
+              <div class="col-sm-2"><p class="text-right"><strong>Switch:</strong></p></div>
               <div class="col-sm-10">{{model.dhcp.switch.name}}</div>
             </div>
             <div class="row">
-              <div class="col-sm-2"><p class="text-right"><strong>Port</strong></p></div>
+              <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
+              <div class="col-sm-10">{{model.dhcp.ip}}</div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2"><p class="text-right"><strong>Port:</strong></p></div>
               <div class="col-sm-10">{{model.dhcp.port}}</div>
             </div>
           </div>
@@ -129,13 +133,16 @@
     <script type="text/x-handlebars" data-template-name="formEditDhcp">
       {{#modal-form title='Upravit' ok='submit' close='closeModal'}}
         <p>DHCP pro {{model.form.service.id}} {{model.form.service.name}}</p>
-        <label>Switch</label>
+        <label>Switch:</label>
         {{view "select"
            content=switches
            optionValuePath="content.id"
            optionLabelPath="content.name"
            value=model.form.dhcp.network_id}}
-        <label>Port</label>
+        <br />   
+        <label>IP:</label>
+        {{input value=model.form.dhcp.ip type=text placeholder="AUTO" maxlength="15"}}
+        <label>Port:</label>
         {{input value=model.form.dhcp.port type=number}}
       {{/modal-form}}
     </script>

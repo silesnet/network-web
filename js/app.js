@@ -224,8 +224,10 @@ App.FormEditDhcpController = Ember.Controller.extend({
       newDhcp = this.model.form.dhcp,
       updateDhcp = {};
       if (currentDhcp.network_id !== newDhcp.network_id ||
+          currentDhcp.ip !== newDhcp.ip ||
           currentDhcp.port !== newDhcp.port) {
         updateDhcp.network_id = newDhcp.network_id;
+        updateDhcp.ip = newDhcp.ip;
         updateDhcp.port = newDhcp.port;
         console.log('updating DHCP of '+ this.model.service.id + ': ' + JSON.stringify(updateDhcp, null, 2));
         putJSON(

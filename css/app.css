@@ -70,6 +70,8 @@ tr.clickable:hover {
 
 .panel.panel-tab {border-top: none ; border-top-right-radius:0; border-top-left-radius:0;}
 
+.btn-group.service {margin-left: 10px;}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;

@@ -161,16 +161,22 @@ App.ServicesController = Ember.Controller.extend({
   needs: 'application',
   search: function() {
     var services = this.model.services;
+    var isActive = this.model.isActive;
     var query = this.model.query;
     var country = this.model.user.operation_country;
     var currentPath = App.get('currentPath');
     if (currentPath && currentPath != 'services.index') {
       this.transitionToRoute('/services');
     }
+    if (isActive === undefined || isActive == false) {
+      isActive = 1;
+    }else{
+      isActive = 0;
+    }
     if (query) {
       App.set('query', this.model.query);
-      console.log('searching...' + query);
-      Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country)
+      console.log('searching... ' + query + " activeClients = " + isActive);
+      Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country + "&isactive=" + isActive)
         .then(function(data) {
           services.setObjects(data.services);
         });

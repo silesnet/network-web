@@ -42,7 +42,7 @@
     <script type="text/x-handlebars" id="services">
       <div class="input-group">
         <span class="input-group-addon" title="Aktivní zákazníci">
-            {{input type="checkbox" name="isActive" checked=model.isActive aria-label="Aktivní zákazníci"}}
+            {{input type="checkbox" name="isActive" class="glyphicon glyphicon-user" checked=model.isActive aria-label="Aktivní zákazníci"}}
         </span>
         {{input id="service_search" class="form-control" type="text" value=model.query placeholder="Customer or Agreement" autofocus="true"}}
         <div class="input-group-btn">

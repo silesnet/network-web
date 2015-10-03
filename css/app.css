@@ -1,5 +1,18 @@
 body {font-size: 15px;}
 
+/*  glyph icon check boxes */
+.glyphicon:before {
+  visibility: visible;
+  color: #ccc;
+}
+.glyphicon.glyphicon-user:checked:before {
+  color: #444;
+}
+
+input[type=checkbox].glyphicon{
+    visibility: hidden;
+}
+
 .issue-closed a {
   text-decoration: line-through;
 }

@@ -216,6 +216,24 @@ App.ConfirmDhcpRemovalController = Ember.Controller.extend({
   }
 });
 
+App.ConfirmPppoeRemovalController = Ember.Controller.extend({
+  actions: {
+    removeDhcp: function(service) {
+      var self = this;
+      console.log('removing pppoe for ' + this.model.service.id);
+      putJSON(
+        'http://localhost:8090/services/' + this.model.service.id,
+        { services: { pppoe: {} } })
+      .then(function(data) {
+        self.send('reload');
+        self.get('flashes').success('OK', 1000);
+      }, function(err) {
+        self.get('flashes').danger(err.detail, 5000);
+      });
+    }
+  }
+});
+
 App.FormEditDhcpController = Ember.Controller.extend({
   switches: [],
   init: function() {
@@ -248,6 +266,21 @@ App.FormEditDhcpController = Ember.Controller.extend({
           self.get('flashes').danger(err.detail, 5000);
         });
       }
+    }
+  }
+});
+
+App.FormEditPppoeController = Ember.Controller.extend({
+  switches: [],
+  init: function() {
+    var self = this;
+    this._super();
+    Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
+         .then(function(switches) { self.set('switches', switches.devices); });
+  },
+  actions: {
+    submit: function() {
+      // TODO
     }
   }
 });

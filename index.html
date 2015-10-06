@@ -76,7 +76,7 @@
         {{#unless model.dhcp.port}}
           <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-plus"></span>&#160;DHCP</button></div>
         {{/unless}}
-        {{#unless model.pppoe.service_id}}
+        {{#unless model.pppoe.radius.id}}
           <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formEditPppoe' model}}><span class="glyphicon glyphicon-plus"></span>&#160;PPPoE</button></div>
         {{/unless}}
         <br />
@@ -90,77 +90,138 @@
       </h2>
       <h3>{{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h3>
       <p>{{model.service.info}}</p>
-      {{#if model.dhcp.port}}
-        <div class="row">
-        <div class="col-md-6 col-md-worel">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title pull-left">DHCP</h3>
-            <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
-            <button class="btn btn-danger pull-right btn-delete" {{action 'openModal' 'confirmDhcpRemoval' model}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
-            <div class="clearfix"></div>
-          </div>
-          <div class="panel-body">
-          <div class="col-md-12">
-            <div class="row">
-              <div class="col-sm-2"><p class="text-right"><strong>Switch:</strong></p></div>
-              <div class="col-sm-10">{{model.dhcp.switch.name}}</div>
+      <div class="row">
+        {{#if model.dhcp.port}}
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title pull-left">DHCP</h3>
+                <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
+                <button class="btn btn-danger pull-right btn-delete" {{action 'openModal' 'confirmDhcpRemoval' model}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
+                <div class="clearfix"></div>
+              </div>
+              <div class="panel-body">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Switch:</strong></p></div>
+                  <div class="col-sm-10">{{model.dhcp.switch.name}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
+                  <div class="col-sm-10">{{model.dhcp.ip}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Port:</strong></p></div>
+                  <div class="col-sm-10">{{model.dhcp.port}}</div>
+                </div>
+              </div>
+              </div>
             </div>
-            <div class="row">
-              <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
-              <div class="col-sm-10">{{model.dhcp.ip}}</div>
+          </div>
+        {{/if}}
+        {{#if model.pppoe.radius.id}}
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title pull-left">PPPoE</h3>
+                <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditPppoe' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
+                <button class="btn btn-danger pull-right btn-delete" {{action 'openModal' 'confirmPppoeRemoval' model}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
+                <div class="clearfix"></div>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Master:</strong></p></div>
+                  <div class="col-sm-10">{{model.pppoe.radius.master}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Interface:</strong></p></div>
+                  <div class="col-sm-10">{{model.pppoe.radius.interface}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
+                  <div class="col-sm-10">{{model.pppoe.radius.address}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>MAC:</strong></p></div>
+                  <div class="col-sm-10">{{model.pppoe.radius.mac}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Login:</strong></p></div>
+                  <div class="col-sm-10">{{model.pppoe.radius.id}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Heslo:</strong></p></div>
+                  <div class="col-sm-10">{{model.pppoe.radius.password}}</div>
+                </div>
+              </div>
             </div>
-            <div class="row">
-              <div class="col-sm-2"><p class="text-right"><strong>Port:</strong></p></div>
-              <div class="col-sm-10">{{model.dhcp.port}}</div>
-            </div>
           </div>
-          </div>
-        </div>
-        </div>
-        </div>
-      {{/if}}
-      {{#if model.pppoe.service_id}}
-        <div class="panel panel-default">
-          <div class="panel-heading">PPPoE</div>
-          <div class="panel-body">
-          <p>Master/Interface {{model.pppoe.master}}/{{model.pppoe.interface}}</p>
-          <p>IP/MAC {{model.pppoe.ip}}/{{model.pppoe.mac.value}}</p>
-          <p>Uživatel/Heslo {{model.pppoe.login}}/{{model.pppoe.password}}</p>
-          </div>
-        </div>
-      {{/if}}
+        {{/if}}
+      </div>
       {{#link-to 'services'}}Zpět{{/link-to}}
     </script>
 
     <script type="text/x-handlebars" data-template-name="formEditDhcp">
       {{#modal-form title='Upravit' ok='submit' close='closeModal'}}
         <p>DHCP pro {{model.form.service.id}} {{model.form.service.name}}</p>
-        <label>Switch:</label>
-        {{view "select"
-           content=switches
-           optionValuePath="content.id"
-           optionLabelPath="content.name"
-           value=model.form.dhcp.network_id}}
-        <br />   
-        <label>IP:</label>
-        {{input value=model.form.dhcp.ip type=text placeholder="AUTO" maxlength="15"}}
-        <label>Port:</label>
-        {{input value=model.form.dhcp.port type=number}}
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>Switch:</label>
+            {{view "select"
+               class="form-control"
+               content=switches
+               optionValuePath="content.id"
+               optionLabelPath="content.name"
+               value=model.form.dhcp.network_id}}
+          </div>
+        </div>        
+        <div class="row">
+          <div class="col-sm-6 form-group">   
+            <label>IP:</label>
+            {{input class="form-control" value=model.form.dhcp.ip type=text placeholder="AUTO" maxlength="15"}}
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Port:</label>
+            {{input class="form-control" value=model.form.dhcp.port type=number}}
+          </div>
+        </div>
       {{/modal-form}}
     </script>
 
     <script type="text/x-handlebars" data-template-name="formEditPppoe">
       {{#modal-form title='Upravit' ok='submit' close='closeModal'}}
         <p>PPPoE pro {{model.form.service.id}} {{model.form.service.name}}</p>
-        <label>Switch</label>
-        {{view "select"
-           content=switches
-           optionValuePath="content.id"
-           optionLabelPath="content.name"
-           value=model.form.dhcp.network_id}}
-        <label>Port</label>
-        {{input value=model.form.dhcp.port type=number}}
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>Master:</label>
+            {{view "select"
+               class="form-control"
+               content=switches
+               optionValuePath="content.name"
+               optionLabelPath="content.name"
+               value=model.form.pppoe.radius.master}}
+          </div>
+        </div>
+        <div class="row">  
+          <div class="col-sm-6 form-group">   
+            <label>Login:</label>
+            {{input class="form-control" name="login" value=model.form.pppoe.radius.id type=text disabled="disabled"}}
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Password:</label>
+            {{input class="form-control" value=model.form.pppoe.radius.password type=text}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>IP:</label>
+            {{input class="form-control" value=model.form.pppoe.radius.address type=text placeholder="AUTO" maxlength="15"}}
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>MAC:</label>
+            {{input class="form-control" value=model.form.pppoe.radius.mac type=text placeholder="AB:CD:EF:01:23:45:67:89" maxlength="23"}}
+          </div>
+        </div>
       {{/modal-form}}
     </script>
 
@@ -168,6 +229,12 @@
     <script type="text/x-handlebars" data-template-name="confirmDhcpRemoval">
       {{#modal-form title='Odebrat DHCP' ok='removeDhcp' close='closeModal'}}
         <p>Chcete opravdu odebrat DHCP pro {{model.service.id}} {{model.service.name}}?</p>
+      {{/modal-form}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="confirmPppoeRemoval">
+      {{#modal-form title='Odebrat DHCP' ok='removeDhcp' close='closeModal'}}
+        <p>Chcete opravdu odebrat PPPoE pro {{model.service.id}} {{model.service.name}}?</p>
       {{/modal-form}}
     </script>
 

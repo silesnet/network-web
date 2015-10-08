@@ -256,7 +256,7 @@ App.FormEditDhcpController = Ember.Controller.extend({
         updateDhcp.port = newDhcp.port;
         console.log('updating DHCP of '+ this.model.service.id + ': ' + JSON.stringify(updateDhcp, null, 2));
         putJSON(
-          'http://localhost:8090/services/' + this.model.service.id,
+          'http://localhost:8090/networks/dhcp/' + this.model.service.id,
           { services: { dhcp: updateDhcp } })
         .then(function(data) {
           self.get('target').send('reload');

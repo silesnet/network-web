@@ -76,7 +76,7 @@
         {{#unless model.dhcp.port}}
           <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-plus"></span>&#160;DHCP</button></div>
         {{/unless}}
-        {{#unless model.pppoe.radius.id}}
+        {{#unless model.pppoe.service_id}}
           <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formEditPppoe' model}}><span class="glyphicon glyphicon-plus"></span>&#160;PPPoE</button></div>
         {{/unless}}
         <br />
@@ -119,7 +119,7 @@
             </div>
           </div>
         {{/if}}
-        {{#if model.pppoe.radius.id}}
+        {{#if model.pppoe.service_id}}
           <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -131,27 +131,27 @@
               <div class="panel-body">
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>Master:</strong></p></div>
-                  <div class="col-sm-10">{{model.pppoe.radius.master}}</div>
+                  <div class="col-sm-10">{{model.pppoe.master}}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>Interface:</strong></p></div>
-                  <div class="col-sm-10">{{model.pppoe.radius.interface}}</div>
+                  <div class="col-sm-10">{{model.pppoe.interface}}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
-                  <div class="col-sm-10">{{model.pppoe.radius.address}}</div>
+                  <div class="col-sm-10">{{model.pppoe.ip}}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>MAC:</strong></p></div>
-                  <div class="col-sm-10">{{model.pppoe.radius.mac}}</div>
+                  <div class="col-sm-10">{{model.pppoe.mac.value}}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>Login:</strong></p></div>
-                  <div class="col-sm-10">{{model.pppoe.radius.id}}</div>
+                  <div class="col-sm-10">{{model.pppoe.login}}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>Heslo:</strong></p></div>
-                  <div class="col-sm-10">{{model.pppoe.radius.password}}</div>
+                  <div class="col-sm-10">{{model.pppoe.password}}</div>
                 </div>
               </div>
             </div>
@@ -174,15 +174,15 @@
                optionLabelPath="content.name"
                value=model.form.dhcp.network_id}}
           </div>
+          <div class="col-sm-6 form-group">
+            <label>Port:</label>
+            {{input class="form-control" value=model.form.dhcp.port type=number}}
+          </div>
         </div>        
         <div class="row">
           <div class="col-sm-6 form-group">   
             <label>IP:</label>
             {{input class="form-control" value=model.form.dhcp.ip type=text placeholder="AUTO" maxlength="15"}}
-          </div>
-          <div class="col-sm-6 form-group">
-            <label>Port:</label>
-            {{input class="form-control" value=model.form.dhcp.port type=number}}
           </div>
         </div>
       {{/modal-form}}
@@ -199,27 +199,27 @@
                content=switches
                optionValuePath="content.name"
                optionLabelPath="content.name"
-               value=model.form.pppoe.radius.master}}
+               value=model.form.pppoe.master}}
           </div>
         </div>
         <div class="row">  
           <div class="col-sm-6 form-group">   
             <label>Login:</label>
-            {{input class="form-control" name="login" value=model.form.pppoe.radius.id type=text disabled="disabled"}}
+            {{input class="form-control" name="login" value=model.form.pppoe.login type=text disabled="disabled"}}
           </div>
           <div class="col-sm-6 form-group">
             <label>Password:</label>
-            {{input class="form-control" value=model.form.pppoe.radius.password type=text}}
+            {{input class="form-control" value=model.form.pppoe.password type=text}}
           </div>
         </div>
         <div class="row">
           <div class="col-sm-6 form-group">
             <label>IP:</label>
-            {{input class="form-control" value=model.form.pppoe.radius.address type=text placeholder="AUTO" maxlength="15"}}
+            {{input class="form-control" value=model.form.pppoe.ip type=text placeholder="AUTO" maxlength="15"}}
           </div>
           <div class="col-sm-6 form-group">
             <label>MAC:</label>
-            {{input class="form-control" value=model.form.pppoe.radius.mac type=text placeholder="AB:CD:EF:01:23:45:67:89" maxlength="23"}}
+            {{input class="form-control" value=model.form.pppoe.mac.value type=text placeholder="AB:CD:EF:01:23:45" maxlength="17"}}
           </div>
         </div>
       {{/modal-form}}

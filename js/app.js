@@ -218,7 +218,7 @@ App.ConfirmDhcpRemovalController = Ember.Controller.extend({
 
 App.ConfirmPppoeRemovalController = Ember.Controller.extend({
   actions: {
-    removeDhcp: function(service) {
+    removePppoe: function(service) {
       var self = this;
       console.log('removing pppoe for ' + this.model.service.id);
       putJSON(

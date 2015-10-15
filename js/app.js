@@ -290,6 +290,7 @@ App.FormEditPppoeController = Ember.Controller.extend({
           currentPppoe.mac.value !== newPppoe.mac.value) {
         updatePppoe.master = newPppoe.master;
         updatePppoe.ip = newPppoe.ip;
+        updatePppoe.login = newPppoe.login;
         updatePppoe.password = newPppoe.password;
         updatePppoe.mac = newPppoe.mac;
         console.log('updating PPPoE of '+ this.model.service.id + ': ' + JSON.stringify(updatePppoe, null, 2));

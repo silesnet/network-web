@@ -201,15 +201,9 @@
                optionLabelPath="content.name"
                value=model.form.pppoe.master}}
           </div>
-        </div>
-        <div class="row">  
           <div class="col-sm-6 form-group">   
-            <label>Login:</label>
-            {{input class="form-control" name="login" value=model.form.pppoe.login type=text}}
-          </div>
-          <div class="col-sm-6 form-group">
-            <label>Password:</label>
-            {{input class="form-control" value=model.form.pppoe.password type=text}}
+            <label>Interface:</label>
+            {{input class="form-control" name="interface" value=model.form.pppoe.interface type=text}}
           </div>
         </div>
         <div class="row">
@@ -220,6 +214,16 @@
           <div class="col-sm-6 form-group">
             <label>MAC:</label>
             {{input class="form-control" value=model.form.pppoe.mac.value type=text placeholder="AB:CD:EF:01:23:45" maxlength="17"}}
+          </div>
+        </div>
+        <div class="row">  
+          <div class="col-sm-6 form-group">   
+            <label>Login:</label>
+            {{input class="form-control" name="login" value=model.form.pppoe.login type=text}}
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Password:</label>
+            {{input class="form-control" value=model.form.pppoe.password type=text}}
           </div>
         </div>
       {{/modal-form}}

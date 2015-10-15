@@ -204,7 +204,7 @@ App.ConfirmDhcpRemovalController = Ember.Controller.extend({
       var self = this;
       console.log('removing dhcp for ' + this.model.service.id);
       putJSON(
-        'http://localhost:8090/services/' + this.model.service.id,
+        'http://localhost:8090/networks/dhcp/' + this.model.service.id,
         { services: { dhcp: {} } })
       .then(function(data) {
         self.send('reload');
@@ -222,7 +222,7 @@ App.ConfirmPppoeRemovalController = Ember.Controller.extend({
       var self = this;
       console.log('removing pppoe for ' + this.model.service.id);
       putJSON(
-        'http://localhost:8090/services/' + this.model.service.id,
+        'http://localhost:8090/networks/pppoe/' + this.model.service.id,
         { services: { pppoe: {} } })
       .then(function(data) {
         self.send('reload');
@@ -284,7 +284,6 @@ App.FormEditPppoeController = Ember.Controller.extend({
       currentPppoe = this.model.pppoe,
       newPppoe = this.model.form.pppoe,
       updatePppoe = {};
-      console.log(newPppoe.password)
       if (currentPppoe.master !== newPppoe.master ||
           currentPppoe.ip !== newPppoe.ip ||
           currentPppoe.password !== newPppoe.password ||
@@ -296,7 +295,7 @@ App.FormEditPppoeController = Ember.Controller.extend({
         console.log('updating PPPoE of '+ this.model.service.id + ': ' + JSON.stringify(updatePppoe, null, 2));
         putJSON(
           'http://localhost:8090/networks/pppoe/' + this.model.service.id,
-          { services: { dhcp: updatePppoe } })
+          { services: { pppoe: updatePppoe } })
         .then(function(data) {
           self.get('target').send('reload');
           self.get('flashes').success('OK', 1000);

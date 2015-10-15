@@ -139,7 +139,7 @@
                 </div>
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
-                  <div class="col-sm-10">{{model.pppoe.ip}}</div>
+                  <div class="col-sm-10">{{model.pppoe.ip.value}}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>MAC:</strong></p></div>
@@ -215,7 +215,7 @@
         <div class="row">
           <div class="col-sm-6 form-group">
             <label>IP:</label>
-            {{input class="form-control" value=model.form.pppoe.ip type=text placeholder="AUTO" maxlength="15"}}
+            {{input class="form-control" value=model.form.pppoe.ip.value type=text placeholder="AUTO" maxlength="15"}}
           </div>
           <div class="col-sm-6 form-group">
             <label>MAC:</label>

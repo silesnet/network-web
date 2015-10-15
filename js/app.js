@@ -285,10 +285,13 @@ App.FormEditPppoeController = Ember.Controller.extend({
       newPppoe = this.model.form.pppoe,
       updatePppoe = {};
       if (currentPppoe.master !== newPppoe.master ||
+          currentPppoe.interface !== newPppoe.interface ||
           currentPppoe.ip !== newPppoe.ip ||
+          currentPppoe.login !== newPppoe.login ||
           currentPppoe.password !== newPppoe.password ||
           currentPppoe.mac.value !== newPppoe.mac.value) {
         updatePppoe.master = newPppoe.master;
+        updatePppoe.interface = newPppoe.interface;
         updatePppoe.ip = newPppoe.ip;
         updatePppoe.login = newPppoe.login;
         updatePppoe.password = newPppoe.password;

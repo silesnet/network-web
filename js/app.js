@@ -196,6 +196,12 @@ App.ServicesController = Ember.Controller.extend({
 
 App.ServiceController = Ember.Controller.extend({
   needs: 'services',
+  actions: {
+    openTabs: function(url1, url2) {
+      window.open(url1);
+      window.open(url2);
+    }
+  }
 });
 
 App.ConfirmDhcpRemovalController = Ember.Controller.extend({
@@ -289,6 +295,7 @@ App.FormEditPppoeController = Ember.Controller.extend({
           currentPppoe.ip !== newPppoe.ip ||
           currentPppoe.login !== newPppoe.login ||
           currentPppoe.password !== newPppoe.password ||
+          // need to fix it for new forms...
           currentPppoe.mac.value !== newPppoe.mac.value) {
         updatePppoe.master = newPppoe.master;
         updatePppoe.interface = newPppoe.interface;

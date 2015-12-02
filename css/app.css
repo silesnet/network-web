@@ -12,7 +12,11 @@ input[type=checkbox].glyphicon.glyphicon-user:checked:before {
 input[type=checkbox].glyphicon {
     visibility: hidden;
 }
-
+@-moz-document url-prefix() {
+  input[type=checkbox].glyphicon {
+      visibility: visible;
+  }
+}
 .issue-closed a {
   text-decoration: line-through;
 }

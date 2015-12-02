@@ -40,6 +40,10 @@ function deleteJSON(url, body) {
   });
 }
 
+Ember.Handlebars.helper('uppercase', function(value, options) {
+  return new Ember.Handlebars.SafeString(('' + value).toUpperCase());
+});
+
 Ember.Handlebars.helper('date', function(value, options) {
   var date = new Date(value);
   return new Ember.Handlebars.SafeString(

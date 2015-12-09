@@ -50,8 +50,30 @@ Ember.Handlebars.helper('date', function(value, options) {
     date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
 });
 
+Ember.Handlebars.helper('address', function(address, options) {
+  var street_location = _join('/', address.descriptive_number, address.orientation_number);
+  var line = _join(' ', address.street, street_location);
+  line = _join(', byt ', line, address.apartment);
+  line = _join(', ', line, _join(' ', address.postal_code, address.town));
+  line = _join(', ', line, address.country);
+  return new Ember.Handlebars.SafeString(line);
+});
+
 function cookie(name) {
   var value = '; ' + document.cookie;
   var parts = value.split('; ' + name + '=');
   if (parts.length == 2) return parts.pop().split(";").shift();
+}
+
+function _join() {
+  var parts = Array.prototype.slice.call(arguments);
+  var separator = parts.shift();
+  // remove undefined or empty parts
+  for (var i = 0; i < parts.length; i++) {
+    if (parts[i] === undefined || parts[i] == '') {
+      parts.splice(i, 1);
+      i--;
+    }
+  }
+  return parts.join(separator);
 }

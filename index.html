@@ -110,6 +110,10 @@
                   <div class="col-sm-10"><a href="#" {{action 'openTabs' (concat 'http://' model.dhcp.switch.name) (concat 'https://' model.dhcp.switch.name)}}>{{model.dhcp.switch.name}}</a></div>
                 </div>
                 <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Master:</strong></p></div>
+                  <div class="col-sm-10">{{model.dhcp.master}}</div>
+                </div>
+                <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>Port:</strong></p></div>
                   <div class="col-sm-10">{{model.dhcp.port}}</div>
                 </div>

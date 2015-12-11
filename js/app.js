@@ -245,19 +245,17 @@ App.FormEditServiceController = Ember.Controller.extend({
   actions: {
     submit: function() {
       var self = this,
-      currentDhcp = this.model.dhcp,
-      newDhcp = this.model.form.dhcp,
-      updateDhcp = {};
-      if (currentDhcp.network_id !== newDhcp.network_id ||
-          currentDhcp.ip !== newDhcp.ip ||
-          currentDhcp.port !== newDhcp.port) {
-        updateDhcp.network_id = newDhcp.network_id;
-        updateDhcp.ip = newDhcp.ip;
-        updateDhcp.port = newDhcp.port;
-        console.log('updating DHCP of '+ this.model.service.id + ': ' + JSON.stringify(updateDhcp, null, 2));
+      currentService = this.model.service,
+      updatedService = this.model.form.service,
+      serviceUpdate = {};
+      if (currentService.info !== updatedService.info ||
+          currentService.status !== updatedService.status) {
+        serviceUpdate.info = updatedService.info;
+        serviceUpdate.status = updatedService.statuse;
+        console.log('updating service '+ this.model.service.id + ': ' + JSON.stringify(serviceUpdate, null, 2));
         putJSON(
-          'http://localhost:8090/networks/dhcp/' + this.model.service.id,
-          { services: { dhcp: updateDhcp } })
+          'http://localhost:8090/services/' + this.model.service.id,
+          { services: serviceUpdate })
         .then(function(data) {
           self.get('target').send('reload');
           self.get('flashes').success('OK', 1000);

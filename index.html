@@ -89,9 +89,33 @@
         </span>
       </h2>
       <h3>{{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h3>
+
       {{#if model.service.address}}
-        {{address model.service.address}}
+        <p>{{address model.service.address}}</p>
       {{/if}}
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title pull-left">Detail</h3>
+              <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditService' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
+              <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Status:</strong></p></div>
+                  <div class="col-sm-10">{{model.service.status}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Poznámky:</strong></p></div>
+                  <div class="col-sm-10">{{model.service.info}}</div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <p>{{model.service.info}}</p>
       <div class="row">
         {{#if model.dhcp.port}}
@@ -171,6 +195,29 @@
       </div>
       {{#link-to 'services'}}Zpět{{/link-to}}
     </script>
+
+    <script type="text/x-handlebars" data-template-name="formEditService">
+      {{#modal-form title='Upravit' ok='submit' close='closeModal'}}
+        <h4>{{model.form.service.id}} {{model.form.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h4>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>Status:</label>
+            {{view "select"
+               class="form-control"
+               content=statuses
+               value=model.form.service.status
+               disabled=true}}
+          </div>
+        </div>        
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label>Poznámky:</label>
+            {{textarea class="form-control" value=model.form.service.info rows="5"}}
+          </div>
+        </div>        
+      {{/modal-form}}
+    </script>
+
 
     <script type="text/x-handlebars" data-template-name="formEditDhcp">
       {{#modal-form title='Upravit' ok='submit' close='closeModal'}}

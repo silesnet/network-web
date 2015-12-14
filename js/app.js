@@ -251,7 +251,7 @@ App.FormEditServiceController = Ember.Controller.extend({
       if (currentService.info !== updatedService.info ||
           currentService.status !== updatedService.status) {
         serviceUpdate.info = updatedService.info;
-        serviceUpdate.status = updatedService.statuse;
+        serviceUpdate.status = updatedService.status;
         console.log('updating service '+ this.model.service.id + ': ' + JSON.stringify(serviceUpdate, null, 2));
         putJSON(
           'http://localhost:8090/services/' + this.model.service.id,

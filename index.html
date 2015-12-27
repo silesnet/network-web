@@ -233,13 +233,13 @@
           </div>
           <div class="col-sm-6 form-group">
             <label>Port:</label>
-            {{input class="form-control" value=model.form.dhcp.port type=number}}
+            {{view App.PortField value=model.form.dhcp.port}}
           </div>
         </div>        
         <div class="row">
           <div class="col-sm-6 form-group">   
             <label>IP:</label>
-            {{input class="form-control" value=model.form.dhcp.ip type=text placeholder="AUTO" maxlength="15"}}
+            {{view App.IPAddressField value=model.form.dhcp.ip placeholder="AUTO"}}
           </div>
         </div>
       {{/modal-form}}
@@ -275,11 +275,11 @@
         <div class="row">
           <div class="col-sm-6 form-group">
             <label>IP:</label>
-            {{input class="form-control" value=model.form.pppoe.ip.value type=text placeholder="AUTO" maxlength="15"}}
+            {{view App.IPAddressField value=model.form.pppoe.ip.value placeholder="AUTO"}}            
           </div>
           <div class="col-sm-6 form-group">
             <label>MAC:</label>
-            {{input class="form-control" value=model.form.pppoe.mac.value type=text placeholder="AB:CD:EF:01:23:45" maxlength="17"}}
+            {{view App.MACAddressField value=model.form.pppoe.mac.value}}
           </div>
         </div>
         <div class="row">  

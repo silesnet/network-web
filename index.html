@@ -258,10 +258,12 @@
                optionLabelPath="content.name"
                value=model.form.pppoe.master}}
           </div>
-          <div class="col-sm-6 form-group">   
-            <label>Interface:</label>
-            {{input class="form-control" name="interface" value=model.form.pppoe.interface type=text}}
-          </div>
+          {{#if isWireless}}
+            <div class="col-sm-6 form-group">   
+              <label>Interface:</label>
+              {{input class="form-control" name="interface" value=model.form.pppoe.interface type=text}}
+            </div>
+          {{/if}}  
         </div>
         <div class="row">
           <div class="col-sm-6 form-group">
@@ -277,10 +279,12 @@
             <label>IP:</label>
             {{view App.IPAddressField value=model.form.pppoe.ip.value placeholder="AUTO"}}            
           </div>
-          <div class="col-sm-6 form-group">
-            <label>MAC:</label>
-            {{view App.MACAddressField value=model.form.pppoe.mac.value}}
-          </div>
+          {{#if isWireless}}
+            <div class="col-sm-6 form-group">
+              <label>MAC:</label>
+              {{view App.MACAddressField value=model.form.pppoe.mac.value}}
+            </div>
+          {{/if}}  
         </div>
         <div class="row">  
           <div class="col-sm-6 form-group">   

@@ -313,6 +313,9 @@ App.FormEditPppoeController = Ember.Controller.extend({
     Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
          .then(function(switches) { self.set('switches', switches.devices); });
   },
+  isWireless: function (){
+    return this.model.service.channel === 'wireless';
+  }.property('model.service.channel'),
   actions: {
     submit: function() {
       var self = this,

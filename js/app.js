@@ -95,7 +95,7 @@ App.ServicesRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     var user = this.modelFor('application').user;
     model.user = user;
-    model.isActive = true;
+    model.isActive = 1;
     controller.set('model', model);
     this._super(controller, model);
   },
@@ -168,11 +168,6 @@ App.ServicesController = Ember.Controller.extend({
     var currentPath = App.get('currentPath');
     if (currentPath && currentPath != 'services.index') {
       this.transitionToRoute('/services');
-    }
-    if (isActive === undefined || isActive === false) {
-      isActive = 0;
-    } else {
-      isActive = 1;
     }
     if (query) {
       App.set('query', this.model.query);

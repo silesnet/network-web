@@ -1,22 +1,5 @@
 body {font-size: 15px;}
 
-/*  glyph icon check boxes */
-input[type=checkbox].glyphicon:before {
-  visibility: visible;
-  color: #ccc;
-}
-input[type=checkbox].glyphicon.glyphicon-user:checked:before {
-  color: #444;
-}
-
-input[type=checkbox].glyphicon {
-    visibility: hidden;
-}
-@-moz-document url-prefix() {
-  input[type=checkbox].glyphicon {
-      visibility: visible;
-  }
-}
 .issue-closed a {
   text-decoration: line-through;
 }
@@ -139,3 +122,7 @@ input[type=number] {
 .delete-confirm .btn {margin: 0 5px;}
 
 .form-control.err {border: 1px solid red; box-shadow: 0 0 8px rgba(255,0,0,0.6);}
+
+.icon-isactive {font-size: 0; color: transparent; width: 14px; height: 14px; background: gray; border: none; outline: none; border-radius: 25px; box-shadow: 0 0 2px 2px gray;}
+.icon-isactive[value="1"] {background: green; box-shadow: 0 0 2px 2px green;}
+.icon-isactive[value="2"] {background: red; box-shadow: 0 0 2px 2px red;}

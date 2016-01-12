@@ -83,3 +83,17 @@ App.MACAddressField = Ember.TextField.extend({
     }
   }
 });
+
+App.ActiveButtonComponent = Ember.Component.extend({
+  tagName: "input",
+  classNames: "icon-isactive",
+  type: "button",
+  attributeBindings : ["name", "type", "value", "rel"],
+  click: function() {
+    var val = Number(this.get('value')) + 1;
+    if(val > 2){
+      val = 0;
+    }
+    this.set('value', val);
+  }                             
+});

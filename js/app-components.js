@@ -31,7 +31,9 @@ App.IPAddressField = Ember.TextField.extend({
   placeholder: "0.0.0.0",
   maxlength: "15",
   keyPress: function (e){
-    if((e.keyCode > 47 && e.keyCode < 58) || e.keyCode == 190 || e.keyCode == 46|| e.keyCode == 8 || e.keyCode == 37|| e.keyCode == 39){
+    console.log(e.charCode);
+    var tmpKeyCode = e.charCode || e.keyCode;
+    if((tmpKeyCode > 47 && tmpKeyCode < 58) || tmpKeyCode == 190 || tmpKeyCode == 46|| tmpKeyCode == 8 || tmpKeyCode == 37|| tmpKeyCode == 39){
       return true;
     }
     e.preventDefault();
@@ -68,7 +70,8 @@ App.MACAddressField = Ember.TextField.extend({
   placeholder: "AB:CD:EF:01:23:45",
   maxlength: "17",
   keyPress: function (e){
-    if((e.keyCode > 47 && e.keyCode < 58) || (e.keyCode > 96 && e.keyCode < 103) || (e.keyCode > 64 && e.keyCode < 71) || e.keyCode == 45|| e.keyCode == 58 || e.keyCode == 46|| e.keyCode == 8 || e.keyCode == 37|| e.keyCode == 39){
+    var tmpKeyCode = e.charCode || e.keyCode;  
+    if((tmpKeyCode > 47 && tmpKeyCode < 58) || (tmpKeyCode > 96 && tmpKeyCode < 103) || (tmpKeyCode > 64 && tmpKeyCode < 71) || tmpKeyCode == 45|| tmpKeyCode == 58 || tmpKeyCode == 46|| tmpKeyCode == 8 || tmpKeyCode == 37|| tmpKeyCode == 39){
       return true;
     }
     e.preventDefault();

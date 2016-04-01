@@ -4,6 +4,8 @@ var App = Ember.Application.create({
   // LOG_RESOLVER: true
 });
 
+Ember.deprecate = () => {};
+
 App.Router.map(function() {
   this.route('services', { path: '/services' }, function() {});
   this.route('service', { path: '/services/:service_id' }, function() {});
@@ -35,10 +37,9 @@ App.ApplicationRoute = Ember.Route.extend({
   },
   actions: {
     openModal: function(name, model) {
-      console.log('openModal: ' + name);
       var form = {};
       if (name.substring(0, 4) === 'form') {
-        model.form = Ember.copy(model, true);
+        Ember.set(model, 'form', Ember.copy(model, true));
       }
       return this.render(name, {
         into: 'application',
@@ -47,7 +48,6 @@ App.ApplicationRoute = Ember.Route.extend({
       });
     },
     closeModal: function() {
-      console.log('closing modal outlet...');
       return this.disconnectOutlet({
         outlet: 'modal',
         parentView: 'application'
@@ -171,7 +171,6 @@ App.ServicesController = Ember.Controller.extend({
     }
     if (query) {
       App.set('query', this.model.query);
-      console.log('searching... ' + query + " activeClients = " + isActive);
       Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country + "&isActive=" + isActive)
         .then(function(data) {
           services.setObjects(data.services);
@@ -183,7 +182,6 @@ App.ServicesController = Ember.Controller.extend({
   }.observes('model.query', 'model.isActive'),
   actions: {
     editService: function(service) {
-      console.log('editing service... ' + this.model.query);
       this.transitionToRoute('/services/' + service.service_id);
     }
   }
@@ -191,6 +189,9 @@ App.ServicesController = Ember.Controller.extend({
 
 App.ServiceController = Ember.Controller.extend({
   needs: 'services',
+  isPppoeStaticIp: Ember.computed('model.pppoe.ip_class', function() {
+    return this.get('model.pppoe.ip_class') === 'static';
+  }),
   actions: {
     openTabs: function(url1, url2) {
       window.open(url1);
@@ -301,25 +302,44 @@ App.FormEditDhcpController = Ember.Controller.extend({
 });
 
 App.FormEditPppoeController = Ember.Controller.extend({
+  ipClasses: [],
   switches: [],
   init: function() {
-    var self = this;
+    var self = this,
+      classes = ['static'],
+      country = App.get('user.operation_country').toLowerCase();
     this._super();
     Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
          .then(function(switches) { self.set('switches', switches.devices); });
+    if (country === 'cz') {
+      classes.push('internal-cz');
+    } else if (country === 'pl') {
+      classes.push('public-pl');
+    }
+    this.set('ipClasses', classes);
   },
-  isWireless: function (){
-    return this.model.service.channel === 'wireless';
-  }.property('model.service.channel'),
+  isWireless: Ember.computed('model.service.channel', function() {
+    return this.get('model.service.channel') === 'wireless';
+  }),
+  isStaticIp: Ember.computed('model.form.pppoe.ip_class', function() {
+    var isStatic = this.get('model.form.pppoe.ip_class') === 'static',
+      ipValue = isStatic ? this.get('model.pppoe.ip.value') : null;
+    this.set('model.form.pppoe.ip.value', ipValue);
+    return isStatic;
+  }),
+  isNotStaticIp: Ember.computed.not('isStaticIp'),
   actions: {
     submit: function() {
       var self = this,
       currentPppoe = this.model.pppoe,
       newPppoe = this.model.form.pppoe,
       updatePppoe = {};
+      console.log(newPppoe);
+      console.log(currentPppoe);
       if (currentPppoe.master !== newPppoe.master ||
           currentPppoe.interface !== newPppoe.interface ||
-          currentPppoe.ip !== newPppoe.ip ||
+          currentPppoe.ip_class !== newPppoe.ip_class ||
+          currentPppoe.ip.value !== newPppoe.ip.value ||
           currentPppoe.login !== newPppoe.login ||
           currentPppoe.password !== newPppoe.password ||
           // need to fix it for new forms...
@@ -327,6 +347,7 @@ App.FormEditPppoeController = Ember.Controller.extend({
         updatePppoe.master = newPppoe.master;
         updatePppoe.interface = newPppoe.interface;
         updatePppoe.location = newPppoe.location;
+        updatePppoe.ip_class = newPppoe.ip_class;
         updatePppoe.ip = newPppoe.ip;
         updatePppoe.login = newPppoe.login;
         updatePppoe.password = newPppoe.password;

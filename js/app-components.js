@@ -31,7 +31,6 @@ App.IPAddressField = Ember.TextField.extend({
   placeholder: "0.0.0.0",
   maxlength: "15",
   keyPress: function (e){
-    console.log(e.charCode);
     var tmpKeyCode = e.charCode || e.keyCode;
     if((tmpKeyCode > 47 && tmpKeyCode < 58) || tmpKeyCode == 190 || tmpKeyCode == 46|| tmpKeyCode == 8 || tmpKeyCode == 37|| tmpKeyCode == 39){
       return true;

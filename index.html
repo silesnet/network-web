@@ -173,7 +173,13 @@
                 </div>
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
-                  <div class="col-sm-10"><a href="#" {{action 'openTabs' (concat 'http://' model.pppoe.ip.value ':65535') (concat 'http://' model.pppoe.ip.value)}}>{{model.pppoe.ip.value}}</a></div>
+                  <div class="col-sm-10">
+                    {{#if isPppoeStaticIp}}
+                      <a href="#" {{action 'openTabs' (concat 'http://' model.pppoe.ip.value ':65535') (concat 'http://' model.pppoe.ip.value)}}>{{model.pppoe.ip.value}}</a>
+                    {{else}}
+                      {{model.pppoe.ip_class}}
+                    {{/if}}
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>MAC:</strong></p></div>
@@ -276,17 +282,27 @@
         </div>
         <div class="row">
           <div class="col-sm-6 form-group">
-            <label>IP:</label>
-            {{view App.IPAddressField value=model.form.pppoe.ip.value placeholder="AUTO"}}            
+            <label>IP class:</label>
+            {{view "select"
+               class="form-control"
+               content=ipClasses
+               value=model.form.pppoe.ip_class}}
           </div>
+          <div class="col-sm-6 form-group">
+            <label>IP:</label>
+            {{view App.IPAddressField
+              value=model.form.pppoe.ip.value placeholder="127.0.0.1"
+              disabled=isNotStaticIp}}
+            </div>
+        </div>
+        <div class="row">
           {{#if isWireless}}
             <div class="col-sm-6 form-group">
               <label>MAC:</label>
               {{view App.MACAddressField value=model.form.pppoe.mac.value}}
             </div>
           {{/if}}  
-        </div>
-        <div class="row">  
+        </div>        <div class="row">  
           <div class="col-sm-6 form-group">   
             <label>Login:</label>
             {{input class="form-control" name="login" value=model.form.pppoe.login type=text}}

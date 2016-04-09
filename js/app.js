@@ -237,7 +237,7 @@ App.ConfirmPppoeRemovalController = Ember.Controller.extend({
 });
 
 App.FormEditServiceController = Ember.Controller.extend({
-  statuses: ['ACTIVE', 'DEBTOR', 'SUSPENDED'],
+  statuses: ['INHERIT_FROM_CUSTOMER', 'ACTIVE', 'DEBTOR', 'SUSPENDED'],
   actions: {
     submit: function() {
       var self = this,

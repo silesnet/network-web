@@ -104,8 +104,8 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                  <div class="col-sm-2"><p class="text-right"><strong>Status:</strong></p></div>
-                  <div class="col-sm-10">{{model.service.status}}</div>
+                  <div class="col-sm-2"><p class="text-right"><strong>Stav:</strong></p></div>
+                  <div class="col-sm-10">{{serviceStatus}}</div>
                 </div>
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>Poznámky:</strong></p></div>
@@ -210,6 +210,8 @@
             {{view "select"
                class="form-control"
                content=statuses
+               optionValuePath="content.value"
+               optionLabelPath="content.name"
                value=model.form.service.status}}
           </div>
         </div>        

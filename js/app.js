@@ -192,6 +192,15 @@ App.ServiceController = Ember.Controller.extend({
   isPppoeStaticIp: Ember.computed('model.pppoe.ip_class', function() {
     return this.get('model.pppoe.ip_class') === 'static';
   }),
+  statusMap: {
+    INHERIT_FROM_CUSTOMER: 'Podle zákazníka',
+    ACTIVE: 'Aktivní',
+    SUSPENDED: 'Pozastaveno',
+    DEBTOR: 'Dlužník',
+  },
+  serviceStatus: Ember.computed('model.service.actual_status', function() {
+    return this.get('statusMap')[this.get('model.service.actual_status')];
+  }),
   actions: {
     openTabs: function(url1, url2) {
       window.open(url1);
@@ -237,7 +246,12 @@ App.ConfirmPppoeRemovalController = Ember.Controller.extend({
 });
 
 App.FormEditServiceController = Ember.Controller.extend({
-  statuses: ['INHERIT_FROM_CUSTOMER', 'ACTIVE', 'DEBTOR', 'SUSPENDED'],
+  statuses: [
+    { name: 'Podle zákazníka', value: 'INHERIT_FROM_CUSTOMER'},
+    { name: 'Aktivní', value: 'ACTIVE' },
+    { name: 'Pozastaveno', value: 'SUSPENDED' },
+    { name: 'Dlužník', value: 'DEBTOR' }
+  ],
   actions: {
     submit: function() {
       var self = this,

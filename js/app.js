@@ -317,14 +317,14 @@ App.FormEditDhcpController = Ember.Controller.extend({
 
 App.FormEditPppoeController = Ember.Controller.extend({
   ipClasses: [],
-  switches: [],
+  routers: [],
   init: function() {
     var self = this,
       classes = ['static'],
       country = App.get('user.operation_country').toLowerCase();
     this._super();
-    Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
-         .then(function(switches) { self.set('switches', switches.devices); });
+    Ember.$.getJSON('http://localhost:8090/networks/routers')
+         .then(function(routers) { self.set('routers', switches.core_routers); });
     if (country === 'cz') {
       classes.push('internal-cz');
     } else if (country === 'pl') {

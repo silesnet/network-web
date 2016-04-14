@@ -324,7 +324,7 @@ App.FormEditPppoeController = Ember.Controller.extend({
       country = App.get('user.operation_country').toLowerCase();
     this._super();
     Ember.$.getJSON('http://localhost:8090/networks/routers')
-         .then(function(routers) { self.set('routers', switches.core_routers); });
+         .then(function(routers) { self.set('routers', routers.core_routers); });
     if (country === 'cz') {
       classes.push('internal-cz');
     } else if (country === 'pl') {

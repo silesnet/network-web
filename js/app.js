@@ -206,7 +206,8 @@ App.ServiceController = Ember.Controller.extend({
       login = this.get('model.pppoe.login');
     console.log(login);
     return Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/lastIp')
-         .then(function(response) { self.set('lastPppoeIp', response.lastIp.address); });
+         .then(function(response) { self.set('lastPppoeIp', response.lastIp.address); },
+            function(err) { return null; } );
   }),
   actions: {
     openTabs: function(url1, url2) {

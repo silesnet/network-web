@@ -201,6 +201,13 @@ App.ServiceController = Ember.Controller.extend({
   serviceStatus: Ember.computed('model.service.actual_status', function() {
     return this.get('statusMap')[this.get('model.service.actual_status')];
   }),
+  lastPppoeIp: Ember.computed('model.pppoe.login', function() {
+    var self = this,
+      login = this.get('model.pppoe.login');
+    console.log(login);
+    return Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/lastIp')
+         .then(function(response) { self.set('lastPppoeIp', response.lastIp.address); });
+  }),
   actions: {
     openTabs: function(url1, url2) {
       window.open(url1);

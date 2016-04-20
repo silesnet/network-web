@@ -132,6 +132,13 @@ App.ServiceRoute = Ember.Route.extend({
         });
       });
   },
+  setupController: function(controller, model) {
+    var login = model.pppoe.login;
+    controller.set('model', model);
+    Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/lastIp')
+      .then(function(response) { controller.set('lastPppoeIp', response.lastIp.address || null); },
+        function(err) { controller.set('lastPppoeIp', null); } );    
+  },
   events: {
     reload: function() {
       console.log('reloading...');
@@ -189,6 +196,7 @@ App.ServicesController = Ember.Controller.extend({
 
 App.ServiceController = Ember.Controller.extend({
   needs: 'services',
+  lastPppoeIp: null,
   isPppoeStaticIp: Ember.computed('model.pppoe.ip_class', function() {
     return this.get('model.pppoe.ip_class') === 'static';
   }),
@@ -200,14 +208,6 @@ App.ServiceController = Ember.Controller.extend({
   },
   serviceStatus: Ember.computed('model.service.actual_status', function() {
     return this.get('statusMap')[this.get('model.service.actual_status')];
-  }),
-  lastPppoeIp: Ember.computed('model.pppoe.login', function() {
-    var self = this,
-      login = this.get('model.pppoe.login');
-    console.log(login);
-    return Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/lastIp')
-         .then(function(response) { self.set('lastPppoeIp', response.lastIp.address); },
-            function(err) { return null; } );
   }),
   actions: {
     openTabs: function(url1, url2) {

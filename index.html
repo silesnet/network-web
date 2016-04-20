@@ -179,7 +179,7 @@
                     {{else}}
                       {{model.pppoe.ip_class}}
                     {{/if}}
-                    {{#if lastPppoeIp}}
+                    {{#if lastPppoeIp}} 
                       &nbsp;(poslední IP:
                       <a href="#" {{action 'openTabs' (concat 'http://' lastPppoeIp ':65535') (concat 'http://' lastPppoeIp)}}>{{lastPppoeIp}}</a>
                       <span class="glyphicon glyphicon-new-window"></span>)

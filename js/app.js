@@ -135,7 +135,7 @@ App.ServiceRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     var login = model.pppoe.login;
     controller.set('model', model);
-    Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/lastIp')
+    Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/last-ip')
       .then(function(response) { controller.set('lastPppoeIp', response.lastIp.address || null); },
         function(err) { controller.set('lastPppoeIp', null); } );    
   },

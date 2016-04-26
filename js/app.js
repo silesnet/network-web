@@ -364,6 +364,7 @@ App.FormEditPppoeController = Ember.Controller.extend({
           currentPppoe.ip.value !== newPppoe.ip.value ||
           currentPppoe.login !== newPppoe.login ||
           currentPppoe.password !== newPppoe.password ||
+          currentPppoe.location !== newPppoe.location ||
           // need to fix it for new forms...
           currentPppoe.mac.value !== newPppoe.mac.value) {
         updatePppoe.master = newPppoe.master;

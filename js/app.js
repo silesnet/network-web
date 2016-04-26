@@ -375,16 +375,18 @@ App.FormEditPppoeController = Ember.Controller.extend({
         updatePppoe.password = newPppoe.password;
         updatePppoe.mac = newPppoe.mac;
         console.log('updating PPPoE of '+ this.model.service.id + ': ' + JSON.stringify(updatePppoe, null, 2));
-        putJSON(
-          'http://localhost:8090/networks/pppoe/' + this.model.service.id,
+        putJSON('http://localhost:8090/networks/pppoe/' + this.model.service.id,
           { services: { pppoe: updatePppoe } })
         .then(function(data) {
           self.get('target').send('reload');
           self.get('flashes').success('OK', 1000);
-        }, function(err) {
-          console.log(JSON.stringify(err));
-          self.get('flashes').danger(err.detail, 5000);
-        });
+          return putJSON('http://localhost:8090/networks/pppoe/'
+            + currentPppoe.login + '/kick/' + currentPppoe.master, {}); })
+        .then(function() {
+          self.get('flashes').success(
+            "'" + currentPppoe.master + "' kicked '" + currentPppoe.login + "'", 3000); })
+        .catch(function(err) {
+          self.get('flashes').danger(err.detail, 5000); });
       }
     }
   }

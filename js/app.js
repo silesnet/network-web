@@ -277,6 +277,9 @@ App.FormEditServiceController = Ember.Controller.extend({
         .then(function(data) {
           self.get('target').send('reload');
           self.get('flashes').success('OK', 1000);
+          if (currentService.status !== updatedService.status) {
+            // TODO KICK PPPeE if exists!!
+          }
         }, function(err) {
           console.log(JSON.stringify(err));
           self.get('flashes').danger(err.detail, 5000);

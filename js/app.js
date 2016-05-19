@@ -169,7 +169,7 @@ App.ServicesController = Ember.Controller.extend({
   needs: 'application',
   search: function() {
     var services = this.model.services;
-    var isActive = this.model.isActive;
+    var isActive = this.model.isActive === 1 ? true : (this.model.isActive === 2 ? false : null);
     var query = this.model.query;
     var country = this.model.user.operation_country;
     var currentPath = App.get('currentPath');

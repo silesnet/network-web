@@ -1,3 +1,11 @@
+function serviceIdToCurrency(serviceId) {
+  return serviceId < 20000000 ? 'CZK' : 'PLN';
+}
+
+function serviceIdToCountry(serviceId) {
+  return serviceId < 20000000 ? 'CZ' : 'PL';
+}
+
 function putJSON(url, body) {
   return new Ember.RSVP.Promise(function(resolve, reject) {
     Ember.$.ajax({

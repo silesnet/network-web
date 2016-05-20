@@ -209,6 +209,12 @@ App.ServiceController = Ember.Controller.extend({
   serviceStatus: Ember.computed('model.service.actual_status', function() {
     return this.get('statusMap')[this.get('model.service.actual_status')];
   }),
+  serviceCountry: Ember.computed('model.service.id', function() {
+    return serviceIdToCountry(this.get('model.service.id'));
+  }),
+  serviceCurrency: Ember.computed('model.service.id', function() {
+    return serviceIdToCurrency(this.get('model.service.id'));
+  }),
   actions: {
     openTabs: function(url1, url2) {
       window.open(url1);

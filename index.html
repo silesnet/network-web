@@ -42,7 +42,7 @@
     <script type="text/x-handlebars" id="services">
       <div class="input-group">
         <span class="input-group-addon" title="Aktivní zákazníci">
-            {{active-button name="isActive" value=model.isActive}}
+            {{active-button name="isActive" value=isActiveFilter}}
         </span>
         {{input id="service_search" class="form-control autofocus" type="text" value=model.query placeholder="Customer or Agreement"}}
         <div class="input-group-btn">

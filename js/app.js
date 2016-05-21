@@ -95,7 +95,6 @@ App.ServicesRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     var user = this.modelFor('application').user;
     model.user = user;
-    model.isActive = 1;
     controller.set('model', model);
     this._super(controller, model);
   },
@@ -174,9 +173,10 @@ App.ApplicationController = Ember.Controller.extend({
 
 App.ServicesController = Ember.Controller.extend({
   needs: 'application',
+  isActiveFilter: 1,
   search: function() {
     var services = this.model.services;
-    var isActive = this.model.isActive === 1 ? true : (this.model.isActive === 2 ? false : null);
+    var isActiveFilter = this.isActiveFilter === 1 ? true : (this.isActiveFilter === 2 ? false : null);
     var query = this.model.query;
     var country = this.model.user.operation_country;
     var currentPath = App.get('currentPath');
@@ -185,7 +185,7 @@ App.ServicesController = Ember.Controller.extend({
     }
     if (query) {
       App.set('query', this.model.query);
-      Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country + "&isActive=" + isActive)
+      Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country + "&isActive=" + isActiveFilter)
         .then(function(data) {
           services.setObjects(data.services);
         });
@@ -193,7 +193,7 @@ App.ServicesController = Ember.Controller.extend({
     else {
       services.setObjects([]);
     }
-  }.observes('model.query', 'model.isActive'),
+  }.observes('model.query', 'isActiveFilter'),
   actions: {
     editService: function(service) {
       this.transitionToRoute('/services/' + service.service_id);

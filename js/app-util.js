@@ -1,4 +1,3 @@
-
 function serviceIdToCurrency(serviceId) {
   return serviceId < 20000000 ? 'CZK' : 'PLN';
 }

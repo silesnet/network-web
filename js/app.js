@@ -104,6 +104,13 @@ App.ServicesRoute = Ember.Route.extend({
       query: App.get('query'),
       services: []
     });
+  },
+  actions: {
+    didTransition() {
+      Ember.run.scheduleOnce('afterRender', this, function() {
+        $('.autofocus').focus();
+      });
+    }
   }
 });
 
@@ -137,7 +144,7 @@ App.ServiceRoute = Ember.Route.extend({
     controller.set('model', model);
     Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/last-ip')
       .then(function(response) { controller.set('lastPppoeIp', response.lastIp.address || null); },
-        function(err) { controller.set('lastPppoeIp', null); } );    
+        function(err) { controller.set('lastPppoeIp', null); } );
   },
   events: {
     reload: function() {

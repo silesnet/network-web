@@ -100,12 +100,6 @@ App.ApplicationRoute = Ember.Route.extend({
 });
 
 App.ServicesRoute = Ember.Route.extend({
-  model: function() {
-    return Ember.RSVP.hash({
-      query: App.get('query'),
-      services: []
-    });
-  },
   actions: {
     didTransition() {
       Ember.run.scheduleOnce('afterRender', this, function() {
@@ -149,7 +143,6 @@ App.ServiceRoute = Ember.Route.extend({
   },
   events: {
     reload: function() {
-      console.log('reloading...');
       this.refresh();
     }
   }
@@ -175,18 +168,19 @@ App.ApplicationController = Ember.Controller.extend({
 
 App.ServicesController = Ember.Controller.extend({
   needs: 'application',
+  query: '',
   isActiveFilter: 1,
+  services: [],
   search: function() {
-    var services = this.model.services;
-    var isActiveFilter = this.isActiveFilter === 1 ? true : (this.isActiveFilter === 2 ? false : null);
-    var query = this.model.query;
+    var services = this.get('services');
+    var isActiveFilter = this.get('isActiveFilter') === 1 ? true : (this.get('isActiveFilter') === 2 ? false : null);
+    var query = this.get('query');
     var country = this.get('session.userCountry');
     var currentPath = App.get('currentPath');
     if (currentPath && currentPath != 'services.index') {
       this.transitionToRoute('/services');
     }
     if (query) {
-      App.set('query', this.model.query);
       Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country + "&isActive=" + isActiveFilter)
         .then(function(data) {
           services.setObjects(data.services);
@@ -195,7 +189,7 @@ App.ServicesController = Ember.Controller.extend({
     else {
       services.setObjects([]);
     }
-  }.observes('model.query', 'isActiveFilter'),
+  }.observes('query', 'isActiveFilter'),
   actions: {
     editService: function(service) {
       this.transitionToRoute('/services/' + service.service_id);

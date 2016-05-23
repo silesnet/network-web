@@ -1,5 +1,4 @@
 var App = Ember.Application.create({
-  currentPath: '',
   rootElement: '#app',
   // LOG_RESOLVER: true
 });

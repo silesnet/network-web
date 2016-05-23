@@ -160,14 +160,7 @@ App.ChangelogRoute = Ember.Route.extend({
   }
 });
 
-App.ApplicationController = Ember.Controller.extend({
-  updateCurrentPath: function() {
-    App.set('currentPath', this.get('currentPath'));
-  }.observes('currentPath')
-});
-
 App.ServicesController = Ember.Controller.extend({
-  needs: 'application',
   query: '',
   isActiveFilter: 1,
   services: [],
@@ -176,10 +169,6 @@ App.ServicesController = Ember.Controller.extend({
     var isActiveFilter = this.get('isActiveFilter') === 1 ? true : (this.get('isActiveFilter') === 2 ? false : null);
     var query = this.get('query');
     var country = this.get('session.userCountry');
-    var currentPath = App.get('currentPath');
-    if (currentPath && currentPath != 'services.index') {
-      this.transitionToRoute('/services');
-    }
     if (query) {
       Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country + "&isActive=" + isActiveFilter)
         .then(function(data) {
@@ -198,7 +187,6 @@ App.ServicesController = Ember.Controller.extend({
 });
 
 App.ServiceController = Ember.Controller.extend({
-  needs: 'services',
   lastPppoeIp: null,
   isPppoeStaticIp: Ember.computed('model.pppoe.ip_class', function() {
     return this.get('model.pppoe.ip_class') === 'static';
@@ -297,7 +285,6 @@ App.FormEditServiceController = Ember.Controller.extend({
     }
   }
 });
-
 
 App.FormEditDhcpController = Ember.Controller.extend({
   switches: [],

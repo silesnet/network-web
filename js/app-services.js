@@ -1,3 +1,12 @@
+App.Session = Ember.Service.extend({
+  userName: null,
+  userCountry: null,
+  configure: function(user) {
+    this.set('userName', user.name);
+    this.set('userCountry', user.operation_country);
+  }
+});
+
 App.FlashMessagesService = Ember.Service.extend({
   queue: Ember.A([]),
   isEmpty: Ember.computed.equal('queue.length', 0),

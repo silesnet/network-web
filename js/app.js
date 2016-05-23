@@ -16,22 +16,30 @@ Ember.Application.initializer({
   name: 'flash-messages',
   initialize: function(container, application) {
     application.register('service:flash-messages', application.FlashMessagesService, { singleton: true });
-    application.inject('controller', 'flashes', 'service:flash-messages');    application.inject('controller', 'flashes', 'service:flash-messages');
+    application.inject('controller', 'flashes', 'service:flash-messages');
     application.inject('route', 'flashes', 'service:flash-messages');
+
+  }
+});
+
+Ember.Application.initializer({
+  name: 'session',
+  initialize: function(container, application) {
+    App.deferReadiness();
+    application.register('service:session', application.Session, { singleton: true });
+    application.inject('controller', 'session', 'service:session');
+    application.inject('route', 'session', 'service:session');
+    var sessionId = cookie('JSESSIONID') || 'test';
+    Ember.$.getJSON('http://localhost:8090/users/current?session=' + sessionId)
+    .then(function(data) {
+      var session = container.lookup('service:session');
+      session.configure(data.users);
+      App.advanceReadiness();
+    })
   }
 });
 
 App.ApplicationRoute = Ember.Route.extend({
-  model: function() {
-    var sessionId = cookie('JSESSIONID') || 'test';
-    return Ember.RSVP.hash({
-      user: Ember.$.getJSON('http://localhost:8090/users/current?session=' + sessionId)
-              .then(function(data) {
-                App.set('user', data.users);
-                return data.users;
-              })
-    });
-  },
   afterModel: function() {
     this.transitionTo('/services');
   },
@@ -92,12 +100,6 @@ App.ApplicationRoute = Ember.Route.extend({
 });
 
 App.ServicesRoute = Ember.Route.extend({
-  setupController: function(controller, model) {
-    var user = this.modelFor('application').user;
-    model.user = user;
-    controller.set('model', model);
-    this._super(controller, model);
-  },
   model: function() {
     return Ember.RSVP.hash({
       query: App.get('query'),
@@ -178,7 +180,7 @@ App.ServicesController = Ember.Controller.extend({
     var services = this.model.services;
     var isActiveFilter = this.isActiveFilter === 1 ? true : (this.isActiveFilter === 2 ? false : null);
     var query = this.model.query;
-    var country = this.model.user.operation_country;
+    var country = this.get('session.userCountry');
     var currentPath = App.get('currentPath');
     if (currentPath && currentPath != 'services.index') {
       this.transitionToRoute('/services');
@@ -306,9 +308,10 @@ App.FormEditServiceController = Ember.Controller.extend({
 App.FormEditDhcpController = Ember.Controller.extend({
   switches: [],
   init: function() {
-    var self = this;
+    var self = this,
+    country = this.get('session.userCountry').toLowerCase();
     this._super();
-    Ember.$.getJSON('http://localhost:8090/networks/' + App.get('user.operation_country').toLowerCase() + '/devices?deviceType=switch')
+    Ember.$.getJSON('http://localhost:8090/networks/' + country + '/devices?deviceType=switch')
          .then(function(switches) { self.set('switches', switches.devices); });
   },
   actions: {
@@ -345,7 +348,7 @@ App.FormEditPppoeController = Ember.Controller.extend({
   init: function() {
     var self = this,
       classes = ['static'],
-      country = App.get('user.operation_country').toLowerCase();
+      country = this.get('session.userCountry').toLowerCase();
     this._super();
     Ember.$.getJSON('http://localhost:8090/networks/routers')
          .then(function(routers) { self.set('routers', routers.core_routers); });

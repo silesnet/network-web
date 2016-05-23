@@ -17,7 +17,6 @@ Ember.Application.initializer({
     application.register('service:flash-messages', application.FlashMessagesService, { singleton: true });
     application.inject('controller', 'flashes', 'service:flash-messages');
     application.inject('route', 'flashes', 'service:flash-messages');
-
   }
 });
 
@@ -345,7 +344,7 @@ App.FormEditPppoeController = Ember.Controller.extend({
   isStaticIp: Ember.computed('model.form.pppoe.ip_class', function() {
     var isStatic = this.get('model.form.pppoe.ip_class') === 'static',
       ipValue = isStatic ? this.get('model.pppoe.ip.value') : null;
-    this.set('model.form.pppoe.ip.value', ipValue);
+    this.set('model.form.pppoe.ip', { type: 'inet', value: ipValue });
     return isStatic;
   }),
   isNotStaticIp: Ember.computed.not('isStaticIp'),

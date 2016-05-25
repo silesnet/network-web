@@ -130,7 +130,15 @@ App.ServiceRoute = Ember.Route.extend({
               }
             }),
           pppoe: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/pppoe')
-            .then(function(pppoe) { return pppoe.pppoe; })
+            .then(function(pppoe) { return pppoe.pppoe; }),
+          customer_draft: new Ember.RSVP.Promise(function(resolve, reject) {
+            if (service.is_draft) {
+              Ember.$.getJSON('http://localhost:8090/drafts2/customers/' + service.customer_id)
+                .then(function(draft) { resolve(draft.drafts); }, reject)
+            } else {
+              resolve({});
+            }
+          })
         });
       });
   },
@@ -205,6 +213,50 @@ App.ServiceController = Ember.Controller.extend({
   }),
   serviceCurrency: Ember.computed('model.service.id', function() {
     return serviceIdToCurrency(this.get('model.service.id'));
+  }),
+  isDraft: Ember.computed('model.service.is_draft', function() {
+    return this.get('model.service.is_draft');
+  }),
+  customerName: Ember.computed('isDraft', function() {
+    return this.get('isDraft') ?
+      this.get('model.customer_draft.data.name') + ' ' + this.get('model.customer_draft.data.surname') :
+      this.get('model.customer.name');
+  }),
+  customerAddress: Ember.computed('isDraft', function() {
+    return this.get('isDraft') ?
+      draftAddress(this.get('model.customer_draft.data')) :
+      customerAddress(this.get('model.customer'));
+  }),
+  customerEmail: Ember.computed('isDraft', function() {
+    return this.get('isDraft') ?
+      this.get('model.customer_draft.data.email') :
+      this.get('model.customer.email');
+  }),
+  customerPhone: Ember.computed('isDraft', function() {
+    return this.get('isDraft') ?
+      this.get('model.customer_draft.data.phone') :
+      this.get('model.customer.phone');
+  }),
+  hasDhcp: Ember.computed('model.dhcp.port', function() {
+    return this.get('model.dhcp.port') ? true : false;
+  }),
+  hasPppoe: Ember.computed('model.pppoe.service_id', function() {
+    return this.get('model.pppoe.service_id') ? true : false;
+  }),
+  canEdit: Ember.computed('isDraft', function() {
+    return !this.get('isDraft');
+  }),
+  canEditDhcp: Ember.computed('canEdit', 'hasDhcp', function() {
+    return this.get('canEdit') && this.get('hasDhcp');
+  }),
+  canEditPppoe: Ember.computed('canEdit', 'hasPppoe', function() {
+    return this.get('canEdit') && this.get('hasPppoe');
+  }),
+  canAddDhcp: Ember.computed('canEdit', 'hasDhcp', function() {
+    return this.get('canEdit') && !this.get('hasDhcp');
+  }),
+  canAddPppoe: Ember.computed('canEdit', 'hasPppoe', function() {
+    return this.get('canEdit') && !this.get('hasPppoe');
   }),
   actions: {
     openTabs: function(url1, url2) {

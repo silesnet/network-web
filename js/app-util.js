@@ -59,13 +59,21 @@ Ember.Handlebars.helper('date', function(value, options) {
 });
 
 Ember.Handlebars.helper('address', function(address, options) {
-  var street_location = _join('/', address.descriptive_number, address.orientation_number);
-  var line = _join(' ', address.street, street_location);
-  line = _join(', byt ', line, address.apartment);
-  line = _join(', ', line, _join(' ', address.postal_code, address.town));
-  line = _join(', ', line, address.country);
-  return new Ember.Handlebars.SafeString(line);
+  return new Ember.Handlebars.SafeString(draftAddress(address));
 });
+
+function draftAddress(data) {
+  var street_location = _join('/', data.descriptive_number, data.orientation_number);
+  var address = _join(' ', data.street, street_location);
+  address = _join(', byt ', address, data.apartment);
+  address = _join(', ', address, _join(' ', data.postal_code, data.town));
+  address = _join(', ', address, data.country);
+  return address;
+}
+
+function customerAddress(customer) {
+  return customer.street + ', ' + customer.postal_code + ' ' + customer.city;
+}
 
 function cookie(name) {
   var value = '; ' + document.cookie;

@@ -72,20 +72,20 @@
     </script>
 
     <script type="text/x-handlebars" id="service">
-      <h2>{{model.customer.name}}
-        {{#unless model.dhcp.port}}
+      <h2>{{customerName}} {{if isDraft '(DRAFT)'}}
+        {{#if canAddDhcp}}
           <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-plus"></span>&#160;DHCP</button></div>
-        {{/unless}}
-        {{#unless model.pppoe.service_id}}
+        {{/if}}
+        {{#if canAddPppoe}}
           <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formEditPppoe' model}}><span class="glyphicon glyphicon-plus"></span>&#160;PPPoE</button></div>
-        {{/unless}}
+        {{/if}}
         <br />
         <span class="small">
-          {{model.customer.street}}, {{model.customer.postal_code}} {{model.customer.city}}
-          <a href="http://www.google.com/maps?q={{model.customer.street}}, {{model.customer.city}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
-          &nbsp;{{model.customer.email}}
-          <a href="mailto:{{model.customer.email}}"><i class="glyphicon glyphicon-envelope"></i></a>
-          &nbsp;{{model.customer.phone}}
+          {{customerAddress}}
+          <a href="http://www.google.com/maps?q={{customerAddress}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
+          &nbsp;{{customerEmail}}
+          <a href="mailto:{{customerEmail}}"><i class="glyphicon glyphicon-envelope"></i></a>
+          &nbsp;{{customerPhone}}
           <a href="#" {{action 'openModal' 'formEditSms' model}}><i class="glyphicon glyphicon-phone"></i></a>
         </span>
       </h2>
@@ -100,7 +100,9 @@
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title pull-left">Detail</h3>
-              <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditService' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
+              {{#if canEdit}}
+                <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditService' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
+              {{/if}}
               <div class="clearfix"></div>
             </div>
             <div class="panel-body">
@@ -123,8 +125,10 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title pull-left">DHCP</h3>
-                <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
-                <button class="btn btn-danger pull-right btn-delete" {{action 'openModal' 'confirmDhcpRemoval' model}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
+                {{#if canEditDhcp}}
+                  <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
+                  <button class="btn btn-danger pull-right btn-delete" {{action 'openModal' 'confirmDhcpRemoval' model}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
+                {{/if}}
                 <div class="clearfix"></div>
               </div>
               <div class="panel-body">
@@ -155,8 +159,10 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title pull-left">PPPoE</h3>
-                <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditPppoe' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
-                <button class="btn btn-danger pull-right btn-delete" {{action 'openModal' 'confirmPppoeRemoval' model}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
+                {{#if canEditPppoe}}
+                  <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditPppoe' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
+                  <button class="btn btn-danger pull-right btn-delete" {{action 'openModal' 'confirmPppoeRemoval' model}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
+                {{/if}}
                 <div class="clearfix"></div>
               </div>
               <div class="panel-body">

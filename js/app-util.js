@@ -71,6 +71,10 @@ function draftAddress(data) {
   return address;
 }
 
+function customerDraftName(data) {
+  return data.customer_type === '1' ? (data.name + ' ' + data.surname) : data.supplementary_name;
+}
+
 function customerAddress(customer) {
   return customer.street + ', ' + customer.postal_code + ' ' + customer.city;
 }

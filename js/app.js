@@ -227,7 +227,7 @@ App.ServiceController = Ember.Controller.extend({
   }),
   customerName: Ember.computed('hasCustomerDraft', function() {
     return this.get('hasCustomerDraft') ?
-      this.get('model.customer_draft.data.name') + ' ' + this.get('model.customer_draft.data.surname') :
+      customerDraftName(this.get('model.customer_draft.data')) :
       this.get('model.customer.name');
   }),
   customerAddress: Ember.computed('hasCustomerDraft', function() {

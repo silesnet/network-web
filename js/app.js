@@ -134,7 +134,9 @@ App.ServiceRoute = Ember.Route.extend({
           customer_draft: new Ember.RSVP.Promise(function(resolve, reject) {
             if (service.is_draft) {
               Ember.$.getJSON('http://localhost:8090/drafts2/customers/' + service.customer_id)
-                .then(function(draft) { resolve(draft.drafts); }, reject)
+                .then(function(draft) { resolve(draft.drafts); }, function(error) {
+                  resolve({}); // draft with existing customer
+                });
             } else {
               resolve({});
             }
@@ -217,23 +219,29 @@ App.ServiceController = Ember.Controller.extend({
   isDraft: Ember.computed('model.service.is_draft', function() {
     return this.get('model.service.is_draft');
   }),
-  customerName: Ember.computed('isDraft', function() {
-    return this.get('isDraft') ?
+  hasCustomer: Ember.computed('model.customer.name', function() {
+    return this.get('model.customer.name') ? true : false;
+  }),
+  hasCustomerDraft: Ember.computed('model.customer_draft.data', function() {
+    return this.get('model.customer_draft.data') ? true : false;
+  }),
+  customerName: Ember.computed('hasCustomerDraft', function() {
+    return this.get('hasCustomerDraft') ?
       this.get('model.customer_draft.data.name') + ' ' + this.get('model.customer_draft.data.surname') :
       this.get('model.customer.name');
   }),
-  customerAddress: Ember.computed('isDraft', function() {
-    return this.get('isDraft') ?
+  customerAddress: Ember.computed('hasCustomerDraft', function() {
+    return this.get('hasCustomerDraft') ?
       draftAddress(this.get('model.customer_draft.data')) :
       customerAddress(this.get('model.customer'));
   }),
-  customerEmail: Ember.computed('isDraft', function() {
-    return this.get('isDraft') ?
+  customerEmail: Ember.computed('hasCustomerDraft', function() {
+    return this.get('hasCustomerDraft') ?
       this.get('model.customer_draft.data.email') :
       this.get('model.customer.email');
   }),
-  customerPhone: Ember.computed('isDraft', function() {
-    return this.get('isDraft') ?
+  customerPhone: Ember.computed('hasCustomerDraft', function() {
+    return this.get('hasCustomerDraft') ?
       this.get('model.customer_draft.data.phone') :
       this.get('model.customer.phone');
   }),

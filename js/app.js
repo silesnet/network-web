@@ -132,7 +132,7 @@ App.ServiceRoute = Ember.Route.extend({
           pppoe: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/pppoe')
             .then(function(pppoe) { return pppoe.pppoe; }),
           customer_draft: new Ember.RSVP.Promise(function(resolve, reject) {
-            if (service.is_draft) {
+            if (service.is_draft && !service.has_customer) {
               Ember.$.getJSON('http://localhost:8090/drafts2/customers/' + service.customer_id)
                 .then(function(draft) { resolve(draft.drafts); }, function(error) {
                   resolve({}); // draft with existing customer

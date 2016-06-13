@@ -322,6 +322,8 @@ App.FormEditServiceController = Ember.Controller.extend({
       var self = this,
       currentService = this.model.service,
       updatedService = this.model.form.service,
+      pppoeLogin = this.model.pppoe.login,
+      pppoeMaster = this.model.pppoe.master,
       serviceUpdate = {};
       if (currentService.info !== updatedService.info ||
           currentService.status !== updatedService.status) {
@@ -334,8 +336,11 @@ App.FormEditServiceController = Ember.Controller.extend({
         .then(function(data) {
           self.get('target').send('reload');
           self.get('flashes').success('OK', 1000);
-          if (currentService.status !== updatedService.status) {
-            // TODO KICK PPPeE if exists!!
+          if (currentService.status !== updatedService.status && pppoeLogin && pppoeMaster) {
+            putJSON('http://localhost:8090/networks/pppoe/' + pppoeLogin+ '/kick/' + pppoeMaster, {})
+              .then(function() {
+                self.get('flashes').success(
+                  "'" + pppoeMaster + "' kicked '" + pppoeLogin + "'", 3000); });
           }
         }, function(err) {
           console.log(JSON.stringify(err));

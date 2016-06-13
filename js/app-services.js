@@ -1,9 +1,17 @@
 App.Session = Ember.Service.extend({
   userName: null,
   userCountry: null,
+  userRoles: null,
+  hasNetworkAdminRole: Ember.computed('userRoles', function() {
+    return this.get('userRoles').indexOf('ROLE_NETWORK_ADMIN') > -1;
+  }),
+  hasManagerRole: Ember.computed('userRoles', function() {
+    return this.get('userRoles').indexOf('ROLE_TECH_ADMIN') > -1;
+  }),
   configure: function(user) {
     this.set('userName', user.name);
     this.set('userCountry', user.operation_country);
+    this.set('userRoles', user.roles);
   }
 });
 

@@ -192,9 +192,15 @@
                     {{/if}}
                     {{#if lastPppoeIp}}<br/>
                       <small>poslední IP:
+                      {{#if isLastIpReachable}}
+                        <i class="glyphicon glyphicon-cloud" style="color:green"></i>
+                      {{else}}
+                        <i class="glyphicon glyphicon-cloud" style="color:gray"></i>
+                      {{/if}}
                       <a href="#" {{action 'openTabs' (concat 'http://' lastPppoeIp ':65535') (concat 'http://' lastPppoeIp)}}>{{lastPppoeIp}}</a>
                       <span class="glyphicon glyphicon-new-window"></span>
-                      {{#if lastPppoeIpDate}}, {{lastPppoeIpDate}}{{/if}}</small>
+                      {{#if lastPppoeIpDate}}, {{lastPppoeIpDate}}{{/if}}
+                      </small>
                     {{/if}}
                   </div>
                 </div>

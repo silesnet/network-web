@@ -113,6 +113,7 @@ App.ServiceRoute = Ember.Route.extend({
   model: function(params) {
     return Ember.$.getJSON('http://localhost:8090/services/' + params.service_id)
       .then(function(service) {
+        service.data = JSON.parse(service.data);
         return Ember.RSVP.hash({
           service: service,
           customer: Ember.$.getJSON('http://localhost:8090/customers/' + service.customer_id)

@@ -111,6 +111,12 @@
                   <div class="col-sm-10">{{serviceStatus}}</div>
                 </div>
                 <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Zařízení:</strong></p></div>
+                  {{#each model.service.data.devices as |device|}}
+                    <div class="col-sm-10">{{device.name}} ({{device.owner}})</div>
+                  {{/each}}
+                </div>
+                <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>Poznámky:</strong></p></div>
                   <div class="col-sm-10">{{model.service.info}}</div>
                 </div>

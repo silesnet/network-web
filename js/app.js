@@ -113,7 +113,13 @@ App.ServiceRoute = Ember.Route.extend({
   model: function(params) {
     return Ember.$.getJSON('http://localhost:8090/services/' + params.service_id)
       .then(function(service) {
+        if (!service.data) {
+          service.data = "{\"devices\": []}";
+        }
         service.data = JSON.parse(service.data);
+        if (!service.data.devices) {
+          service.data.devices = [];
+        }
         return Ember.RSVP.hash({
           service: service,
           customer: Ember.$.getJSON('http://localhost:8090/customers/' + service.customer_id)
@@ -343,9 +349,11 @@ App.FormEditServiceController = Ember.Controller.extend({
       pppoeMaster = this.model.pppoe.master,
       serviceUpdate = {};
       if (currentService.info !== updatedService.info ||
-          currentService.status !== updatedService.status) {
+          currentService.status !== updatedService.status ||
+          JSON.stringify(currentService.data) !== JSON.stringify(updatedService.data)) {
         serviceUpdate.info = updatedService.info;
         serviceUpdate.status = updatedService.status;
+        serviceUpdate.data = JSON.stringify(updatedService.data);
         console.log('updating service '+ this.model.service.id + ': ' + JSON.stringify(serviceUpdate, null, 2));
         putJSON(
           'http://localhost:8090/services/' + this.model.service.id,
@@ -364,7 +372,14 @@ App.FormEditServiceController = Ember.Controller.extend({
           self.get('flashes').danger(err.detail, 5000);
         });
       }
+    },
+    addDevice: function() {
+      this.get('model.form.service.data.devices').pushObject({ name: '', owner:'silesnet' });
+    },
+    removeDevice: function(device) {
+      this.get('model.form.service.data.devices').removeObject(device);
     }
+
   }
 });
 

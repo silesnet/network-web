@@ -246,6 +246,22 @@
         </div>
         <div class="row">
           <div class="col-sm-12 form-group">
+            <label>Zařízení:</label>
+              {{#each model.form.service.data.devices as |device index|}}
+                <div class="form-group">
+                  <div class="pull-left">
+                    {{input value=device.name class="form-control"}}
+                  </div>&nbsp;
+                  {{radio-button name=(concat 'owner_'index) groupValue=device.owner value="silesnet"}} SilesNet
+                  {{radio-button name=(concat 'owner_' index) groupValue=device.owner value="customer"}} Zákazník
+                  <button type="button" class="btn btn-danger btn-sm" {{action 'removeDevice' device}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
+                </div>
+              {{/each}}
+            <button type="button" class="btn btn-primary btn-sm" {{action 'addDevice'}}><span class="glyphicon glyphicon-plus"></span>&#160;Přidat</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
             <label>Poznámky:</label>
             {{textarea class="form-control" value=model.form.service.info rows="5"}}
           </div>

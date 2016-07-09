@@ -1,3 +1,35 @@
+//https://gist.github.com/kenkogi/35f518eab57aa544bf1ba5b0e506788b
+App.RadioButtonComponent = Ember.Component.extend({
+  init() {
+    this._super();
+    Ember.run.once(this, 'isChecked');
+  },
+
+  tagName: 'input',
+  type: 'radio',
+  attributeBindings: [ 'checked', 'name', 'type', 'value' ],
+
+  checked: null,
+
+  isChecked() {
+    if (this.get('value') === this.get('groupValue')) {
+      Ember.run.once(this, 'takeAction');
+      this.set('checked', true);
+    } else {
+      this.set('checked', null);
+    }
+  },
+
+  takeAction() {
+    this.sendAction('selectedAction', this.get('value'));
+  },
+
+  change() {
+    this.set('groupValue', this.get('value'));
+    Ember.run.once(this, 'isChecked');
+  }
+});
+
 App.ModalFormComponent = Ember.Component.extend({
   actions: {
     ok: function() {

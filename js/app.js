@@ -502,7 +502,7 @@ App.FormAddTodoController = Ember.Controller.extend({
   actions: {
     submit: function() {
       var self = this;
-      $.get('https://localhost/sisng/resource/systech/php/todo.php', {
+      $.get('https://sis.silesnet.net/sisng/resource/systech/php/todo.php', {
         task: 'ADDTODOFROMPPPOE',
         category: this.category,
         priority: this.priority,

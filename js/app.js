@@ -289,6 +289,9 @@ App.ServiceController = Ember.Controller.extend({
   canAddPppoe: Ember.computed('canEdit', 'hasPppoe', function() {
     return this.get('canEdit') && !this.get('hasPppoe');
   }),
+  canAddTodo: Ember.computed('serviceCountry', function() {
+    return this.get('serviceCountry') === 'PL';
+  }),
   actions: {
     openTabs: function(url1, url2) {
       window.open(url1);
@@ -486,6 +489,32 @@ App.FormEditPppoeController = Ember.Controller.extend({
         .catch(function(err) {
           self.get('flashes').danger(err.detail, 5000); });
       }
+    }
+  }
+});
+
+App.FormAddTodoController = Ember.Controller.extend({
+  category: 'Servis',
+  categories: ['Servis', 'Moving', 'Modernization', 'Dismantling', 'Other'],
+  priority: 'Normal',
+  priorities: ['Low', 'Normal', 'High'],
+  comment: '',
+  actions: {
+    submit: function() {
+      var self = this;
+      $.get('https://localhost/sisng/resource/systech/php/todo.php', {
+        task: 'ADDTODOFROMPPPOE',
+        category: this.category,
+        priority: this.priority,
+        username: this.model.service.id,
+        todotask: this.comment
+      })
+        .done(function() {
+          console.log('OK');
+        })
+        .fail(function() {
+          console.log('FAIL');
+        });
     }
   }
 });

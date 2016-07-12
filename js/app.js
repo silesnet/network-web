@@ -45,9 +45,13 @@ App.ApplicationRoute = Ember.Route.extend({
   },
   actions: {
     openModal: function(name, model) {
-      var form = {};
+      var form = {}, controller;
       if (name.substring(0, 4) === 'form') {
         Ember.set(model, 'form', Ember.copy(model, true));
+      }
+      controller = this.controllerFor(name);
+      if (controller.reset) {
+        controller.reset();
       }
       return this.render(name, {
         into: 'application',
@@ -499,22 +503,40 @@ App.FormAddTodoController = Ember.Controller.extend({
   priority: 'Normal',
   priorities: ['Low', 'Normal', 'High'],
   comment: '',
+  reset: function() {
+    this.set('category', 'Servis');
+    this.set('priority', 'Normal');
+    this.set('comment', '');
+  },
   actions: {
     submit: function() {
       var self = this;
       $.get('https://sis.silesnet.net/sisng/resource/systech/php/todo.php', {
         task: 'ADDTODOFROMPPPOE',
-        category: this.category,
-        priority: this.priority,
-        username: this.model.service.id,
-        todotask: this.comment
+        category: this.get('category'),
+        priority: this.get('priority'),
+        username: this.get('model.pppoe.login') || this.get('model.service.id'),
+        todotask: this.get('comment')
       })
         .done(function() {
-          console.log('OK');
+          self.get('flashes').success('OK', 1000);
         })
         .fail(function() {
-          console.log('FAIL');
+          self.get('flashes').danger('FAIL', 2000);
         });
     }
   }
 });
+
+App.FormEditSmsController = Ember.Controller.extend({
+  smsMessage: '',
+  reset: function() {
+    this.set('smsMessage', '');
+  },
+  actions: {
+    submit: function() {
+      var self = this;
+    }
+  }
+});
+

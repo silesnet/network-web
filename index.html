@@ -79,6 +79,9 @@
         {{#if canAddPppoe}}
           <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formEditPppoe' model}}><span class="glyphicon glyphicon-plus"></span>&#160;PPPoE</button></div>
         {{/if}}
+        {{#if canAddTodo}}
+          <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formAddTodo' model}}><span class="glyphicon glyphicon-plus"></span>&#160;TODO</button></div>
+        {{/if}}
         <br />
         <span class="small">
           {{customerAddress}}
@@ -276,6 +279,35 @@
           <div class="col-sm-12 form-group">
             <label>Zpráva:</label>
             {{input class="form-control autofocus" value=smsMessage}}
+          </div>
+        </div>
+      {{/modal-form}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="formAddTodo">
+      {{#modal-form title='Add TODO' ok='submit' close='closeModal'}}
+        <h4>{{model.customer.name}}, {{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h4>
+        {{#if model.service.address}}
+          <p>{{address model.service.address}}</p>
+        {{/if}}
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>Category:</label>
+            {{view "select"
+               class="form-control"
+               content=categories
+               value=category}}
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Priority:</label>
+            {{view "select"
+               class="form-control"
+               content=priorities
+               value=priority}}
+          </div>
+          <div class="col-sm-12 form-group">
+            <label>Comment:</label>
+            {{textarea class="form-control autofocus" value=comment rows='5'}}
           </div>
         </div>
       {{/modal-form}}

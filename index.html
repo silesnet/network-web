@@ -274,11 +274,17 @@
 
     <script type="text/x-handlebars" data-template-name="formEditSms">
       {{#modal-form title='Poslat SMS' ok='submit' close='closeModal'}}
-        <h4>{{model.customer.name}} {{model.customer.phone}}</h4>
+        <h4>{{model.customer.name}}</h4>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>Číslo:</label>
+            {{input class="form-control" value=phoneNumber}}
+          </div>
+        </div>
         <div class="row">
           <div class="col-sm-12 form-group">
             <label>Zpráva:</label>
-            {{input class="form-control autofocus" value=smsMessage}}
+            {{textarea class="form-control autofocus" value=smsMessage}}
           </div>
         </div>
       {{/modal-form}}

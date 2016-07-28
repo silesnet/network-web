@@ -50,8 +50,8 @@ App.ApplicationRoute = Ember.Route.extend({
         Ember.set(model, 'form', Ember.copy(model, true));
       }
       controller = this.controllerFor(name);
-      if (controller.reset) {
-        controller.reset();
+      if (controller.initModal) {
+        controller.initModal(model);
       }
       return this.render(name, {
         into: 'application',
@@ -503,7 +503,7 @@ App.FormAddTodoController = Ember.Controller.extend({
   priority: 'Normal',
   priorities: ['Low', 'Normal', 'High'],
   comment: '',
-  reset: function() {
+  initModal: function() {
     this.set('category', 'Servis');
     this.set('priority', 'Normal');
     this.set('comment', '');
@@ -530,12 +530,30 @@ App.FormAddTodoController = Ember.Controller.extend({
 
 App.FormEditSmsController = Ember.Controller.extend({
   smsMessage: '',
-  reset: function() {
+  phoneNumber: '',
+  initModal(model) {
     this.set('smsMessage', '');
+    this.set('phoneNumber', normalizePhoneNumber(
+      Ember.get(model, 'customer.phone'),
+      serviceIdToCountry(Ember.get(model, 'service.id'))));
   },
   actions: {
     submit: function() {
-      var self = this;
+      var self = this,
+      number = this.get('phoneNumber'),
+      text = this.get('smsMessage');
+      if (number && text) {
+        postJSON(
+          'http://localhost:8090/messages/sms',
+          { number: number, text: text }
+        )
+        .then(() => {
+          self.get('flashes').success('OK', 1000);
+        })
+        .catch((err) => {
+          self.get('flashes').danger(err, 2000);
+        });
+      }
     }
   }
 });

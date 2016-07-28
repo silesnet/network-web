@@ -1,3 +1,14 @@
+function normalizePhoneNumber(number, country) {
+  var prefix = country === 'CZ' ? '420' : (country === 'PL' ? 46 : ''),
+  numbers;
+  number = number.replace(/ /g, '');
+  numbers = number.split(',');
+  for (var i = 0; i < numbers.length; i++) {
+    numbers[i] = '+' + prefix + numbers[i];
+  }
+  return numbers.join(', ');
+}
+
 function serviceIdToCurrency(serviceId) {
   return serviceId < 20000000 ? 'CZK' : 'PLN';
 }
@@ -15,7 +26,7 @@ function putJSON(url, body) {
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       success: function(data) { resolve(data); },
-      error: function(err) { reject(err.responseJSON.errors); }
+      error: function(err) { reject(Ember.get(err, 'responseJSON.errors')); }
     });
   });
 }
@@ -29,7 +40,7 @@ function postJSON(url, body) {
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
       success: function(data) { resolve(data); },
-      error: function(err) { reject(err.responseJSON.errors); }
+      error: function(err) { reject(Ember.get(err, 'responseJSON.errors')); }
     });
   });
 }

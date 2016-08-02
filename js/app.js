@@ -549,7 +549,8 @@ App.FormEditSmsController = Ember.Controller.extend({
         )
         .then(() => {
           self.get('flashes').success('Odesláno', 1000);
-        }, (err) => {
+        })
+        .catch((err) => {
           self.get('flashes').danger('Chyba při odesílání: ' + err, 2000);
         });
       }

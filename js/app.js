@@ -554,6 +554,13 @@ App.FormEditSmsController = Ember.Controller.extend({
           self.get('flashes').danger('Chyba při odesílání: ' + err, 2000);
         });
       }
+    },
+    smsKeysInputFilter: function(value, event) {
+      var key = event.key,
+        code = key.charCodeAt(0) || event.which || event.keyCode;
+      if (code < 32 || code > 126) {
+        event.preventDefault();
+      }
     }
   }
 });

@@ -1,4 +1,5 @@
 App.Session = Ember.Service.extend({
+  login: null,
   userName: null,
   userCountry: null,
   userRoles: null,
@@ -9,6 +10,7 @@ App.Session = Ember.Service.extend({
     return this.get('userRoles').indexOf('ROLE_TECH_ADMIN') > -1;
   }),
   configure: function(user) {
+    this.set('user', user.user);
     this.set('userName', user.name);
     this.set('userCountry', user.operation_country);
     this.set('userRoles', user.roles);

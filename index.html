@@ -311,6 +311,15 @@
                content=priorities
                value=priority}}
           </div>
+          <div class="col-sm-6 form-group">
+            <label>Operator:</label>
+            {{view "select"
+               class="form-control"
+               content=users
+               optionValuePath="content.login"
+               optionLabelPath="content.name"
+               value=assignee}}
+          </div>
           <div class="col-sm-12 form-group">
             <label>Comment:</label>
             {{textarea class="form-control autofocus" value=comment rows='5'}}

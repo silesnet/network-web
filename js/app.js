@@ -501,7 +501,18 @@ App.FormAddTodoController = Ember.Controller.extend({
   categories: ['Servis', 'Moving', 'Modernization', 'Dismantling', 'Other'],
   priority: 'Normal',
   priorities: ['Low', 'Normal', 'High'],
+  assignee: null,
+  users: [],
   comment: '',
+  init: function() {
+    var self = this;
+    this._super();
+    this.set('assignee', this.get('session.user'));
+    Ember.$.getJSON('http://localhost:8090/users')
+      .then((resopnse) => {
+        self.set('users', resopnse.users);
+      });
+  },
   initModal: function() {
     this.set('category', 'Servis');
     this.set('priority', 'Normal');

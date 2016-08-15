@@ -160,13 +160,12 @@ App.ServiceRoute = Ember.Route.extend({
     controller.set('model', model);
     Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/last-ip')
       .then(function(response) { controller.set('lastPppoeIp', response.lastIp.address || null);
+          controller.set('lastPppoeIp', response.lastIp.address); 
           controller.set('lastPppoeIpDateValue', response.lastIp.date || null);
           if (response.lastIp.address) {
-            Ember.$.getJSON('http://localhost:8090/networks/ip/' + response.lastIp.address)
-              .then(function(response) {
-                controller.set('isLastIpReachable', response.isReachable);
-              },
-              function(err) { controller.set('isLastIpReachable', false)});
+            controller.set('isPppoeOnline', true);
+          } else {
+            controller.set('isPppoeOnline', false);
           }
         },
         function(err) { controller.set('lastPppoeIp', null); } );
@@ -220,7 +219,7 @@ App.ServicesController = Ember.Controller.extend({
 App.ServiceController = Ember.Controller.extend({
   lastPppoeIp: null,
   lastPppoeIpDateValue: null,
-  isLastIpReachable: false,
+  isPppoeOnline: false,
   lastPppoeIpDate:  Ember.computed('lastPppoeIpDateValue', function() {
     var dateValue = this.get('lastPppoeIpDateValue');
     return dateValue ? dateValue.substring(0, 10) + ' ' + dateValue.substring(11, 19) : '';

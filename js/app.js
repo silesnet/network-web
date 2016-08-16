@@ -33,7 +33,7 @@ Ember.Application.initializer({
       var session = container.lookup('service:session');
       session.configure(data.users);
       App.advanceReadiness();
-    })
+    });
   }
 });
 
@@ -484,8 +484,8 @@ App.FormEditPppoeController = Ember.Controller.extend({
         .then(function(data) {
           self.get('target').send('reload');
           self.get('flashes').success('OK', 1000);
-          return putJSON('http://localhost:8090/networks/pppoe/'
-            + currentPppoe.login + '/kick/' + currentPppoe.master, {}); })
+          return putJSON('http://localhost:8090/networks/pppoe/' +
+            currentPppoe.login + '/kick/' + currentPppoe.master, {}); })
         .then(function() {
           self.get('flashes').success(
             "'" + currentPppoe.master + "' kicked '" + currentPppoe.login + "'", 3000); })

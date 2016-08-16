@@ -101,7 +101,7 @@ function _join() {
   var separator = parts.shift();
   // remove undefined or empty parts
   for (var i = 0; i < parts.length; i++) {
-    if (parts[i] === undefined || parts[i] == '') {
+    if (parts[i] === undefined || parts[i] === '') {
       parts.splice(i, 1);
       i--;
     }

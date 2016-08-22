@@ -1,5 +1,5 @@
 App.Session = Ember.Service.extend({
-  login: null,
+  user: null,
   userName: null,
   userCountry: null,
   userRoles: null,

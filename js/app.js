@@ -509,8 +509,8 @@ App.FormAddTodoController = Ember.Controller.extend({
     this._super();
     this.set('assignee', this.get('session.user'));
     Ember.$.getJSON('http://localhost:8090/users')
-      .then((resopnse) => {
-        self.set('users', resopnse.users);
+      .then((response) => {
+        self.set('users', Ember.A(response.users).filterBy('country', 'PL'));
       });
   },
   initModal: function() {
@@ -526,6 +526,8 @@ App.FormAddTodoController = Ember.Controller.extend({
         category: this.get('category'),
         priority: this.get('priority'),
         username: this.get('model.pppoe.login') || this.get('model.service.id'),
+        assignee: this.get('assignee'),
+        createdBy: this.get('session.userName'),
         todotask: this.get('comment')
       })
         .done(function() {

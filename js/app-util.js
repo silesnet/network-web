@@ -1,5 +1,5 @@
 function normalizePhoneNumber(number, country) {
-  var prefix = country === 'CZ' ? '420' : (country === 'PL' ? 46 : ''),
+  var prefix = country === 'CZ' ? '420' : (country === 'PL' ? '48' : ''),
   numbers;
   number = number.replace(/ /g, '');
   numbers = number.split(',');

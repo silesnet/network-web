@@ -31,6 +31,8 @@ App.RadioButtonComponent = Ember.Component.extend({
 });
 
 App.ModalFormComponent = Ember.Component.extend({
+  submitLabel: 'Uložit',
+  cancelLabel: 'Storno',
   actions: {
     ok: function() {
       this.$('.modal').modal('hide');

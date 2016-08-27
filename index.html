@@ -273,7 +273,7 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="formEditSms">
-      {{#modal-form title='Poslat SMS' ok='submit' close='closeModal'}}
+      {{#modal-form title='Poslat SMS' ok='submit' close='closeModal' submitLabel='Poslat'}}
         <h4>{{model.customer.name}}</h4>
         <div class="row">
           <div class="col-sm-6 form-group">
@@ -421,13 +421,13 @@
 
 
     <script type="text/x-handlebars" data-template-name="confirmDhcpRemoval">
-      {{#modal-form title='Odebrat DHCP' ok='removeDhcp' close='closeModal'}}
+      {{#modal-form title='Odebrat DHCP' ok='removeDhcp' close='closeModal' submitLabel='Odebrat'}}
         <p>Chcete opravdu odebrat DHCP pro {{model.service.id}} {{model.service.name}}?</p>
       {{/modal-form}}
     </script>
 
     <script type="text/x-handlebars" data-template-name="confirmPppoeRemoval">
-      {{#modal-form title='Odebrat PPPoE' ok='removePppoe' close='closeModal'}}
+      {{#modal-form title='Odebrat PPPoE' ok='removePppoe' close='closeModal' submitLabel='Odebrat'}}
         <p>Chcete opravdu odebrat PPPoE pro {{model.service.id}} {{model.service.name}}?</p>
       {{/modal-form}}
     </script>
@@ -458,7 +458,7 @@
               {{yield}}
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">{{cancelLabel}}</button>
+              <button type="button" class="btn btn-link" data-dismiss="modal">{{cancelLabel}}</button>
               <button type="button" class="btn btn-primary" {{action 'ok'}}>{{submitLabel}}</button>
             </div>
           </div>

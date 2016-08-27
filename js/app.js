@@ -299,6 +299,16 @@ App.ServiceController = Ember.Controller.extend({
     openTabs: function(url1, url2) {
       window.open(url1);
       window.open(url2);
+    },
+    addPppoe(model) {
+      var newPppoe = {
+        login: model.service.id,
+        password: generatePassword(8),
+        ip_class: 'public-pl',
+        _isNew: true
+      };
+      this.set('model.pppoe', newPppoe);
+      this.send('openModal', 'formEditPppoe', model);
     }
   }
 });
@@ -332,7 +342,14 @@ App.ConfirmPppoeRemovalController = Ember.Controller.extend({
       .then(function(data) {
         self.send('reload');
         self.get('flashes').success('OK', 1000);
-      }, function(err) {
+        return putJSON('http://localhost:8090/networks/pppoe/' +
+          self.model.pppoe.login + '/kick/' + self.model.pppoe.master, {});
+      })
+      .then(function() {
+        self.get('flashes').success(
+          "'" + self.model.pppoe.master + "' kicked '" + self.model.pppoe.login + "'", 3000);
+      })
+      .catch(function(err) {
         self.get('flashes').danger(err.detail, 5000);
       });
     }
@@ -459,9 +476,8 @@ App.FormEditPppoeController = Ember.Controller.extend({
       currentPppoe = this.model.pppoe,
       newPppoe = this.model.form.pppoe,
       updatePppoe = {};
-      console.log(newPppoe);
-      console.log(currentPppoe);
-      if (currentPppoe.master !== newPppoe.master ||
+      if (newPppoe._isNew ||
+          currentPppoe.master !== newPppoe.master ||
           currentPppoe.interface !== newPppoe.interface ||
           currentPppoe.ip_class !== newPppoe.ip_class ||
           currentPppoe.ip.value !== newPppoe.ip.value ||
@@ -478,17 +494,25 @@ App.FormEditPppoeController = Ember.Controller.extend({
         updatePppoe.login = newPppoe.login;
         updatePppoe.password = newPppoe.password;
         updatePppoe.mac = newPppoe.mac;
-        console.log('updating PPPoE of '+ this.model.service.id + ': ' + JSON.stringify(updatePppoe, null, 2));
+        console.log((newPppoe._isNew ? 'adding' : 'updating') + 
+          ' PPPoE of '+ this.model.service.id + ': ' + JSON.stringify(updatePppoe, null, 2));
         putJSON('http://localhost:8090/networks/pppoe/' + this.model.service.id,
           { services: { pppoe: updatePppoe } })
         .then(function(data) {
           self.get('target').send('reload');
           self.get('flashes').success('OK', 1000);
-          return putJSON('http://localhost:8090/networks/pppoe/' +
-            currentPppoe.login + '/kick/' + currentPppoe.master, {}); })
+          if (!newPppoe._isNew) {
+            return putJSON('http://localhost:8090/networks/pppoe/' +
+              currentPppoe.login + '/kick/' + currentPppoe.master, {});
+          } else {
+            return true;
+        }})
         .then(function() {
-          self.get('flashes').success(
-            "'" + currentPppoe.master + "' kicked '" + currentPppoe.login + "'", 3000); })
+          if (!newPppoe._isNew) {
+            self.get('flashes').success(
+              "'" + currentPppoe.master + "' kicked '" + currentPppoe.login + "'", 3000);
+          self.set('model.pppoe._isNew', false);
+        }})
         .catch(function(err) {
           self.get('flashes').danger(err.detail, 5000); });
       }

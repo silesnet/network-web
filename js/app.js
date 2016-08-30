@@ -446,13 +446,30 @@ App.FormEditDhcpController = Ember.Controller.extend({
 App.FormEditPppoeController = Ember.Controller.extend({
   ipClasses: [],
   routers: [],
+  ssids: [],
+  ssid: null,
+  ssidChanged: function() {
+    var ssid = this.get('ssid');
+    this.set('model.form.pppoe.master', ssid.master);
+    this.set('model.form.pppoe.interface', ssid.name);
+  }.observes('ssid'),
   init: function() {
     var self = this,
       classes = ['static'],
       country = this.get('session.userCountry').toLowerCase();
     this._super();
     Ember.$.getJSON('http://localhost:8090/networks/routers')
-         .then(function(routers) { self.set('routers', routers.core_routers); });
+      .then(function(routers) { self.set('routers', routers.core_routers); });
+    Ember.$.getJSON('http://localhost:8090/networks/ssids')
+      .then(function(response) {
+        var ssids = response.ssids,
+          iface = self.get('model.form.pppoe.interface'),
+          ssid = Ember.A(ssids).findBy('name', iface);
+        if (ssid) {
+          self.set('ssid', ssid);
+        }
+        self.set('ssids', ssids);
+      });
     if (country === 'cz') {
       classes.push('internal-cz');
     } else if (country === 'pl') {

@@ -368,12 +368,18 @@
                content=routers
                optionValuePath="content.name"
                optionLabelPath="content.name"
-               value=model.form.pppoe.master}}
+               value=model.form.pppoe.master
+               disabled=isWireless}}
           </div>
           {{#if isWireless}}
             <div class="col-sm-6 form-group">
-              <label>Interface:</label>
-              {{input class="form-control" name="interface" value=model.form.pppoe.interface type=text}}
+              <label>SSID:</label>
+              {{view "select"
+                 class="form-control"
+                 content=ssids
+                 optionValuePath="content"
+                 optionLabelPath="content.ssid"
+                 value=ssid}}
             </div>
           {{/if}}
         </div>
@@ -383,7 +389,10 @@
             {{input class="form-control" value=model.form.pppoe.location type=text}}
           </div>
           <div class="col-sm-6 form-group">
-            <label></label>
+            {{#if isWireless}}
+              <label>Interface:</label>
+              {{input class="form-control" name="interface" value=model.form.pppoe.interface type=text disabled=true}}
+            {{/if}}
           </div>
         </div>
         <div class="row">

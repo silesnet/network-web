@@ -453,6 +453,14 @@ App.FormEditPppoeController = Ember.Controller.extend({
     this.set('model.form.pppoe.master', ssid.master);
     this.set('model.form.pppoe.interface', ssid.name);
   }.observes('ssid'),
+  interfaceChanged: function() {
+    var ssids = this.get('ssids'),
+      iface = this.get('model.form.pppoe.interface'),
+      ssid = Ember.A(ssids).findBy('name', iface);
+    if (ssid) {
+      this.set('ssid', ssid);
+    }
+  }.observes('model.form.pppoe.interface'),
   init: function() {
     var self = this,
       classes = ['static'],
@@ -462,13 +470,9 @@ App.FormEditPppoeController = Ember.Controller.extend({
       .then(function(routers) { self.set('routers', routers.core_routers); });
     Ember.$.getJSON('http://localhost:8090/networks/ssids')
       .then(function(response) {
-        var ssids = response.ssids,
-          iface = self.get('model.form.pppoe.interface'),
-          ssid = Ember.A(ssids).findBy('name', iface);
-        if (ssid) {
-          self.set('ssid', ssid);
-        }
+        var ssids = response.ssids;
         self.set('ssids', ssids);
+        self.interfaceChanged();
       });
     if (country === 'cz') {
       classes.push('internal-cz');

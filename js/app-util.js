@@ -1,3 +1,23 @@
+function serviceToPppoeMode(serviceId, serviceName) {
+  var name = serviceName.toLowerCase(),
+    country = serviceIdToCountry(serviceId);
+  if (country === 'PL') {
+    if (name.substr(0, 3) === 'lan') {
+      return 'LAN';
+    } else {
+      return 'WIRELESS';
+    }
+  } else {
+    if (name.substr(0, 8) === 'wireless') {
+      return 'WIRELESS';
+    } else if (name.substr(0, 3) === 'lan' && name !== 'lanfiber') {
+      return 'LAN';
+    } else {
+      return 'FIBER';
+    }
+  }
+}
+
 function generatePassword(length) {
   var iteration = 0;
   var password = "";

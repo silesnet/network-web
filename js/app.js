@@ -304,7 +304,8 @@ App.ServiceController = Ember.Controller.extend({
       var newPppoe = {
         login: model.service.id,
         password: generatePassword(8),
-        ip_class: 'public-pl',
+        ip_class: serviceIdToCountry(model.service.id) === 'CZ' ? 'internal-cz' : 'public-pl',
+        mode: serviceToPppoeMode(model.service.id, model.service.name),
         _isNew: true
       };
       this.set('model.pppoe', newPppoe);
@@ -510,6 +511,7 @@ App.FormEditPppoeController = Ember.Controller.extend({
         updatePppoe.master = newPppoe.master;
         updatePppoe.interface = newPppoe.interface;
         updatePppoe.location = newPppoe.location;
+        updatePppoe.mode = newPppoe.mode;
         updatePppoe.ip_class = newPppoe.ip_class;
         updatePppoe.ip = newPppoe.ip;
         updatePppoe.login = newPppoe.login;

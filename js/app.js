@@ -445,7 +445,16 @@ App.FormEditDhcpController = Ember.Controller.extend({
 });
 
 App.FormEditPppoeController = Ember.Controller.extend({
-  ipClasses: [],
+  ipClasses: Ember.computed('model.service.id', function() {
+    var classes = ['static'],
+      country = serviceIdToCountry(this.get('model.service.id'));
+    if (country === 'CZ') {
+      classes.push('internal-cz');      
+    } else {
+      classes.push('public-pl');
+    }
+    return classes;
+  }),
   routers: [],
   ssids: [],
   ssid: null,
@@ -464,7 +473,6 @@ App.FormEditPppoeController = Ember.Controller.extend({
   }.observes('model.form.pppoe.interface'),
   init: function() {
     var self = this,
-      classes = ['static'],
       country = this.get('session.userCountry').toLowerCase();
     this._super();
     Ember.$.getJSON('http://localhost:8090/networks/routers')
@@ -475,12 +483,6 @@ App.FormEditPppoeController = Ember.Controller.extend({
         self.set('ssids', ssids);
         self.interfaceChanged();
       });
-    if (country === 'cz') {
-      classes.push('internal-cz');
-    } else if (country === 'pl') {
-      classes.push('public-pl');
-    }
-    this.set('ipClasses', classes);
   },
   isWireless: Ember.computed('model.pppoe.mode', function() {
     return this.get('model.pppoe.mode').toLowerCase() === 'wireless';

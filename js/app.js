@@ -482,8 +482,8 @@ App.FormEditPppoeController = Ember.Controller.extend({
     }
     this.set('ipClasses', classes);
   },
-  isWireless: Ember.computed('model.service.channel', function() {
-    return this.get('model.service.channel') === 'wireless';
+  isWireless: Ember.computed('model.pppoe.mode', function() {
+    return this.get('model.pppoe.mode').toLowerCase() === 'wireless';
   }),
   isStaticIp: Ember.computed('model.form.pppoe.ip_class', function() {
     var isStatic = this.get('model.form.pppoe.ip_class') === 'static',

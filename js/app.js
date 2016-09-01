@@ -295,6 +295,15 @@ App.ServiceController = Ember.Controller.extend({
   canAddTodo: Ember.computed('serviceCountry', function() {
     return this.get('serviceCountry') === 'PL';
   }),
+  servicePeriod: Ember.computed('model.service.period_from', function () {
+    var fromDate = this.get('model.service.period_from').substr(0, 10),
+      to = this.get('model.service.period_to'),
+      period = { from: fromDate, to: '...' };
+    if (to) {
+      period.to = to.substr(0, 10);
+    }
+    return period;
+  }),
   actions: {
     openTabs: function(url1, url2) {
       window.open(url1);

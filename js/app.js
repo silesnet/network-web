@@ -296,9 +296,12 @@ App.ServiceController = Ember.Controller.extend({
     return this.get('serviceCountry') === 'PL';
   }),
   servicePeriod: Ember.computed('model.service.period_from', function () {
-    var fromDate = this.get('model.service.period_from').substr(0, 10),
+    var from = this.get('model.service.period_from'),
       to = this.get('model.service.period_to'),
-      period = { from: fromDate, to: '...' };
+      period = { from: '...', to: '...' };
+    if (from) {
+      period.from = from.substr(0, 10);
+    }
     if (to) {
       period.to = to.substr(0, 10);
     }

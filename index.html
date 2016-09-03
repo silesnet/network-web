@@ -113,10 +113,12 @@
                   <div class="col-sm-2"><p class="text-right"><strong>Stav:</strong></p></div>
                   <div class="col-sm-10">{{serviceStatus}}</div>
                 </div>
-                <div class="row">
-                  <div class="col-sm-2"><p class="text-right"><strong>Období:</strong></p></div>
-                  <div class="col-sm-10">{{servicePeriod.from}} &rarr; {{servicePeriod.to}}</div>
-                </div>
+                {{#unless isDraft}}
+                  <div class="row">
+                    <div class="col-sm-2"><p class="text-right"><strong>Období:</strong></p></div>
+                    <div class="col-sm-10">{{servicePeriod.from}} &rarr; {{servicePeriod.to}}</div>
+                  </div>
+                {{/unless}}
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>Zařízení:</strong></p></div>
                   <div class="col-sm-10">

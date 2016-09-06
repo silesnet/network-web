@@ -8,9 +8,7 @@ App.RadioButtonComponent = Ember.Component.extend({
   tagName: 'input',
   type: 'radio',
   attributeBindings: [ 'checked', 'name', 'type', 'value' ],
-
   checked: null,
-
   isChecked() {
     if (this.get('value') === this.get('groupValue')) {
       Ember.run.once(this, 'takeAction');
@@ -19,11 +17,9 @@ App.RadioButtonComponent = Ember.Component.extend({
       this.set('checked', null);
     }
   },
-
   takeAction() {
     this.sendAction('selectedAction', this.get('value'));
   },
-
   change() {
     this.set('groupValue', this.get('value'));
     Ember.run.once(this, 'isChecked');
@@ -46,7 +42,12 @@ App.ModalFormComponent = Ember.Component.extend({
     Ember.run.scheduleOnce('afterRender', this, function() {
       $('.autofocus').focus();
     });
-  }.on('didInsertElement')
+  }.on('didInsertElement'),
+  keyDown: function(event) {
+    if (event.ctrlKey && event.keyCode === 13) {
+      this.send('ok');
+    }
+  }
 });
 
 App.FlashMessageComponent = Ember.Component.extend({

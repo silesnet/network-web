@@ -1,3 +1,7 @@
+function servcieIdToAgreement(serviceId) {
+  return Math.floor((serviceId % 10000000) / 100);
+}
+
 function serviceToPppoeMode(serviceId, serviceName) {
   var name = serviceName.toLowerCase(),
     country = serviceIdToCountry(serviceId);

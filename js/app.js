@@ -574,10 +574,18 @@ App.FormAddTodoController = Ember.Controller.extend({
         self.set('users', Ember.A(response.users).filterBy('country', 'PL'));
       });
   },
-  initModal: function() {
+  initModal: function(model) {
+    var comment = '';
     this.set('category', 'Servis');
     this.set('priority', 'Normal');
-    this.set('comment', '');
+    comment = [
+      servcieIdToAgreement(model.service.id),
+      model.customer.name,
+      model.service.name + ' ' +
+        model.service.download + '/' + model.service.upload + ' Mbs'
+    ].join(", ");
+    comment += "\n";
+    this.set('comment', comment);
   },
   actions: {
     submit: function() {

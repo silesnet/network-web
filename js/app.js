@@ -38,11 +38,6 @@ Ember.Application.initializer({
 });
 
 App.ApplicationRoute = Ember.Route.extend({
-  afterModel: function() {
-    if (this.get('session.userName') !== 'Test') {
-      this.transitionTo('/services');
-    }
-  },
   actions: {
     openModal: function(name, model) {
       var form = {}, controller;

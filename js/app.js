@@ -585,6 +585,12 @@ App.FormAddTodoController = Ember.Controller.extend({
         model.service.download + '/' + model.service.upload + ' Mbs'
     ].join(", ");
     comment += "\n";
+    if (model.customer.phone) {
+      comment += model.customer.phone + "\n";
+    }
+    if (model.pppoe.interface) {
+      comment += model.pppoe.interface + "\n";
+    }
     this.set('comment', comment);
   },
   actions: {

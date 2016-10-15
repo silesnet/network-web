@@ -313,6 +313,8 @@ App.ServiceController = Ember.Controller.extend({
         password: generatePassword(8),
         ip_class: serviceIdToCountry(model.service.id) === 'CZ' ? 'internal-cz' : 'public-pl',
         mode: serviceToPppoeMode(model.service.id, model.service.name),
+        ip: { type: 'inet', value: null },
+        mac: { type: 'macaddr', value: null },
         _isNew: true
       };
       this.set('model.pppoe', newPppoe);

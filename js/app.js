@@ -597,7 +597,7 @@ App.FormAddTodoController = Ember.Controller.extend({
         task: 'ADDTODOFROMPPPOE',
         category: this.get('category'),
         priority: this.get('priority'),
-        username: this.get('model.pppoe.login') || this.get('model.service.id'),
+        customerId: this.get('model.customer.id'),
         assignee: this.get('assignee'),
         createdBy: this.get('session.userName'),
         todotask: this.get('comment')

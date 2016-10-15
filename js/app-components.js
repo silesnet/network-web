@@ -115,8 +115,8 @@ App.MACAddressField = Ember.TextField.extend({
     return false;
   },
   keyUp: function (){
-    var regMacAddress = new RegExp("(?:[a-zA-Z0-9]{2}[:-]){5}[a-zA-Z0-9]{2}");
-    if(this.value.length > 0 && !regMacAddress.test(this.value)){
+    var regMacAddress = new RegExp("(?:[a-zA-Z0-9]{2}[:-]?){5}[a-zA-Z0-9]{2}");
+    if(this.value.length > 0 && (!regMacAddress.test(this.value) || this.value.length > 12)){
       this.set("err", true);
     }else{
       this.set("err", false);

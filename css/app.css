@@ -126,3 +126,7 @@ input[type=number] {
 .icon-isactive {font-size: 0; color: transparent; width: 14px; height: 14px; background: gray; border: none; outline: none; border-radius: 25px; box-shadow: 0 0 2px 2px gray;}
 .icon-isactive[value="1"] {background: green; box-shadow: 0 0 2px 2px green;}
 .icon-isactive[value="2"] {background: red; box-shadow: 0 0 2px 2px red;}
+
+.tiny {
+  font-size: 0.7em;
+}

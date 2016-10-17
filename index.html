@@ -241,6 +241,25 @@
             </div>
           </div>
         {{/if}}
+        {{#if model.comments}}
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title pull-left">Komentáře</h3>
+                <div class="clearfix"></div>
+              </div>
+              <div class="panel-body">
+                {{#each model.comments as |comment|}}
+                  <div class="row">
+                    <div class="col-sm-1">{{comment.user}}</div>
+                    <div class="col-sm-3">{{stamp comment.date}}</div>
+                    <div class="col-sm-8">{{comment.comment}}</div>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        {{/if}}
       </div>
       {{#link-to 'services'}}Zpět{{/link-to}}
     </script>

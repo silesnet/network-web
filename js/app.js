@@ -146,7 +146,9 @@ App.ServiceRoute = Ember.Route.extend({
             } else {
               resolve({});
             }
-          })
+          }),
+          comments: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/comments')
+            .then(function(result) { return result.comments; })
         });
       });
   },

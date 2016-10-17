@@ -109,6 +109,13 @@ Ember.Handlebars.helper('date', function(value, options) {
     date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear());
 });
 
+Ember.Handlebars.helper('stamp', function(value, options) {
+  var date = new Date(value);
+  return new Ember.Handlebars.SafeString(
+    date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()) +
+    ' @' + date.getHours() + ':' + date.getMinutes();
+});
+
 Ember.Handlebars.helper('address', function(address, options) {
   return new Ember.Handlebars.SafeString(draftAddress(address));
 });

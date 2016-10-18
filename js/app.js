@@ -8,6 +8,7 @@ Ember.deprecate = () => {};
 App.Router.map(function() {
   this.route('services', { path: '/services' }, function() {});
   this.route('service', { path: '/services/:service_id' }, function() {});
+  this.route('service-errors', { path: '/service-errors' }, function() {});
   this.route('changelog', { path: '/changelog' }, function() {});
 });
 
@@ -172,6 +173,17 @@ App.ServiceRoute = Ember.Route.extend({
       this.refresh();
     }
   }
+});
+
+App.ServiceErrorsRoute = Ember.Route.extend({
+  model: function() {
+    return Ember.RSVP.hash({
+      conflicts: Ember.$.getJSON('http://localhost:8090/services/conflicting-authentications')
+        .then(function(result) { return result.services; }),
+      orphans: Ember.$.getJSON('http://localhost:8090/services/orphaned-authentications')
+        .then(function(result) { return result.services; })
+    });
+  } 
 });
 
 App.ChangelogRoute = Ember.Route.extend({

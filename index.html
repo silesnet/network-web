@@ -17,6 +17,9 @@
           <a class="navbar-brand" href="..">Home</a>
           <a class="navbar-brand" href="#/services">Služby</a>
           <a class="navbar-brand" href="http://localhost:9090">Přidej službu</a>
+          {{#if session.hasNetworkAdminRole}}
+            <a class="navbar-brand" href="#/service-errors">Chyby</a>
+          {{/if}}
           <a class="navbar-brand" href="#/changelog"><span class="small">Seznam změn</span></a>
           <div class="navbar-right navbar-brand">
             <span class='glyphicon glyphicon-user'></span>
@@ -485,6 +488,27 @@
       </tbody>
       </table>
     </script>
+
+    <script type="text/x-handlebars" data-template-name="service-errors">
+      <h2>Seznam služeb s DHCP i PPPoE autentifikací</h2>
+      <table class="table">
+      <tbody>
+      {{#each model.conflicts as |service|}}
+        <tr>
+          <td>{{#link-to 'service' service.id}}{{service.id}}{{/link-to}}</td>
+          <td>{{service.name}}</td>
+          <td>{{service.download}}/{{service.upload}} Mbs</td>
+        </tr>
+      {{/each}}
+      </tbody>
+      </table>
+<!--       <h2>Seznam DHCP/PPPoE autentifikací bez existující služby</h2>
+      {{#each model.orphans as |orphan|}}
+        <tr>
+          <td>NOP</td>
+        </tr>
+      {{/each}}
+ -->    </script>
 
     <script type="text/x-handlebars" data-template-name="components/modal-form">
       <div class="modal">

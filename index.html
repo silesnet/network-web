@@ -101,6 +101,10 @@
       </h2>
       <h3>{{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs, {{model.service.price}} {{serviceCurrency}}</h3>
 
+      {{#if model.customer.connection_spot}}
+        <p>{{model.customer.connection_spot}}</p>
+      {{/if}}
+
       {{#if model.service.address}}
         <p>{{address model.service.address}}</p>
       {{/if}}

@@ -179,8 +179,6 @@ App.ServiceErrorsRoute = Ember.Route.extend({
   model: function() {
     return Ember.RSVP.hash({
       conflicts: Ember.$.getJSON('http://localhost:8090/services/conflicting-authentications')
-        .then(function(result) { return result.services; }),
-      orphans: Ember.$.getJSON('http://localhost:8090/services/orphaned-authentications')
         .then(function(result) { return result.services; })
     });
   } 

@@ -1,3 +1,27 @@
+function toTimestamp(date) {
+  return  toDate(date) + ' @' + toTime(date);
+}
+
+function toDate(date) {
+  if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+  return date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear();
+}
+
+function toTime(date) {
+  if (!(date instanceof Date)) {
+    date = new Date(date);
+  }
+  return leftPadNum(date.getHours(), 2) + ':' + 
+    leftPadNum(date.getMinutes(), 2) + ':' + 
+    leftPadNum(date.getSeconds(), 2);
+}
+
+function leftPadNum(num, len) {
+  return ('0000000000' + num).slice(-len);
+}
+
 function servcieIdToAgreement(serviceId) {
   return parseInt((serviceId % 10000000) / 100);
 }

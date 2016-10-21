@@ -17,7 +17,7 @@
           <a class="navbar-brand" href="..">Home</a>
           <a class="navbar-brand" href="#/services">Služby</a>
           <a class="navbar-brand" href="http://localhost:9090">Přidej službu</a>
-          {{#if session.hasNetworkAdminRole}}
+          {{#if session.hasManagerOrNetworkAdminRole}}
             <a class="navbar-brand" href="#/service-errors">Chyby</a>
           {{/if}}
           <a class="navbar-brand" href="#/changelog"><span class="small">Seznam změn</span></a>

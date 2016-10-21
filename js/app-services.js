@@ -9,6 +9,10 @@ App.Session = Ember.Service.extend({
   hasManagerRole: Ember.computed('userRoles', function() {
     return this.get('userRoles').indexOf('ROLE_TECH_ADMIN') > -1;
   }),
+  hasManagerOrNetworkAdminRole: Ember.computed('userRoles', function() {
+    return (this.get('userRoles').indexOf('ROLE_TECH_ADMIN') > -1) ||
+      (this.get('userRoles').indexOf('ROLE_NETWORK_ADMIN') > -1);
+  }),
   configure: function(user) {
     this.set('user', user.user);
     this.set('userName', user.name);

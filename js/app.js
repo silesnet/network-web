@@ -149,7 +149,9 @@ App.ServiceRoute = Ember.Route.extend({
             }
           }),
           comments: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/comments')
-            .then(function(result) { return result.comments; })
+            .then(function(result) { return result.comments; }),
+          events: Ember.$.getJSON('http://localhost:8090/events/?entity=services&entityId=' + params.service_id)
+            .then(function(result) { return result.data; })
         });
       });
   },
@@ -230,6 +232,8 @@ App.ServiceController = Ember.Controller.extend({
   lastPppoeIp: null,
   lastPppoeIpDateValue: null,
   isPppoeOnline: false,
+  eventsSortOder: ['id:desc'],
+  eventsSorted: Ember.computed.sort('model.events', 'eventsSortOder'),
   lastPppoeIpDate:  Ember.computed('lastPppoeIpDateValue', function() {
     var dateValue = this.get('lastPppoeIpDateValue');
     return toTimestamp(this.get('lastPppoeIpDateValue'));

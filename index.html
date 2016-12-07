@@ -248,6 +248,24 @@
             </div>
           </div>
         {{/if}}
+        {{#if model.events}}
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title pull-left">Události</h3>
+                <div class="clearfix"></div>
+              </div>
+              <div class="panel-body">
+                {{#each eventsSorted as |event|}}
+                  <div class="row">
+                    <div class="col-sm-3 text-right">{{stamp event.attributes.happenedOn}}</div>
+                    <div class="col-sm-9">{{event.attributes.event}}</div>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        {{/if}}
         {{#if model.comments}}
           <div class="col-md-6">
             <div class="panel panel-default">

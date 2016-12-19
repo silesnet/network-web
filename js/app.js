@@ -7,7 +7,9 @@ Ember.deprecate = () => {};
 
 App.Router.map(function() {
   this.route('services', { path: '/services' }, function() {});
-  this.route('service', { path: '/services/:service_id' }, function() {});
+  this.route('service', { path: '/services/:service_id' }, function() {
+    this.route('print');
+  });
   this.route('service-errors', { path: '/service-errors' }, function() {});
   this.route('changelog', { path: '/changelog' }, function() {});
 });
@@ -228,7 +230,34 @@ App.ServicesController = Ember.Controller.extend({
   }
 });
 
-App.ServiceController = Ember.Controller.extend({
+App.ServicePrintController = Ember.Controller.extend({
+  agreementNo: Ember.computed(function() {
+    return servcieIdToAgreement(this.get('model.service.id'));
+  }),
+  serviceName: Ember.computed('model.service', function() {
+    return serviceName(this.get('model.service'));
+  }),
+  customerAddress: Ember.computed('model.customer', function() {
+    return customerAddress(this.get('model.customer')) + ', ' + 
+      countryIdToName(this.get('model.customer.country'));
+  }),
+  connectionLocation: Ember.computed('model.service', function() {
+    return serviceAddress(this.get('model.service.address'));
+  }),
+  devices: Ember.computed('model.service.data.devices', function() {
+    var devices = this.get('model.service.data.devices').map(function(device, idx) {
+      return {
+        name: device.name,
+        isOwnedBySilesnet: device.owner === 'silesnet',
+        isOwnedByCustomer: device.owner !== 'silesnet'
+      };
+    });
+    // devices.push({ name: '', isOwnedBySilesnet: false, isOwnedByCustomer: false });
+    return devices;
+  })
+});
+
+App.ServiceIndexController = Ember.Controller.extend({
   lastPppoeIp: null,
   lastPppoeIpDateValue: null,
   isPppoeOnline: false,

@@ -1,0 +1,235 @@
+<div id="protocol" class="container">
+  <img class="pl logo" src="../img/silesnet_logo.svg">
+  <h1>DODATEK NR .... DO UMOWY NR {{agreementNo}}</h1>
+  <table>
+    <tr>
+      <td><span class='glyphicon glyphicon-unchecked'></span> Nowa usługa</td>
+      <td><span class='glyphicon glyphicon-unchecked'></span> Przeniesienie usługi</td>
+      <td><span class='glyphicon glyphicon-unchecked'></span> Wymiana urządzeń</td>
+      <td><span class='glyphicon glyphicon-unchecked'></span> Zmiana usługi</td>
+      <td><span class='glyphicon glyphicon-unchecked'></span> Ukończenie usługi</td>
+    </tr>
+  </table>
+  <table class="main-protocol">
+    <tr>
+      <td class="col-1">1.</td><td class="col-2">Dostawca łącza internetowego:</td>
+      <td class="col-3"><b>SilesNet Polska Sp. z o. o.</b></td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Adres siedziby:</td>
+      <td class="col-3">43-400 Cieszyn, ul. Motelowa 16</td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Reprezentowany przez:</td>
+      <td class="col-3">mgr Iwona Julianna Heczková, prezes zarządu</td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Regon:</td>
+      <td class="col-3">933040425, NIP: 8961380108</td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Numer konta bankowego:</td>
+      <td class="col-3">65 1090 1782 0000 0001 0327 0891</td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Telefon kontaktowy:</td>
+      <td class="col-3">+48 500 673 311, e-mail: info@silesnet.pl</td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Numer KRS:</td>
+      <td class="col-3">0000 22 12 87</td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Wysokość kapitału zakładowego:</td>
+      <td class="col-3">50.000 zł</td>
+    </tr>
+
+    {{!-- empty row --}}
+    <tr><td class="col-1">&nbsp;</td><td class="col-2"></td><td class="col-3"></td></tr>
+    <tr>
+      <td class="col-1">2.</td><td class="col-2">Użytkownik:</td>
+      <td class="col-3 bordered">{{model.customer.name}}</td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Adres:</td>
+      <td class="col-3 bordered">{{customerAddress}}</td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Regon / Pesel:</td>
+      <td class="col-3 bordered">
+        <div style="width: 39%;display: inline-block">{{model.customer.public_id}}</div>
+        <div style="width: 15%; display: inline-block;
+          border-left: 1px solid black; padding-left: 5px;
+          border-right: 1px solid black;">NIP:</div>
+        <div style="width: 39%; display: inline-block">{{modle.customer.dic}}</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Telefon:</td>
+      <td class="col-3 bordered">
+        <div style="width: 39%;display: inline-block">{{model.customer.phone}}</div>
+        <div style="width: 15%; display: inline-block;
+          border-left: 1px solid black; padding-left: 5px;
+          border-right: 1px solid black;">e-mail:</div>
+        <div style="width: 44%; display: inline-block">{{model.customer.email}}</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-1"></td><td class="col-2">Miejsce podłączenia:</td>
+      <td class="col-3 bordered">{{connectionLocation}}</td>
+    </tr>
+
+    {{!-- empty row --}}
+    <tr><td class="col-1">&nbsp;</td><td class="col-2"></td><td class="col-3"></td></tr>
+    <tr>
+      <td class="col-1">3.</td>
+      <td colspan="2" class="col-3">
+        Dostawca zawarł z użytkownikiem dnia <span class="dotted-field">&nbsp;</span>
+        umowę nr <span class="dotted-field">&nbsp;</span><br />
+        o udostępnieniu stałego łącza do sieci internet.
+      </td>
+    </tr>
+
+    {{!-- empty row --}}
+    <tr><td class="col-1">&nbsp;</td><td class="col-2"></td><td class="col-3"></td></tr>
+    <tr>
+      <td class="col-1">4.</td>
+      <td colspan="2" class="col-3">
+        Użytkownik stwierdza, że zostały oddane do użytku urządzenia
+        zapewniające dostęp do sieci Internetu i są one majątkiem Dostawcy
+        użyczonym Użytkownikowi, co Użytkownik potwierdza swym niżej złożonym
+        podpisem.
+      </td>
+    </tr>
+    {{!-- empty row --}}
+    <tr><td class="col-1">&nbsp;</td><td class="col-2"></td><td class="col-3"></td></tr>
+    <tr>
+      <td with="3%">&nbsp;</td>
+      <td width="97%" colspan="2">
+        <table>
+          <tr>
+            <td class="devices-label" width="15%">&nbsp;</td>
+            <td class="device-name" width="60%" style="text-align: right">
+              Właściciel:
+            </td>
+            <td class="device-owner" style="text-align: center">
+              Dostawca
+            </td>
+            <td class="device-owner" style="text-align: center">
+              Użytkownik
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td with="3%">&nbsp;</td>
+      <td width="97%" colspan="2">
+        <table class="device">
+          {{#each devices as |device|}}
+            <tr>
+              <td class="devices-label" width="15%">Urządzenia:</td>
+              <td class="device-name" width="60%">{{device.name}}</td>
+              <td class="device-owner">
+                {{#if device.isOwnedBySilesnet}}
+                  <span class='glyphicon glyphicon-check'></span>
+                {{else}}
+                  <span class='glyphicon glyphicon-unchecked'></span>
+                {{/if}}
+              </td>
+              <td class="device-owner">
+                {{#if device.isOwnedByCustomer}}
+                  <span class='glyphicon glyphicon-check'></span>
+                {{else}}
+                  <span class='glyphicon glyphicon-unchecked'></span>
+                {{/if}}
+              </td>
+            </tr>
+          {{/each}}
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td with="3%">&nbsp;</td>
+      <td width="100%" colspan="3">&nbsp;</td>
+    </tr>
+
+    <tr>
+      <td with="3%">&nbsp;</td>
+      <td width="97%" colspan="2">
+        <table class="service-detail">
+          <tr>
+            <td class="devices-label" width="15%">Nazwa usługi:</td>
+            <td class="device-name" width="40%">{{serviceName}}</td>
+            <td width="20%" style="padding-left: 5px">Cena usługi:</td>
+            <td style="border: 1px solid black; padding-left: 5px">{{model.service.price}} zł miesięcznie</td>
+          </tr>
+          <tr>
+            <td class="devices-label" width="15%">Technik:</td>
+            <td class="device-name" width="40%">&nbsp;  </td>
+            <td width="20%" style="padding-left: 5px">Opłata jednorazowa:</td>
+            <td style="border: 1px solid black; padding-left: 5px">&nbsp;&nbsp;&nbsp;&nbsp; zł miesięcznie</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td with="3%">&nbsp;</td>
+      <td width="100%" colspan="3">&nbsp;</td>
+    </tr>
+    <tr>
+      <td with="3%">&nbsp;</td>
+      <td width="100%" colspan="3">
+        * do cen będzie doliczony podatek VAT wg obowiązującej stawki
+      </td>
+    </tr>
+
+    {{!-- empty row --}}
+    <tr><td class="col-1">&nbsp;</td><td class="col-2"></td><td class="col-3"></td></tr>
+    <tr>
+      <td class="col-1">5.</td>
+      <td colspan="2" class="col-3">
+        Protokół ten będący częścią umowy, został sporządzony w dwóch
+        egzemplarzach dla użytkownika oraz dostawcy.
+      </td>
+    </tr>
+
+    <tr>
+      <td with="3%">&nbsp;</td>
+      <td width="100%" colspan="3">&nbsp;</td>
+    </tr>
+    <tr>
+      <td colspan="3"><span class="connection-detail">TECHNICZNA CHARAKTERYSTYKA PODŁĄCZENIA</span></td>
+    </tr>
+    <tr>
+      <td width="50%" colspan="3">
+        <table style="margin-top: 10px">
+        {{#if model.pppoe.login}}
+          <tr>
+            <td width="20%"><b>Tryb PPPoE:</b></td>
+            <td width="40%"><span class="glyphicon glyphicon-check"></span></td>
+            <td width="40%">&nbsp;</td>
+          </tr>
+          <tr>
+            <td>Nazwa użytkownika:</td>
+            <td style="border: 1px solid black; padding-left: 5px">{{model.pppoe.login}}</td>
+          </tr>
+          <tr>
+            <td>Hasło:</td>
+            <td style="border: 1px solid black; padding-left: 5px">{{model.pppoe.password}}</td>
+          </tr>
+        {{/if}}
+        {{#if model.dhcp.master}}
+          <tr>
+            <td width="20%"><b>Tryb DHCP:</b></td>
+            <td width="40%"><span class="glyphicon glyphicon-check"></span></td>
+          </tr>
+        {{/if}}
+        </table>
+      </td>
+    </tr>
+  </table>
+  <p class="signature-place">W <span class="dotted-field">&nbsp;</span> dnia <span class="dotted-field">&nbsp;</span></p>
+  <p class="signature-name">Użytkownik: <span class="dotted-field">&nbsp;</span> Dostawca: <span class="dotted-field">&nbsp;</span></p>
+</div>

@@ -1,3 +1,33 @@
+function serviceName(service) {
+  return _join(' ', service.name, _join('/', service.download, service.upload), 'Mbps');
+}
+
+function countryCodeToName(code) {
+  switch (code) {
+    case 'cz':
+    case 'CZ':
+    case 'cs':
+    case 'CS':
+      return 'Česká republika';
+    case 'pl':
+    case 'PL':
+      return 'Polska';
+    default:
+      return '';
+  }
+}
+
+function countryIdToName(id) {
+  switch (id) {
+    case 10:
+      return 'Česká republika';
+    case 20:
+      return 'Polska';
+    default:
+      return '';
+  }
+}
+
 function toTimestamp(date) {
   return  toDate(date) + ' @' + toTime(date);
 }
@@ -159,6 +189,13 @@ function customerDraftName(data) {
 
 function customerAddress(customer) {
   return customer.street + ', ' + customer.postal_code + ' ' + customer.city;
+}
+
+function serviceAddress(address) {
+  var street = _join(' ', address.street, _join('/', address.descriptive_number, address.orientation_number));
+  var post = _join(' ', address.postal_code, address.town);
+  var country = countryCodeToName(address.country);
+  return _join(', ', street, post, country);
 }
 
 function cookie(name) {

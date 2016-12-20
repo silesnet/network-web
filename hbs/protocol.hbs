@@ -1,3 +1,4 @@
+{{#if isPlService}}
 <div id="protocol" class="container">
   <img class="pl logo" src="../img/silesnet_logo.svg">
   <h1>DODATEK NR .... DO UMOWY NR {{agreementNo}}</h1>
@@ -233,3 +234,7 @@
   <p class="signature-place">W <span class="dotted-field">&nbsp;</span> dnia <span class="dotted-field">&nbsp;</span></p>
   <p class="signature-name">Użytkownik: <span class="dotted-field">&nbsp;</span> Dostawca: <span class="dotted-field">&nbsp;</span></p>
 </div>
+{{else}}
+
+  {{!-- TODO --}}
+{{/if}}

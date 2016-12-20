@@ -192,6 +192,9 @@ function customerAddress(customer) {
 }
 
 function serviceAddress(address) {
+  if (!address) {
+    return '';
+  }
   var street = _join(' ', address.street, _join('/', address.descriptive_number, address.orientation_number));
   var post = _join(' ', address.postal_code, address.town);
   var country = countryCodeToName(address.country);

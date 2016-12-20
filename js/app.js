@@ -257,6 +257,12 @@ App.ServicePrintController = Ember.Controller.extend({
     });
     // devices.push({ name: '', isOwnedBySilesnet: false, isOwnedByCustomer: false });
     return devices;
+  }),
+  hasDhcp: Ember.computed('model.dhcp.port', function() {
+    return this.get('model.dhcp.port') ? true : false;
+  }),
+  hasPppoe: Ember.computed('model.pppoe.service_id', function() {
+    return this.get('model.pppoe.service_id') ? true : false;
   })
 });
 

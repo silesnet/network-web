@@ -210,7 +210,7 @@
     <tr>
       <td width="50%" colspan="3">
         <table style="margin-top: 10px">
-        {{#if model.pppoe.login}}
+        {{#if hasPppoe}}
           <tr>
             <td width="20%"><b>Tryb PPPoE:</b></td>
             <td width="40%"><span class="glyphicon glyphicon-check"></span></td>
@@ -225,10 +225,11 @@
             <td style="border: 1px solid black; padding-left: 5px">{{model.pppoe.password}}</td>
           </tr>
         {{/if}}
-        {{#if model.dhcp.master}}
+        {{#if hasDhcp}}
           <tr>
             <td width="20%"><b>Tryb DHCP:</b></td>
             <td width="40%"><span class="glyphicon glyphicon-check"></span></td>
+            <td width="40%">&nbsp;</td>
           </tr>
         {{/if}}
         </table>

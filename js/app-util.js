@@ -188,7 +188,7 @@ function customerDraftName(data) {
 }
 
 function customerAddress(customer) {
-  return customer.street + ', ' + customer.postal_code + ' ' + customer.city;
+  return _join(', ', customer.street, _join(' ', customer.postal_code, customer.city));
 }
 
 function serviceAddress(address) {
@@ -198,7 +198,8 @@ function serviceAddress(address) {
   var street = _join(' ', address.street, _join('/', address.descriptive_number, address.orientation_number));
   var post = _join(' ', address.postal_code, address.town);
   var country = countryCodeToName(address.country);
-  return _join(', ', street, post, country);
+  var serviceAddress = _join(', ', street, post, country);
+  return country === serviceAddress ? '' : serviceAddress;
 }
 
 function cookie(name) {

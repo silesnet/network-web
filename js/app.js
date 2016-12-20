@@ -238,8 +238,8 @@ App.ServicePrintController = Ember.Controller.extend({
     return serviceName(this.get('model.service'));
   }),
   customerAddress: Ember.computed('model.customer', function() {
-    return customerAddress(this.get('model.customer')) + ', ' + 
-      countryIdToName(this.get('model.customer.country'));
+    var address = customerAddress(this.get('model.customer'));
+    return address === '' ? '' : _join(', ', address, countryIdToName(this.get('model.customer.country')));
   }),
   connectionLocation: Ember.computed('model.service', function() {
     return serviceAddress(this.get('model.service.address'));

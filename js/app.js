@@ -244,6 +244,9 @@ App.ServicePrintController = Ember.Controller.extend({
   connectionLocation: Ember.computed('model.service', function() {
     return serviceAddress(this.get('model.service.address'));
   }),
+  isPlService: Ember.computed('model.service.id', function() {
+    return  serviceIdToCountry(this.get('model.service.id')) === "PL";
+  }),
   devices: Ember.computed('model.service.data.devices', function() {
     var devices = this.get('model.service.data.devices').map(function(device, idx) {
       return {
@@ -349,6 +352,9 @@ App.ServiceIndexController = Ember.Controller.extend({
       period.to = to.substr(0, 10);
     }
     return period;
+  }),
+  isPlService: Ember.computed('model.service.id', function() {
+    return  serviceIdToCountry(this.get('model.service.id')) === "PL";
   }),
   actions: {
     openTabs: function(url1, url2) {

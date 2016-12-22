@@ -162,18 +162,21 @@ App.ServiceRoute = Ember.Route.extend({
     controller.set('model', model);
     Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/last-ip')
       .then(function(response) {
-          var ipResolved = false;
+          var ipResolved = false,
+            lastIp = {};
           Ember.A(response.lastIp).forEach(function(auth, index) {
             if (!ipResolved && auth.address) {
               if (index === 0) {
-                controller.set('isPppoeOnline', true);
+                lastIp.isOnline = true;
               }
-              controller.set('lastPppoeIp', auth.address); 
-              controller.set('lastPppoeIpDateValue', auth.date || null);
+              lastIp.ip = auth.address;
+              lastIp.dateValue = auth.date || null;
+              lastIp.timestamp = toTimestamp(lastIp.dateValue);
               ipResolved = true;
             }
           });
-        }, function(err) { controller.set('lastPppoeIp', null);} );
+          controller.set('model.pppoe.lastIp', lastIp);
+        }, function(err) { controller.set('model.pppoe.lastIp', {});} );
   },
   events: {
     reload: function() {
@@ -267,15 +270,8 @@ App.ServicePrintController = Ember.Controller.extend({
 });
 
 App.ServiceIndexController = Ember.Controller.extend({
-  lastPppoeIp: null,
-  lastPppoeIpDateValue: null,
-  isPppoeOnline: false,
   eventsSortOder: ['id:desc'],
   eventsSorted: Ember.computed.sort('model.events', 'eventsSortOder'),
-  lastPppoeIpDate:  Ember.computed('lastPppoeIpDateValue', function() {
-    var dateValue = this.get('lastPppoeIpDateValue');
-    return toTimestamp(this.get('lastPppoeIpDateValue'));
-  }),
   isPppoeStaticIp: Ember.computed('model.pppoe.ip_class', function() {
     return this.get('model.pppoe.ip_class') === 'static';
   }),

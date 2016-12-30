@@ -258,14 +258,28 @@ App.ServicePrintController = Ember.Controller.extend({
         isOwnedByCustomer: device.owner !== 'silesnet'
       };
     });
-    // devices.push({ name: '', isOwnedBySilesnet: false, isOwnedByCustomer: false });
     return devices;
   }),
-  hasDhcp: Ember.computed('model.dhcp.port', function() {
-    return this.get('model.dhcp.port') ? true : false;
+  hasDhcp: Ember.computed('model.service', 'model.dhcp', function() {
+    var country = serviceIdToCountry(this.get('model.service.id')),
+      name = this.get('model.service.name').toLowerCase();
+    if (country === 'PL') {
+      return name.substring(0, 8) === 'wireless';
+    } else {
+      return this.get('model.dhcp.port') ? true : false;
+    }
   }),
-  hasPppoe: Ember.computed('model.pppoe.service_id', function() {
-    return this.get('model.pppoe.service_id') ? true : false;
+  hasPppoe: Ember.computed('model.service', 'model.pppoe', function() {
+    var country = serviceIdToCountry(this.get('model.service.id')),
+      name = this.get('model.service.name').toLowerCase();
+    if (country === 'PL') {
+      return name.substring(0, 3) === 'lan';
+    } else {
+      return this.get('model.pppoe.service_id') ? true : false;
+    }
+  }),
+  hasAccessDetails: Ember.computed('hasDhcp', 'hasPppoe', function() {
+    return this.get('hasDhcp') || this.get('hasPppoe');
   })
 });
 

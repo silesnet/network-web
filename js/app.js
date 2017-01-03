@@ -245,13 +245,14 @@ App.ServicePrintController = Ember.Controller.extend({
     });
     return devices;
   }),
-  hasDhcp: Ember.computed('model.service', 'model.dhcp', function() {
+  hasDhcp: Ember.computed('model.service', 'model.dhcp', 'model.dhcp_wireless', function() {
     var country = serviceIdToCountry(this.get('model.service.id')),
       name = this.get('model.service.name').toLowerCase();
     if (country === 'PL') {
       return name.substring(0, 8) === 'wireless';
     } else {
-      return this.get('model.dhcp.port') ? true : false;
+      return (this.get('model.dhcp.port') ||
+               this.get('model.dhcp_wireless.service_id')) ? true : false;
     }
   }),
   hasPppoe: Ember.computed('model.service', 'model.pppoe', function() {
@@ -269,6 +270,15 @@ App.ServicePrintController = Ember.Controller.extend({
 });
 
 App.ServiceIndexController = Ember.Controller.extend({
+  access: Ember.computed('model.service.name', 'model.pppoe.mode', 'hasDhcp', 'hasPppoe', function () {
+    var
+      channel = serviceChannel(this.get('model.service.name'), this.get('model.pppoe.mode')),
+      protocol = serviceProtocol(this.get('hasDhcp'), this.get('hasPppoe'));
+    return {
+      channel: channel,
+      protocol: protocol
+    };
+  }),
   eventsSortOder: ['id:desc'],
   eventsSorted: Ember.computed.sort('model.events', 'eventsSortOder'),
   isPppoeStaticIp: Ember.computed('model.pppoe.ip_class', function() {
@@ -318,8 +328,9 @@ App.ServiceIndexController = Ember.Controller.extend({
       this.get('model.customer_draft.data.phone') :
       this.get('model.customer.phone');
   }),
-  hasDhcp: Ember.computed('model.dhcp.port', function() {
-    return this.get('model.dhcp.port') ? true : false;
+  hasDhcp: Ember.computed('model.dhcp.port', 'model.dhcp_wireless.service_id', function() {
+    return (this.get('model.dhcp.port') ||
+             this.get('model.dhcp_wireless.service_id')) ? true : false;
   }),
   hasPppoe: Ember.computed('model.pppoe.service_id', function() {
     return this.get('model.pppoe.service_id') ? true : false;

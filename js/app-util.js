@@ -52,8 +52,26 @@ function leftPadNum(num, len) {
   return ('0000000000' + num).slice(-len);
 }
 
+function serviceProtocol(hasDhcp, hasPppoe) {
+  var
+    dhcp = hasDhcp ? 'dhcp' : '',
+    pppoe = hasPppoe ? 'pppoe' : '',
+    protocol = _join('_', dhcp, pppoe);
+  return protocol ? protocol : 'static';
+}
+
 function servcieIdToAgreement(serviceId) {
   return parseInt((serviceId % 10000000) / 100);
+}
+
+function serviceChannel(serviceName, pppoeMode) {
+  var name = serviceName.toLowerCase();
+  pppoeMode = pppoeMode ? pppoeMode.toLowerCase : '';
+  if (name.substring(0, 8) === 'wireless' ||
+       (name.substring(0, 8) === 'internet' && pppoeMode === 'wireless')) {
+    return 'wireless';
+  }
+  return 'lan';
 }
 
 function serviceToPppoeMode(serviceId, serviceName) {

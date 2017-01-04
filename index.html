@@ -94,6 +94,9 @@
         {{#if canAddDhcp}}
           <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formEditDhcp' model}}><span class="glyphicon glyphicon-plus"></span>&#160;DHCP</button></div>
         {{/if}}
+        {{#if canAddDhcpWireless}}
+          <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'addDhcpWireless' model}}><span class="glyphicon glyphicon-plus"></span>&#160;DHCP Wireless</button></div>
+        {{/if}}
         {{#if canAddPppoe}}
           <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'addPppoe' model}}><span class="glyphicon glyphicon-plus"></span>&#160;PPPoE</button></div>
         {{/if}}
@@ -202,7 +205,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title pull-left">DHCP Wireless</h3>
-                {{#if canEditDhcp}}
+                {{#if canEditDhcpWireless}}
                   <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditDhcpWireless' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
                   <button class="btn btn-danger pull-right btn-delete" {{action 'openModal' 'confirmDhcpWirelessRemoval' model}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
                 {{/if}}

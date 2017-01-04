@@ -273,7 +273,7 @@ App.ServiceIndexController = Ember.Controller.extend({
   access: Ember.computed('model.service.name', 'model.pppoe.mode', 'hasDhcp', 'hasPppoe', function () {
     var
       channel = serviceChannel(this.get('model.service.name'), this.get('model.pppoe.mode')),
-      protocol = serviceProtocol(this.get('hasDhcp'), this.get('hasPppoe'));
+      protocol = serviceProtocol(this.get('hasDhcp'), this.get('hasPppoe'), this.get('model.service.name'));
     return {
       channel: channel,
       protocol: protocol
@@ -331,9 +331,11 @@ App.ServiceIndexController = Ember.Controller.extend({
       this.get('model.customer_draft.data.phone') :
       this.get('model.customer.phone');
   }),
-  hasDhcp: Ember.computed('model.dhcp.port', 'model.dhcp_wireless.service_id', function() {
-    return (this.get('model.dhcp.port') ||
-             this.get('model.dhcp_wireless.service_id')) ? true : false;
+  hasDhcp: Ember.computed('model.dhcp.port', function() {
+    return this.get('model.dhcp.port') ? true : false;
+  }),
+  hasDhcpWireless: Ember.computed('model.dhcp_wireless.service_id', function() {
+    return this.get('model.dhcp_wireless.service_id') ? true : false;
   }),
   hasPppoe: Ember.computed('model.pppoe.service_id', function() {
     return this.get('model.pppoe.service_id') ? true : false;
@@ -344,11 +346,19 @@ App.ServiceIndexController = Ember.Controller.extend({
   canEditDhcp: Ember.computed('canEdit', 'hasDhcp', function() {
     return this.get('canEdit') && this.get('hasDhcp');
   }),
+  canEditDhcpWireless: Ember.computed('canEdit', 'hasDhcpWireless', function() {
+    return this.get('canEdit') && this.get('hasDhcpWireless');
+  }),
   canEditPppoe: Ember.computed('canEdit', 'hasPppoe', function() {
     return this.get('canEdit') && this.get('hasPppoe');
   }),
-  canAddDhcp: Ember.computed('canEdit', 'hasDhcp', function() {
-    return this.get('canEdit') && !this.get('hasDhcp');
+  canAddDhcp: Ember.computed('canEdit', 'hasDhcp', 'access', function() {
+    return this.get('canEdit') && !this.get('hasDhcp') &&
+      this.get('access.channel') === 'lan';
+  }),
+  canAddDhcpWireless: Ember.computed('canEdit', 'hasDhcpWireless', 'access', function() {
+    return this.get('canEdit') && !this.get('hasDhcpWireless') &&
+      this.get('access.channel') === 'wireless';
   }),
   canAddPppoe: Ember.computed('canEdit', 'hasPppoe', function() {
     return this.get('canEdit') && !this.get('hasPppoe');

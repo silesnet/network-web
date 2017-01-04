@@ -160,8 +160,8 @@ App.ServiceRoute = Ember.Route.extend({
               ipResolved = true;
             }
           });
-          controller.set('model.pppoe.lastIp', lastIp);
-        }, function(err) { controller.set('model.pppoe.lastIp', {});} );
+          controller.set('model.lastIp', lastIp);
+        }, function(err) { controller.set('model.lastIp', {});} );
   },
   events: {
     reload: function() {
@@ -281,8 +281,9 @@ App.ServiceIndexController = Ember.Controller.extend({
   }),
   eventsSortOder: ['id:desc'],
   eventsSorted: Ember.computed.sort('model.events', 'eventsSortOder'),
-  isPppoeStaticIp: Ember.computed('model.pppoe.ip_class', function() {
-    return this.get('model.pppoe.ip_class') === 'static';
+  isStaticIp: Ember.computed('model.pppoe.ip_class', 'model.dhcp_wireless.ip_class', function() {
+    return this.get('model.pppoe.ip_class') === 'static' ||
+            this.get('model.dhcp_wireless.ip_class') === 'static';
   }),
   statusMap: {
     INHERIT_FROM_CUSTOMER: 'Podle zákazníka',
@@ -385,6 +386,16 @@ App.ServiceIndexController = Ember.Controller.extend({
       };
       this.set('model.pppoe', newPppoe);
       this.send('openModal', 'formEditPppoe', model);
+    },
+    addDhcpWireless(model) {
+      var newDhcpWireless = {
+        ip_class: serviceIdToCountry(model.service.id) === 'CZ' ? 'internal-cz' : 'public-pl',
+        ip: { type: 'inet', value: null },
+        mac: { type: 'macaddr', value: null },
+        _isNew: true
+      };
+      this.set('model.dhcp_wireless', newDhcpWireless);
+      this.send('openModal', 'formEditDhcpWireless', model);
     }
   }
 });
@@ -514,6 +525,107 @@ App.FormEditDhcpController = Ember.Controller.extend({
           console.log(JSON.stringify(err));
           self.get('flashes').danger(err.detail, 5000);
         });
+      }
+    }
+  }
+});
+
+App.FormEditDhcpWirelessController = Ember.Controller.extend({
+  ipClasses: Ember.computed('model.service.id', function() {
+    var classes = ['static'],
+      country = serviceIdToCountry(this.get('model.service.id'));
+    if (country === 'CZ') {
+      classes.push('internal-cz');      
+    } else {
+      classes.push('public-pl');
+    }
+    return classes;
+  }),
+  routers: [],
+  ssids: [],
+  ssid: null,
+  ssidChanged: function() {
+    var ssid = this.get('ssid');
+    this.set('model.form.pppoe.master', ssid.master);
+    this.set('model.form.pppoe.interface', ssid.name);
+  }.observes('ssid'),
+  interfaceChanged: function() {
+    var ssids = this.get('ssids'),
+      iface = this.get('model.form.pppoe.interface'),
+      ssid = Ember.A(ssids).findBy('name', iface);
+    if (ssid) {
+      this.set('ssid', ssid);
+    }
+  }.observes('model.form.pppoe.interface'),
+  init: function() {
+    var self = this,
+      country = this.get('session.userCountry').toLowerCase();
+    this._super();
+    Ember.$.getJSON('http://localhost:8090/networks/routers')
+      .then(function(routers) { self.set('routers', routers.core_routers); });
+    Ember.$.getJSON('http://localhost:8090/networks/ssids')
+      .then(function(response) {
+        var ssids = response.ssids;
+        self.set('ssids', ssids);
+        self.interfaceChanged();
+      });
+  },
+  isWireless: Ember.computed('model.pppoe.mode', function() {
+    return this.get('model.pppoe.mode').toLowerCase() === 'wireless';
+  }),
+  isStaticIp: Ember.computed('model.form.pppoe.ip_class', function() {
+    var isStatic = this.get('model.form.pppoe.ip_class') === 'static',
+      ipValue = isStatic ? this.get('model.pppoe.ip.value') : null;
+    this.set('model.form.pppoe.ip', { type: 'inet', value: ipValue });
+    return isStatic;
+  }),
+  isNotStaticIp: Ember.computed.not('isStaticIp'),
+  actions: {
+    submit: function() {
+      var self = this,
+      currentPppoe = this.model.pppoe,
+      newPppoe = this.model.form.pppoe,
+      updatePppoe = {};
+      if (newPppoe._isNew ||
+          currentPppoe.master !== newPppoe.master ||
+          currentPppoe.interface !== newPppoe.interface ||
+          currentPppoe.ip_class !== newPppoe.ip_class ||
+          currentPppoe.ip.value !== newPppoe.ip.value ||
+          currentPppoe.login !== newPppoe.login ||
+          currentPppoe.password !== newPppoe.password ||
+          currentPppoe.location !== newPppoe.location ||
+          // need to fix it for new forms...
+          currentPppoe.mac.value !== newPppoe.mac.value) {
+        updatePppoe.master = newPppoe.master;
+        updatePppoe.interface = newPppoe.interface;
+        updatePppoe.location = newPppoe.location;
+        updatePppoe.mode = newPppoe.mode;
+        updatePppoe.ip_class = newPppoe.ip_class;
+        updatePppoe.ip = newPppoe.ip;
+        updatePppoe.login = newPppoe.login;
+        updatePppoe.password = newPppoe.password;
+        updatePppoe.mac = newPppoe.mac;
+        console.log((newPppoe._isNew ? 'adding' : 'updating') + 
+          ' PPPoE of '+ this.model.service.id + ': ' + JSON.stringify(updatePppoe, null, 2));
+        putJSON('http://localhost:8090/networks/pppoe/' + this.model.service.id,
+          { services: { pppoe: updatePppoe } })
+        .then(function(data) {
+          self.get('target').send('reload');
+          self.get('flashes').success('OK', 1000);
+          if (!newPppoe._isNew) {
+            return putJSON('http://localhost:8090/networks/pppoe/' +
+              currentPppoe.login + '/kick/' + currentPppoe.master, {});
+          } else {
+            return true;
+        }})
+        .then(function() {
+          if (!newPppoe._isNew) {
+            self.get('flashes').success(
+              "'" + currentPppoe.master + "' kicked '" + currentPppoe.login + "'", 3000);
+          self.set('model.pppoe._isNew', false);
+        }})
+        .catch(function(err) {
+          self.get('flashes').danger(err.detail, 5000); });
       }
     }
   }

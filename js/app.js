@@ -281,9 +281,11 @@ App.ServiceIndexController = Ember.Controller.extend({
   }),
   eventsSortOder: ['id:desc'],
   eventsSorted: Ember.computed.sort('model.events', 'eventsSortOder'),
-  isStaticIp: Ember.computed('model.pppoe.ip_class', 'model.dhcp_wireless.ip_class', function() {
-    return this.get('model.pppoe.ip_class') === 'static' ||
-            this.get('model.dhcp_wireless.ip_class') === 'static';
+  isPppoeStaticIp: Ember.computed('model.pppoe.ip_class', function() {
+    return this.get('model.pppoe.ip_class') === 'static';
+  }),
+  isDhcpWirelessStaticIp: Ember.computed('model.dhcp_wireless.ip_class', function() {
+    return this.get('model.dhcp_wireless.ip_class') === 'static';
   }),
   statusMap: {
     INHERIT_FROM_CUSTOMER: 'Podle zákazníka',
@@ -546,17 +548,17 @@ App.FormEditDhcpWirelessController = Ember.Controller.extend({
   ssid: null,
   ssidChanged: function() {
     var ssid = this.get('ssid');
-    this.set('model.form.pppoe.master', ssid.master);
-    this.set('model.form.pppoe.interface', ssid.name);
+    this.set('model.form.dhcp_wireless.master', ssid.master);
+    this.set('model.form.dhcp_wireless.interface', ssid.name);
   }.observes('ssid'),
   interfaceChanged: function() {
     var ssids = this.get('ssids'),
-      iface = this.get('model.form.pppoe.interface'),
+      iface = this.get('model.form.dhcp_wireless.interface'),
       ssid = Ember.A(ssids).findBy('name', iface);
     if (ssid) {
       this.set('ssid', ssid);
     }
-  }.observes('model.form.pppoe.interface'),
+  }.observes('model.form.dhcp_wireless.interface'),
   init: function() {
     var self = this,
       country = this.get('session.userCountry').toLowerCase();
@@ -570,60 +572,43 @@ App.FormEditDhcpWirelessController = Ember.Controller.extend({
         self.interfaceChanged();
       });
   },
-  isWireless: Ember.computed('model.pppoe.mode', function() {
-    return this.get('model.pppoe.mode').toLowerCase() === 'wireless';
-  }),
-  isStaticIp: Ember.computed('model.form.pppoe.ip_class', function() {
-    var isStatic = this.get('model.form.pppoe.ip_class') === 'static',
-      ipValue = isStatic ? this.get('model.pppoe.ip.value') : null;
-    this.set('model.form.pppoe.ip', { type: 'inet', value: ipValue });
+  isStaticIp: Ember.computed('model.form.dhcp_wireless.ip_class', function() {
+    var isStatic = this.get('model.form.dhcp_wireless.ip_class') === 'static',
+      ipValue = isStatic ? this.get('model.dhcp_wireless.ip.value') : null;
+    this.set('model.form.dhcp_wireless.ip', { type: 'inet', value: ipValue });
     return isStatic;
   }),
   isNotStaticIp: Ember.computed.not('isStaticIp'),
   actions: {
     submit: function() {
       var self = this,
-      currentPppoe = this.model.pppoe,
-      newPppoe = this.model.form.pppoe,
-      updatePppoe = {};
-      if (newPppoe._isNew ||
-          currentPppoe.master !== newPppoe.master ||
-          currentPppoe.interface !== newPppoe.interface ||
-          currentPppoe.ip_class !== newPppoe.ip_class ||
-          currentPppoe.ip.value !== newPppoe.ip.value ||
-          currentPppoe.login !== newPppoe.login ||
-          currentPppoe.password !== newPppoe.password ||
-          currentPppoe.location !== newPppoe.location ||
+      currentDhcpWireless = this.model.dhcp_wireless,
+      newDhcpWireless = this.model.form.dhcp_wireless,
+      updateDhcpWireless = {};
+      if (newDhcpWireless._isNew ||
+          currentDhcpWireless.master !== newDhcpWireless.master ||
+          currentDhcpWireless.interface !== newDhcpWireless.interface ||
+          currentDhcpWireless.ip_class !== newDhcpWireless.ip_class ||
+          currentDhcpWireless.ip.value !== newDhcpWireless.ip.value ||
+          currentDhcpWireless.location !== newDhcpWireless.location ||
           // need to fix it for new forms...
-          currentPppoe.mac.value !== newPppoe.mac.value) {
-        updatePppoe.master = newPppoe.master;
-        updatePppoe.interface = newPppoe.interface;
-        updatePppoe.location = newPppoe.location;
-        updatePppoe.mode = newPppoe.mode;
-        updatePppoe.ip_class = newPppoe.ip_class;
-        updatePppoe.ip = newPppoe.ip;
-        updatePppoe.login = newPppoe.login;
-        updatePppoe.password = newPppoe.password;
-        updatePppoe.mac = newPppoe.mac;
-        console.log((newPppoe._isNew ? 'adding' : 'updating') + 
-          ' PPPoE of '+ this.model.service.id + ': ' + JSON.stringify(updatePppoe, null, 2));
-        putJSON('http://localhost:8090/networks/pppoe/' + this.model.service.id,
-          { services: { pppoe: updatePppoe } })
+          currentDhcpWireless.mac.value !== newDhcpWireless.mac.value) {
+        updateDhcpWireless.master = newDhcpWireless.master;
+        updateDhcpWireless.interface = newDhcpWireless.interface;
+        updateDhcpWireless.location = newDhcpWireless.location;
+        updateDhcpWireless.ip_class = newDhcpWireless.ip_class;
+        updateDhcpWireless.ip = newDhcpWireless.ip;
+        updateDhcpWireless.mac = newDhcpWireless.mac;
+        console.log((newDhcpWireless._isNew ? 'adding' : 'updating') + 
+          ' DHCP Wireless of '+ this.model.service.id + ': ' + JSON.stringify(updateDhcpWireless, null, 2));
+        putJSON('http://localhost:8090/networks/dhcp-wireless/' + this.model.service.id,
+          { services: { dhcp_wireless: updateDhcpWireless } })
         .then(function(data) {
           self.get('target').send('reload');
+          self.set('model.dhcp_wireless._isNew', false);
           self.get('flashes').success('OK', 1000);
-          if (!newPppoe._isNew) {
-            return putJSON('http://localhost:8090/networks/pppoe/' +
-              currentPppoe.login + '/kick/' + currentPppoe.master, {});
-          } else {
-            return true;
-        }})
-        .then(function() {
-          if (!newPppoe._isNew) {
-            self.get('flashes').success(
-              "'" + currentPppoe.master + "' kicked '" + currentPppoe.login + "'", 3000);
-          self.set('model.pppoe._isNew', false);
-        }})
+          return true;
+        })
         .catch(function(err) {
           self.get('flashes').danger(err.detail, 5000); });
       }

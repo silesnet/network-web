@@ -228,7 +228,7 @@
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
                   <div class="col-sm-10">
-                    {{#if isStaticIp}}
+                    {{#if isDhcpWirelessStaticIp}}
                       {{model.dhcp_wireless.ip.value}}
                     {{else}}
                       {{model.dhcp_wireless.ip_class}}
@@ -286,7 +286,7 @@
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
                   <div class="col-sm-10">
-                    {{#if isStaticIp}}
+                    {{#if isPppoeStaticIp}}
                       {{model.pppoe.ip.value}}
                     {{else}}
                       {{model.pppoe.ip_class}}
@@ -497,31 +497,27 @@
                content=routers
                optionValuePath="content.name"
                optionLabelPath="content.name"
-               value=model.form.pppoe.master
-               disabled=isWireless}}
+               value=model.form.dhcp_wireless.master
+               disabled=true}}
           </div>
-          {{#if isWireless}}
-            <div class="col-sm-6 form-group">
-              <label>SSID:</label>
-              {{view "select"
-                 class="form-control"
-                 content=ssids
-                 optionValuePath="content"
-                 optionLabelPath="content.ssid"
-                 value=ssid}}
-            </div>
-          {{/if}}
+          <div class="col-sm-6 form-group">
+            <label>SSID:</label>
+            {{view "select"
+               class="form-control"
+               content=ssids
+               optionValuePath="content"
+               optionLabelPath="content.ssid"
+               value=ssid}}
+          </div>
         </div>
         <div class="row">
           <div class="col-sm-6 form-group">
             <label>Location:</label>
-            {{input class="form-control" value=model.form.pppoe.location type=text}}
+            {{input class="form-control" value=model.form.dhcp_wireless.location type=text}}
           </div>
           <div class="col-sm-6 form-group">
-            {{#if isWireless}}
-              <label>Interface:</label>
-              {{input class="form-control" name="interface" value=model.form.pppoe.interface type=text disabled=true}}
-            {{/if}}
+            <label>Interface:</label>
+            {{input class="form-control" name="interface" value=model.form.dhcp_wireless.interface type=text disabled=true}}
           </div>
         </div>
         <div class="row">
@@ -530,31 +526,19 @@
             {{view "select"
                class="form-control"
                content=ipClasses
-               value=model.form.pppoe.ip_class}}
+               value=model.form.dhcp_wireless.ip_class}}
           </div>
           <div class="col-sm-6 form-group">
             <label>IP:</label>
             {{view App.IPAddressField
-              value=model.form.pppoe.ip.value placeholder="127.0.0.1"
+              value=model.form.dhcp_wireless.ip.value placeholder="127.0.0.1"
               disabled=isNotStaticIp}}
             </div>
         </div>
         <div class="row">
-          {{#if isWireless}}
-            <div class="col-sm-6 form-group">
-              <label>MAC:</label>
-              {{view App.MACAddressField value=model.form.pppoe.mac.value}}
-            </div>
-          {{/if}}
-        </div>
-        <div class="row">
           <div class="col-sm-6 form-group">
-            <label>Login:</label>
-            {{input disabled=true class="form-control" name="login" value=model.form.pppoe.login type=text}}
-          </div>
-          <div class="col-sm-6 form-group">
-            <label>Password:</label>
-            {{input disabled=true class="form-control" value=model.form.pppoe.password type=text}}
+            <label>MAC:</label>
+            {{view App.MACAddressField value=model.form.dhcp_wireless.mac.value}}
           </div>
         </div>
       {{/modal-form}}

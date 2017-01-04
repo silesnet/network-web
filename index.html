@@ -197,6 +197,64 @@
             </div>
           </div>
         {{/if}}
+        {{#if model.dhcp_wireless.service_id}}
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title pull-left">DHCP Wireless</h3>
+                {{#if canEditDhcp}}
+                  <button class="btn btn-primary pull-right" {{action 'openModal' 'formEditDhcpWireless' model}}><span class="glyphicon glyphicon-edit"></span>&#160;Upravit</button>
+                  <button class="btn btn-danger pull-right btn-delete" {{action 'openModal' 'confirmDhcpWirelessRemoval' model}}><span class="glyphicon glyphicon-trash"></span>&#160;Smazat</button>
+                {{/if}}
+                <div class="clearfix"></div>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Master:</strong></p></div>
+                  <div class="col-sm-10">{{model.dhcp_wireless.master}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Area:</strong></p></div>
+                  <div class="col-sm-10">{{model.dhcp_wireless.area}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Interface:</strong></p></div>
+                  <div class="col-sm-10">{{model.dhcp_wireless.interface}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>Location:</strong></p></div>
+                  <div class="col-sm-10">{{model.dhcp_wireless.location}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
+                  <div class="col-sm-10">
+                    {{#if isStaticIp}}
+                      {{model.dhcp_wireless.ip.value}}
+                    {{else}}
+                      {{model.dhcp_wireless.ip_class}}
+                    {{/if}}
+                    {{#if model.pppoe.lastIp.isOnline}}
+                      <i class="glyphicon glyphicon-cloud" style="color:green"></i>
+                    {{else}}
+                      <i class="glyphicon glyphicon-cloud" style="color:gray"></i>
+                    {{/if}}
+                    {{#if model.lastIp.ip}}<br/>
+                      <small>poslední IP:
+                      <a href="#" {{action 'openTabs' (concat 'http://' model.lastIp.ip ':65535') (concat 'http://' model.lastIp.ip)}}>{{model.lastIp.ip}}</a>
+                      <span class="glyphicon glyphicon-new-window"></span>
+                      {{#if model.lastIp.dateValue}}, {{model.lastIp.timestamp}}{{/if}}
+                      </small>
+                    {{/if}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2"><p class="text-right"><strong>MAC:</strong></p></div>
+                  <div class="col-sm-10">{{uppercase model.dhcp_wireless.mac.value}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/if}}
         {{#if model.pppoe.service_id}}
           <div class="col-md-6">
             <div class="panel panel-default">
@@ -228,21 +286,21 @@
                 <div class="row">
                   <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
                   <div class="col-sm-10">
-                    {{#if isPppoeStaticIp}}
+                    {{#if isStaticIp}}
                       {{model.pppoe.ip.value}}
                     {{else}}
                       {{model.pppoe.ip_class}}
                     {{/if}}
-                    {{#if model.pppoe.lastIp.isOnline}}
+                    {{#if model.lastIp.isOnline}}
                       <i class="glyphicon glyphicon-cloud" style="color:green"></i>
                     {{else}}
                       <i class="glyphicon glyphicon-cloud" style="color:gray"></i>
                     {{/if}}
-                    {{#if model.pppoe.lastIp.ip}}<br/>
+                    {{#if model.lastIp.ip}}<br/>
                       <small>poslední IP:
-                      <a href="#" {{action 'openTabs' (concat 'http://' model.pppoe.lastIp.ip ':65535') (concat 'http://' model.pppoe.lastIp.ip)}}>{{model.pppoe.lastIp.ip}}</a>
+                      <a href="#" {{action 'openTabs' (concat 'http://' model.lastIp.ip ':65535') (concat 'http://' model.lastIp.ip)}}>{{model.lastIp.ip}}</a>
                       <span class="glyphicon glyphicon-new-window"></span>
-                      {{#if model.pppoe.lastIp.dateValue}}, {{model.pppoe.lastIp.timestamp}}{{/if}}
+                      {{#if model.lastIp.dateValue}}, {{model.lastIp.timestamp}}{{/if}}
                       </small>
                     {{/if}}
                   </div>
@@ -423,6 +481,80 @@
           <div class="col-sm-6 form-group">
             <label>IP:</label>
             {{view App.IPAddressField value=model.form.dhcp.ip placeholder="AUTO"}}
+          </div>
+        </div>
+      {{/modal-form}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="formEditDhcpWireless">
+      {{#modal-form title='Upravit' ok='submit' close='closeModal'}}
+        <p>DHCP Wireless pro {{model.form.service.id}} {{model.form.service.name}}</p>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>Master:</label>
+            {{view "select"
+               class="form-control"
+               content=routers
+               optionValuePath="content.name"
+               optionLabelPath="content.name"
+               value=model.form.pppoe.master
+               disabled=isWireless}}
+          </div>
+          {{#if isWireless}}
+            <div class="col-sm-6 form-group">
+              <label>SSID:</label>
+              {{view "select"
+                 class="form-control"
+                 content=ssids
+                 optionValuePath="content"
+                 optionLabelPath="content.ssid"
+                 value=ssid}}
+            </div>
+          {{/if}}
+        </div>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>Location:</label>
+            {{input class="form-control" value=model.form.pppoe.location type=text}}
+          </div>
+          <div class="col-sm-6 form-group">
+            {{#if isWireless}}
+              <label>Interface:</label>
+              {{input class="form-control" name="interface" value=model.form.pppoe.interface type=text disabled=true}}
+            {{/if}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>IP class:</label>
+            {{view "select"
+               class="form-control"
+               content=ipClasses
+               value=model.form.pppoe.ip_class}}
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>IP:</label>
+            {{view App.IPAddressField
+              value=model.form.pppoe.ip.value placeholder="127.0.0.1"
+              disabled=isNotStaticIp}}
+            </div>
+        </div>
+        <div class="row">
+          {{#if isWireless}}
+            <div class="col-sm-6 form-group">
+              <label>MAC:</label>
+              {{view App.MACAddressField value=model.form.pppoe.mac.value}}
+            </div>
+          {{/if}}
+        </div>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>Login:</label>
+            {{input disabled=true class="form-control" name="login" value=model.form.pppoe.login type=text}}
+          </div>
+          <div class="col-sm-6 form-group">
+            <label>Password:</label>
+            {{input disabled=true class="form-control" value=model.form.pppoe.password type=text}}
           </div>
         </div>
       {{/modal-form}}

@@ -52,11 +52,14 @@ function leftPadNum(num, len) {
   return ('0000000000' + num).slice(-len);
 }
 
-function serviceProtocol(hasDhcp, hasPppoe) {
+function serviceProtocol(hasDhcp, hasPppoe, serviceName) {
   var
     dhcp = hasDhcp ? 'dhcp' : '',
     pppoe = hasPppoe ? 'pppoe' : '',
     protocol = _join('_', dhcp, pppoe);
+  if (/^.*max min.$/.test(serviceName)) {
+    return 'dhcp';
+  }
   return protocol ? protocol : 'static';
 }
 

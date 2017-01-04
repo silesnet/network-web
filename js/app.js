@@ -420,6 +420,24 @@ App.ConfirmDhcpRemovalController = Ember.Controller.extend({
   }
 });
 
+App.ConfirmDhcpWirelessRemovalController = Ember.Controller.extend({
+  actions: {
+    removeDhcpWireless: function(service) {
+      var self = this;
+      console.log('removing dhcp wireless for ' + this.model.service.id);
+      putJSON(
+        'http://localhost:8090/networks/dhcp-wireless/' + this.model.service.id,
+        { services: { dhcp_wireless: {} } })
+      .then(function(data) {
+        self.send('reload');
+        self.get('flashes').success('OK', 1000);
+      }, function(err) {
+        self.get('flashes').danger(err.detail, 5000);
+      });
+    }
+  }
+});
+
 App.ConfirmPppoeRemovalController = Ember.Controller.extend({
   actions: {
     removePppoe: function(service) {

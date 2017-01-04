@@ -624,6 +624,12 @@
       {{/modal-form}}
     </script>
 
+    <script type="text/x-handlebars" data-template-name="confirmDhcpWirelessRemoval">
+      {{#modal-form title='Odebrat DHCP Wireless' ok='removeDhcpWireless' close='closeModal' submitLabel='Odebrat'}}
+        <p>Chcete opravdu odebrat DHCP Wireless pro {{model.service.id}} {{model.service.name}}?</p>
+      {{/modal-form}}
+    </script>
+
     <script type="text/x-handlebars" data-template-name="confirmPppoeRemoval">
       {{#modal-form title='Odebrat PPPoE' ok='removePppoe' close='closeModal' submitLabel='Odebrat'}}
         <p>Chcete opravdu odebrat PPPoE pro {{model.service.id}} {{model.service.name}}?</p>

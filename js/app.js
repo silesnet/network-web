@@ -525,10 +525,16 @@ App.FormEditServiceController = Ember.Controller.extend({
 
 App.FormEditDhcpController = Ember.Controller.extend({
   switches: [],
+  defaultOptions: function() {
+    if (!this.get('model.form.dhcp.network_id')) {
+      console.log('set default switch dhcp on the form');
+      // TODO
+    }
+  }.observes('model.form'),
   init: function() {
     var self = this,
     country = this.get('session.userCountry').toLowerCase();
-    this._super();
+    this._super(...arguments);
     Ember.$.getJSON('http://localhost:8090/networks/' + country + '/devices?deviceType=switch')
          .then(function(switches) { self.set('switches', switches.devices); });
   },
@@ -587,10 +593,16 @@ App.FormEditDhcpWirelessController = Ember.Controller.extend({
       this.set('ssid', ssid);
     }
   }.observes('model.form.dhcp_wireless.interface'),
+  defaultOptions: function() {
+    if (!this.get('model.form.pppoe.interface')) {
+      console.log('set default ssid for wireless on the form');
+      // TODO
+    }
+  }.observes('model.form'),
   init: function() {
     var self = this,
       country = this.get('session.userCountry').toLowerCase();
-    this._super();
+    this._super(...arguments);
     Ember.$.getJSON('http://localhost:8090/networks/routers')
       .then(function(routers) { self.set('routers', routers.core_routers); });
     Ember.$.getJSON('http://localhost:8090/networks/ssids')
@@ -671,10 +683,23 @@ App.FormEditPppoeController = Ember.Controller.extend({
       this.set('ssid', ssid);
     }
   }.observes('model.form.pppoe.interface'),
+  defaultOptions: function() {
+    if (this.get('isWireless')) {
+      if (!this.get('model.form.pppoe.interface')) {
+        console.log('set default ssid for wireless on the form');
+        // TODO
+      }
+    } else {
+      if (!this.get('model.form.pppoe.master')) {
+        console.log('set default master/router for wireless on the form');
+        // TODO
+      }
+    }
+  }.observes('model.form'),
   init: function() {
+    this._super(...arguments);
     var self = this,
       country = this.get('session.userCountry').toLowerCase();
-    this._super();
     Ember.$.getJSON('http://localhost:8090/networks/routers')
       .then(function(routers) { self.set('routers', routers.core_routers); });
     Ember.$.getJSON('http://localhost:8090/networks/ssids')
@@ -684,8 +709,10 @@ App.FormEditPppoeController = Ember.Controller.extend({
         self.interfaceChanged();
       });
   },
-  isWireless: Ember.computed('model.pppoe.mode', function() {
-    return this.get('model.pppoe.mode').toLowerCase() === 'wireless';
+  isWireless: Ember.computed('model.service.channel', 'model.service.name', function() {
+    var channel = this.get('model.service.channel') || '',
+      name = this.get('model.service.name') || '';
+    return channel ? channel === 'wireless' : name.substring(0, 8).toLowerCase() === 'wireless';
   }),
   isStaticIp: Ember.computed('model.form.pppoe.ip_class', function() {
     var isStatic = this.get('model.form.pppoe.ip_class') === 'static',
@@ -755,7 +782,7 @@ App.FormAddTodoController = Ember.Controller.extend({
   comment: '',
   init: function() {
     var self = this;
-    this._super();
+    this._super(...arguments);
     this.set('assignee', this.get('session.user'));
     Ember.$.getJSON('http://localhost:8090/users')
       .then((response) => {

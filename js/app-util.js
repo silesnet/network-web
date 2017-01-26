@@ -188,11 +188,41 @@ Ember.Handlebars.helper('stamp', function(value, options) {
   var date = new Date(value);
   return new Ember.Handlebars.SafeString(
     date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()) +
-    ' @' + date.getHours() + ':' + date.getMinutes();
+    ' @' + digits(date.getHours(), 2) + ':' + digits(date.getMinutes(), 2);
 });
+
+function digits(number, digits) {
+  number = '' + number;
+  if (digits <= number.length) {
+    return number;
+  }
+  return '0000000000'.substring(0, digits - number.length) + number;
+}
 
 Ember.Handlebars.helper('address', function(address, options) {
   return new Ember.Handlebars.SafeString(draftAddress(address));
+});
+
+Ember.Handlebars.helper('todoStatus', function(code, options) {
+  var status = '';
+  switch(code) {
+    case 0:
+      status = 'New';
+      break;
+    case 1:
+      status = 'In Progress';
+      break;
+    case 2:
+      status = 'Completed';
+      break;
+    case 3:
+      status = 'Archived';
+      break;
+    default:
+      status = 'Unknown';
+      break;
+  }
+  return new Ember.Handlebars.SafeString(status);
 });
 
 function draftAddress(data) {

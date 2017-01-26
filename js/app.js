@@ -135,8 +135,8 @@ App.ServiceRoute = Ember.Route.extend({
               resolve({});
             }
           }),
-          comments: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/comments')
-            .then(function(result) { return result.comments; }),
+          todos: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/todos')
+            .then(function(result) { return result.todos; }),
           events: Ember.$.getJSON('http://localhost:8090/events/?entity=services&entityId=' + params.service_id)
             .then(function(result) { return result.data; })
         });

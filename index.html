@@ -342,19 +342,39 @@
             </div>
           </div>
         {{/if}}
-        {{#if model.comments}}
+        {{#if model.todos}}
           <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title pull-left">Komentáře</h3>
+                <h3 class="panel-title pull-left">TODO</h3>
                 <div class="clearfix"></div>
               </div>
               <div class="panel-body">
-                {{#each model.comments as |comment|}}
-                  <div class="row">
-                    <div class="col-sm-1">{{comment.user}}</div>
-                    <div class="col-sm-3">{{stamp comment.date}}</div>
-                    <div class="col-sm-8">{{comment.comment}}</div>
+                {{#each model.todos as |todo|}}
+                  <div class="todo">
+                    <div class="row details">
+                      <div class="col-sm-12">
+                        <strong>
+                          {{stamp todo.added_time}}
+                          [
+                            Priority: {{todo.priority}},
+                            Status: {{todoStatus todo.status}}
+                          ]
+                        </strong><br/>
+                        <em>{{todo.task}}</em>
+                      </div>
+                    </div>
+                    {{#if todo.comments}}
+                    <div class="comments">
+                    {{#each todo.comments as |comment|}}
+                      <div class="row comment">
+                        <div class="col-sm-1">{{comment.user}}</div>
+                        <div class="col-sm-3">{{stamp comment.date}}</div>
+                        <div class="col-sm-8">{{comment.comment}}</div>
+                      </div>
+                    {{/each}}
+                    </div>
+                    {{/if}}
                   </div>
                 {{/each}}
               </div>

@@ -2,6 +2,11 @@ body {
   font-size: 15px;
 }
 
+.todo .comments {
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+}
+
 #protocol p.signature-place {
   margin-top: 5em;
 }

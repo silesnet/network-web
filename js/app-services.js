@@ -1,5 +1,8 @@
 App.Status = Ember.Service.extend({
   version: '15.6.17-854+cdced69',
+  versionShort: Ember.computed('version', function() {
+    return this.get('version').substring(0, this.get('version').indexOf('+'));
+  }),
   commit: Ember.computed('version', function() {
     return this.get('version').substring(this.get('version').indexOf('+') + 1);
   }),

@@ -29,8 +29,8 @@
             <span class='glyphicon glyphicon-user'></span>
             {{session.userName}}|{{session.userCountry}}
           </div>
-          <a class="navbar-brand version" href="{{status.commitUrl}}" target="_blank">
-            <span class="small">v{{status.versionShort}}</span></a>
+          <a class="navbar-brand version" href="{{status.version.commitUrl}}" target="_blank">
+            <span class="small">v{{status.version.short}}</span></a>
         </div>
       </nav>
       <div class="content">
@@ -662,6 +662,8 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="changelog">
+      <p class="pull-right">crm-service
+        <a href="{{status.serviceVersion.commitUrl}}" target="_blank">v{{status.serviceVersion.short}}</a></p>
       <h2>Seznam posledních změn aplikace</h2>
       <table class="table">
       <tbody>

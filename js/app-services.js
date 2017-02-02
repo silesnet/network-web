@@ -1,3 +1,13 @@
+App.Status = Ember.Service.extend({
+  version: '15.6.17-854+cdced69',
+  commit: Ember.computed('version', function() {
+    return this.get('version').substring(this.get('version').indexOf('+') + 1);
+  }),
+  commitUrl: Ember.computed('commit', function() {
+    return 'https://github.com/silesnet/network-web/commit/' + this.get('commit');
+  })
+});
+
 App.Session = Ember.Service.extend({
   user: null,
   userName: null,

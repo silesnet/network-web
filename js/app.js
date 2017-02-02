@@ -15,6 +15,14 @@ App.Router.map(function() {
 });
 
 Ember.Application.initializer({
+  name: 'status',
+  initialize: function(container, application) {
+    application.register('service:status', application.Status, { singleton: true });
+    application.inject('controller', 'status', 'service:status');
+  }
+});
+
+Ember.Application.initializer({
   name: 'flash-messages',
   initialize: function(container, application) {
     application.register('service:flash-messages', application.FlashMessagesService, { singleton: true });

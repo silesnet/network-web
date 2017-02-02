@@ -1,3 +1,18 @@
+function applicationVersion(application, fullVersion) {
+    var 
+      separator = fullVersion.indexOf('+'),
+      shortVersion = fullVersion.substring(0, separator),
+      commit = fullVersion.substring(separator + 1),
+      commitUrl = 'https://github.com/silesnet/' + application + '/commit/' + commit;
+    return {
+      application: application,
+      full: fullVersion,
+      short: shortVersion,
+      commit: commit,
+      commitUrl: commitUrl
+    };
+}
+
 function serviceName(service) {
   return _join(' ', service.name, _join('/', service.download, service.upload), 'Mbps');
 }

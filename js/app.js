@@ -19,6 +19,11 @@ Ember.Application.initializer({
   initialize: function(container, application) {
     application.register('service:status', application.Status, { singleton: true });
     application.inject('controller', 'status', 'service:status');
+    Ember.$.getJSON('http://localhost:8090/status/version')
+    .then(function(data) {
+      var status = container.lookup('service:status');
+      status.set('serviceFullVersion', data.version);
+    });
   }
 });
 

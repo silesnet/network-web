@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SilesNet IS</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
-    <link rel="stylesheet" type="text/css" href="css/app.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css?v=${VERSION}">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css?v=${VERSION}">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css?v=${VERSION}">
+    <link rel="stylesheet" type="text/css" href="css/app.css?v=${VERSION}">
     <!-- <link rel="stylesheet" type="text/css" href="css/print.css"> -->
   </head>
   <body>
@@ -387,7 +387,7 @@
       {{#link-to 'services'}}Zpět{{/link-to}}
     </script>
 
-    <script type="text/x-handlebars" src="hbs/protocol.hbs" data-template-name="service/print"></script>
+    <script type="text/x-handlebars" src="hbs/protocol.hbs?v=${VERSION}" data-template-name="service/print"></script>
 
     <script type="text/x-handlebars" data-template-name="formEditService">
       {{#modal-form title='Upravit' ok='submit' close='closeModal'}}
@@ -720,16 +720,16 @@
       {{/if}}
     </script>
 
-    <script type="text/javascript" language="javascript" src="js/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript" src="js/jquery-ui.min.js"></script>
-    <script type="text/javascript" language="javascript" src="js/jquery-ui-datepicker-cs.js"></script>
-    <script type="text/javascript" language="javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" language="javascript" src="js/ember.js"></script>
-    <script type="text/javascript" language="javascript" src="js/ember-template-compiler.js"></script>
-    <script type="text/javascript" language="javascript" src="js/app.js"></script>
-    <script type="text/javascript" language="javascript" src="js/app-services.js"></script>
-    <script type="text/javascript" language="javascript" src="js/app-components.js"></script>
-    <script type="text/javascript" language="javascript" src="js/app-util.js"></script>
-    <script type="text/javascript" language="javascript" src="js/load-hbs.js"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery.min.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery-ui.min.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery-ui-datepicker-cs.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/bootstrap.min.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/ember.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/ember-template-compiler.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/app.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/app-services.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/app-components.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/app-util.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/load-hbs.js?v=${VERSION}"></script>
   </body>
 </html>

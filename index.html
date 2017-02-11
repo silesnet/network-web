@@ -10,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css?v=${VERSION}">
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css?v=${VERSION}">
     <link rel="stylesheet" type="text/css" href="css/app.css?v=${VERSION}">
-    <!-- <link rel="stylesheet" type="text/css" href="css/print.css"> -->
   </head>
   <body>
     <div id='app'></div>
@@ -387,7 +386,7 @@
       {{#link-to 'services'}}Zpět{{/link-to}}
     </script>
 
-    <script type="text/x-handlebars" src="hbs/protocol.hbs?v=${VERSION}" data-template-name="service/print"></script>
+    <script type="text/x-handlebars" data-src="hbs/protocol.hbs?v=${VERSION}" data-template-name="service/print"></script>
 
     <script type="text/x-handlebars" data-template-name="formEditService">
       {{#modal-form title='Upravit' ok='submit' close='closeModal'}}

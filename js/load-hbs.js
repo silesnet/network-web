@@ -1,4 +1,4 @@
-$('script[type="text/x-handlebars"]').each(function() {
+$('script[type="text/x-handlebars-load"]').each(function() {
   var name = $(this).attr('data-template-name'),
   src = $(this).attr('data-src');
   if (src) {

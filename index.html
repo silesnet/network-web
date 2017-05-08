@@ -107,22 +107,28 @@
         {{/if}}
         <br />
         <span class="small">
-          {{customerAddress}}
-          <a href="http://www.google.com/maps?q={{customerAddress}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
-          &nbsp;{{customerEmail}}
+          {{customerEmail}}
           <a href="mailto:{{customerEmail}}"><i class="glyphicon glyphicon-envelope"></i></a>
           &nbsp;{{customerPhone}}
           <a href="#" {{action 'openModal' 'formEditSms' model}}><i class="glyphicon glyphicon-phone"></i></a>
         </span>
       </h2>
       <h3>{{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs, {{model.service.price}} {{serviceCurrency}}</h3>
+      {{#if model.service.address_label}}
+        <p>
+          {{model.service.address_label}}
+          {{#if model.service.gps_cord}}
+            <a href="http://www.google.com/maps?q={{model.service.gps_cord}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
+          {{/if}}
+        </p>
+      {{else}}
+        {{#if model.customer.connection_spot}}
+          <p>{{model.customer.connection_spot}}</p>
+        {{/if}}
 
-      {{#if model.customer.connection_spot}}
-        <p>{{model.customer.connection_spot}}</p>
-      {{/if}}
-
-      {{#if model.service.address}}
-        <p>{{address model.service.address}}</p>
+        {{#if model.service.address}}
+          <p>{{address model.service.address}}</p>
+        {{/if}}
       {{/if}}
 
       <div class="row">

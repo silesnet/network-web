@@ -494,6 +494,20 @@ App.FormEditServiceController = Ember.Controller.extend({
     { name: 'Dlužník', value: 'DEBTOR' }
   ],
   actions: {
+    addressSelected: function(address) {
+      console.log(address);
+      console.log(this.get('model.form.service'));
+      this.set('model.form.service.address_id', address.id);
+      this.set('model.form.service.address_label', address.label);
+      if (address.gps) {
+        this.set('model.form.service.gps_cord', address.gps.join(' '));
+      }
+      else {
+        this.set('model.form.service.gps_cord', null);
+      }
+      this.set('model.form.service.address_id', null);
+      this.set('model.form.service.place_id', null);
+    },
     submit: function() {
       var self = this,
       currentService = this.model.service,

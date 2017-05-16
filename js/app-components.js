@@ -1,3 +1,46 @@
+App.AddressSelectorComponent = Ember.Component.extend({
+  addressSelector: null,
+  init() {
+    this._super();
+    console.log('initialized address selector');
+  },
+  didInsertElement() {
+    console.log('inserted AS element...');
+    var onAddress = this.get('onAddress');
+    var addressSelector = new AddressSelector('addressSelectorInput', {
+      maxItems: 25
+    })
+    .onSearch(function(query, cb) {
+      console.log('searching for address: ' + query);
+      $.getJSON('http://localhost:8090/addresses?q=' + query)
+      .then(function(addresses) {
+        cb(null, addresses);
+      }, function(err) {
+        cb(err);
+      });
+    })
+    .onAddress(function(address) {
+      console.log('address selected: ' + address.label);
+      onAddress(address);
+    });
+    this.set('addressSelector', addressSelector);
+  },
+  willDestroyElement() {
+    this.get('addressSelector').destroy();
+  }
+});
+
+App.GpsCordComponent = Ember.Component.extend({
+  init() {
+    this._super();
+    console.log('initialized GPS cord');
+  },
+  didInsertElement() {
+    console.log('inserted GS element...');
+  }
+
+});
+
 //https://gist.github.com/kenkogi/35f518eab57aa544bf1ba5b0e506788b
 App.RadioButtonComponent = Ember.Component.extend({
   init() {

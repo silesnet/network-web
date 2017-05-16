@@ -406,6 +406,23 @@
         </div>
         <div class="row">
           <div class="col-sm-12 form-group">
+            <label>Adresa:</label>
+            <p>{{model.form.service.address_label}}
+            {{#if model.form.service.gps_cord}}
+              <a href="http://www.google.com/maps?q={{model.form.service.gps_cord}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
+            {{/if}}
+            </p>
+            {{address-selector onAddress=(action "addressSelected")}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>GPS:</label>
+            {{gps-cord}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
             <label>Zařízení:</label>
               {{#each model.form.service.data.devices as |device index|}}
                 <div class="form-group">
@@ -721,6 +738,15 @@
       {{/if}}
     </script>
 
+    <script type="text/x-handlebars" data-template-name="components/address-selector">
+      <input id="addressSelectorInput" />
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="components/gps-cord">
+      <input id="gpsCordInput" />
+    </script>
+
+
     <script type="text/javascript" language="javascript" src="js/jquery.min.js?v=${VERSION}"></script>
     <script type="text/javascript" language="javascript" src="js/jquery-ui.min.js?v=${VERSION}"></script>
     <script type="text/javascript" language="javascript" src="js/jquery-ui-datepicker-cs.js?v=${VERSION}"></script>
@@ -732,5 +758,6 @@
     <script type="text/javascript" language="javascript" src="js/app-components.js?v=${VERSION}"></script>
     <script type="text/javascript" language="javascript" src="js/app-util.js?v=${VERSION}"></script>
     <script type="text/javascript" language="javascript" src="js/load-hbs.js?v=${VERSION}"></script>
+    <script type="text/javascript" language="javascript" src="js/address-selector.js?v=${VERSION}"></script>
   </body>
 </html>

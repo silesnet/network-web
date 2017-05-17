@@ -112,8 +112,8 @@
       {{#if model.service.address_label}}
         <p>
           {{model.service.address_label}}
-          {{#if model.service.gps_cord}}
-            <a href="http://www.google.com/maps?q={{model.service.gps_cord}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
+          {{#if model.service.place}}
+            <a href="http://www.google.com/maps?q={{model.service.place}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
           {{/if}}
         </p>
       {{else}}
@@ -408,17 +408,18 @@
           <div class="col-sm-12 form-group">
             <label>Adresa:</label>
             <p>{{model.form.service.address_label}}
-            {{#if model.form.service.gps_cord}}
-              <a href="http://www.google.com/maps?q={{model.form.service.gps_cord}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
+            {{#if model.form.service.address_place}}
+              <a href="http://www.google.com/maps?q={{model.form.service.address_place}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
             {{/if}}
             </p>
+            <p>{{model.form.service.address_place}}</p>
             {{address-selector onAddress=(action "addressSelected")}}
           </div>
         </div>
         <div class="row">
           <div class="col-sm-6 form-group">
             <label>GPS:</label>
-            {{gps-cord}}
+            {{gps-cord value=(mut model.form.service.place)}}
           </div>
         </div>
         <div class="row">
@@ -744,6 +745,9 @@
 
     <script type="text/x-handlebars" data-template-name="components/gps-cord">
       <input id="gpsCordInput" />
+      {{#if value}}
+        <a href="http://www.google.com/maps?q={{value}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
+      {{/if}}
     </script>
 
 

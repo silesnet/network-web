@@ -1,17 +1,11 @@
 App.AddressSelectorComponent = Ember.Component.extend({
   addressSelector: null,
-  init() {
-    this._super();
-    console.log('initialized address selector');
-  },
   didInsertElement() {
-    console.log('inserted AS element...');
     var onAddress = this.get('onAddress');
     var addressSelector = new AddressSelector('addressSelectorInput', {
       maxItems: 25
     })
     .onSearch(function(query, cb) {
-      console.log('searching for address: ' + query);
       $.getJSON('http://localhost:8090/addresses?q=' + query)
       .then(function(addresses) {
         cb(null, addresses);
@@ -20,7 +14,6 @@ App.AddressSelectorComponent = Ember.Component.extend({
       });
     })
     .onAddress(function(address) {
-      console.log('address selected: ' + address.label);
       onAddress(address);
     });
     this.set('addressSelector', addressSelector);
@@ -31,15 +24,84 @@ App.AddressSelectorComponent = Ember.Component.extend({
 });
 
 App.GpsCordComponent = Ember.Component.extend({
-  init() {
-    this._super();
-    console.log('initialized GPS cord');
-  },
+  gpsInput: null,
+  value: null,
   didInsertElement() {
-    console.log('inserted GS element...');
+    var gpsInput = document.getElementById('gpsCordInput');
+    var self = this;
+    gpsInput.value = gpsToString(normalizeGps(this.get('value').split(' ')));
+    gpsInput.addEventListener('change', function(evt) {
+      var value = gpsToString(normalizeGps(parseDmsLocation(gpsInput.value)));
+      gpsInput.value = value;
+      self.set('value', value);
+    });
+    this.set('gpsInput', gpsInput);
   }
-
 });
+
+function gpsToString(gps) {
+  return gps[0] && gps[1] ? gps.join(', ') : '';
+}
+
+function normalizeGps(gps) {
+  return (gps && gps.length === 2) ? [roundTo5Dec(gps[0]), roundTo5Dec(gps[1])] : [];
+}
+
+function roundTo5Dec(num) {
+  return Math.round(num * 100000) / 100000;
+}
+
+function parseDmsLocation(input) {
+  var coors = String(input).trim().split(/[^\dNSEW.'"°*-]+/i);
+  var lat, lon;
+  switch (coors.length) {
+    case 2:
+      lat = coors[0];
+      lon = coors[1];
+      break;
+    case 4:
+      if (/[NSEW]{2}/i.test(coors[0]+coors[2])) {
+        lat = coors[1] + coors[0];
+        lon = coors[3] + coors[2];
+      }
+      break;
+  }
+  return [parseDms(lat), parseDms(lon)];
+
+  function parseDms(dmsInput) {
+    if (dmsInput === null || dmsInput === undefined) {
+      return NaN;
+    }
+    if (typeof dmsInput === 'number' && isFinite(dmsInput)) {
+      return Number(dmsInput);
+    }
+    var dms = String(dmsInput).trim()
+                .replace(/^-/, '')
+                .replace(/[NSEW]$/i, '')
+                .split(/[^\d.]+/);
+    if (dms[dms.length - 1] === '') {
+      dms.splice(dms.length - 1);
+    }
+    var deg = null;
+    switch (dms.length) {
+      case 3:
+        deg = dms[0]/1 + dms[1]/60 + dms[2]/3600;
+        break;
+      case 2:
+        deg = dms[0]/1 + dms[1]/60;
+        break;
+      case 1:
+        deg = dms[0];
+        break;
+      default:
+        return NaN;
+    }
+    if (/^-|[WS]$/i.test(dmsInput.trim())) {
+      deg = -deg;
+    }
+    return Number(deg);
+  }
+}
 
 //https://gist.github.com/kenkogi/35f518eab57aa544bf1ba5b0e506788b
 App.RadioButtonComponent = Ember.Component.extend({

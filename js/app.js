@@ -495,18 +495,14 @@ App.FormEditServiceController = Ember.Controller.extend({
   ],
   actions: {
     addressSelected: function(address) {
-      console.log(address);
-      console.log(this.get('model.form.service'));
-      this.set('model.form.service.address_id', address.id);
+      this.set('model.form.service.address_id', address.externalId);
       this.set('model.form.service.address_label', address.label);
       if (address.gps) {
-        this.set('model.form.service.gps_cord', address.gps.join(' '));
+        this.set('model.form.service.address_place', address.gps.join(' '));
       }
       else {
-        this.set('model.form.service.gps_cord', null);
+        this.set('model.form.service.address_place', null);
       }
-      this.set('model.form.service.address_id', null);
-      this.set('model.form.service.place_id', null);
     },
     submit: function() {
       var self = this,
@@ -517,9 +513,17 @@ App.FormEditServiceController = Ember.Controller.extend({
       serviceUpdate = {};
       if (currentService.info !== updatedService.info ||
           currentService.status !== updatedService.status ||
+          currentService.address_id !== updatedService.address_id ||
+          currentService.place !== updatedService.place ||
           JSON.stringify(currentService.data) !== JSON.stringify(updatedService.data)) {
         serviceUpdate.info = updatedService.info;
         serviceUpdate.status = updatedService.status;
+        serviceUpdate.address_id = updatedService.address_id;
+        serviceUpdate.address_place = updatedService.address_place.replace(',', '');
+        serviceUpdate.place = updatedService.place.replace(',', '');
+        if (!serviceUpdate.place) {
+          serviceUpdate.place = serviceUpdate.address_place;
+        }
         serviceUpdate.data = JSON.stringify(updatedService.data);
         console.log('updating service '+ this.model.service.id + ': ' + JSON.stringify(serviceUpdate, null, 2));
         putJSON(

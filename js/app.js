@@ -497,7 +497,7 @@ App.FormEditServiceController = Ember.Controller.extend({
     addressSelected(address) {
       var isAddressPlace = this.get('model.form.service.address_place') === this.get('model.form.service.place');
       if (address) {
-        this.set('model.form.service.address_id', address.externalId);
+        this.set('model.form.service.address_fk', address.externalId);
         this.set('model.form.service.address_label', address.label);
         this.set('model.form.service.address_place', (address.gps ? address.gps.join(' ') : ''));
         if (isAddressPlace) {
@@ -506,7 +506,7 @@ App.FormEditServiceController = Ember.Controller.extend({
       }
       else {
         if (!isAddressPlace) {
-          this.set('model.form.service.address_id', null);
+          this.set('model.form.service.address_fk', null);
           this.set('model.form.service.address_label', null);
           this.set('model.form.service.address_place', null);
         }
@@ -529,12 +529,12 @@ App.FormEditServiceController = Ember.Controller.extend({
       serviceUpdate = {};
       if (currentService.info !== updatedService.info ||
           currentService.status !== updatedService.status ||
-          currentService.address_id !== updatedService.address_id ||
+          currentService.address_fk !== updatedService.address_fk ||
           currentService.place !== updatedService.place ||
           JSON.stringify(currentService.data) !== JSON.stringify(updatedService.data)) {
         serviceUpdate.info = updatedService.info;
         serviceUpdate.status = updatedService.status;
-        serviceUpdate.address_id = updatedService.address_id;
+        serviceUpdate.address_fk = updatedService.address_fk;
         serviceUpdate.address_place = updatedService.address_place;
         serviceUpdate.place = updatedService.place;
         if (!serviceUpdate.place) {

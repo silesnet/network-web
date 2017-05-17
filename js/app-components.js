@@ -4,8 +4,10 @@ App.GpsLinkComponent =Ember.Component.extend({
 
 App.PlaceEditorComponent = Ember.Component.extend({
   addressSelector: null,
-  isAddressPlace: Ember.computed('service.address_place', 'service.place', function() {
-    return this.get('service.address_place') === this.get('service.place');
+  canClear: Ember.computed('service.address_place', 'service.place', function() {
+    var addressPlace = this.get('service.address_place');
+    var place = this.get('service.place');
+    return  addressPlace && place && addressPlace !== place;
   }),
   didInsertElement() {
     var onAddress = this.get('onAddress');

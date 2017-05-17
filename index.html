@@ -747,17 +747,17 @@
       <p>
         <label>Adresa:</label><br />
         <input id="addressSelectorInput" placeholder="{{service.address_label}}" size="40" type="text" />
-        {{#unless isAddressPlace}}
+        {{#if canClear}}
           <a {{action "clearAddress"}}><i class="glyphicon glyphicon-remove"></i></a>
-        {{/unless}}
+        {{/if}}
         {{gps-link cord=service.address_place}}
       </p>
       <p>
         <label>GPS:</label><br />
         <input id="gpsInput" placeholder="{{gps service.place}}" size="40" type="text" />
-        {{#unless isAddressPlace}}
+        {{#if canClear}}
           <a {{action "clearGps"}}><i class="glyphicon glyphicon-remove"></i></a>
-        {{/unless}}
+        {{/if}}
         {{gps-link cord=service.place hideLabel=true}}
       </p>
     </script>

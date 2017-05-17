@@ -112,9 +112,7 @@
       {{#if model.service.address_label}}
         <p>
           {{model.service.address_label}}
-          {{#if model.service.place}}
-            <a href="http://www.google.com/maps?q={{model.service.place}}&t=k" target="_blank"><i class="glyphicon glyphicon-map-marker"></i></a>
-          {{/if}}
+          {{gps-link cord=model.service.place}}
         </p>
       {{else}}
         {{#if model.customer.connection_spot}}
@@ -124,6 +122,8 @@
         {{#if model.service.address}}
           <p>{{address model.service.address}}</p>
         {{/if}}
+
+        {{gps-link cord=model.service.place}}
       {{/if}}
 
       <div class="row">

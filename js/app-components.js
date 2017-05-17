@@ -1,3 +1,53 @@
+App.GpsLinkComponent =Ember.Component.extend({
+  tagName: 'span'
+});
+
+App.PlaceEditorComponent = Ember.Component.extend({
+  addressSelector: null,
+  isAddressPlace: Ember.computed('service.address_place', 'service.place', function() {
+    return this.get('service.address_place') === this.get('service.place');
+  }),
+  didInsertElement() {
+    var onAddress = this.get('onAddress');
+    var self = this;
+    var addressSelector = new AddressSelector('addressSelectorInput', {
+      maxItems: 25
+    })
+    .onSearch(function(query, cb) {
+      $.getJSON('http://localhost:8090/addresses?q=' + query)
+      .then(function(addresses) {
+        cb(null, addresses);
+      }, function(err) {
+        cb(err);
+      });
+    })
+    .onAddress(function(address) {
+      self.get('onAddress')(address);
+    });
+    this.set('addressSelector', addressSelector);
+
+    var gpsInput = document.getElementById('gpsInput');
+    gpsInput.addEventListener('change', function(evt) {
+      var gpsValue = parseDmsLocation(gpsInput.value);
+      if (gpsValue) {
+        self.get('onPlace')(gpsValue);
+      }
+      gpsInput.value = '';
+    });
+  },
+  willDestroyElement() {
+    this.get('addressSelector').destroy();
+  },
+  actions: {
+    clearAddress: function() {
+      this.get('onAddress')();
+    },
+    clearGps: function() {
+      this.get('onPlace')();
+    }
+  }
+});
+
 App.AddressSelectorComponent = Ember.Component.extend({
   addressSelector: null,
   didInsertElement() {
@@ -41,66 +91,6 @@ App.GpsCordComponent = Ember.Component.extend({
 
 function gpsToString(gps) {
   return gps[0] && gps[1] ? gps.join(', ') : '';
-}
-
-function normalizeGps(gps) {
-  return (gps && gps.length === 2) ? [roundTo5Dec(gps[0]), roundTo5Dec(gps[1])] : [];
-}
-
-function roundTo5Dec(num) {
-  return Math.round(num * 100000) / 100000;
-}
-
-function parseDmsLocation(input) {
-  var coors = String(input).trim().split(/[^\dNSEW.'"°*-]+/i);
-  var lat, lon;
-  switch (coors.length) {
-    case 2:
-      lat = coors[0];
-      lon = coors[1];
-      break;
-    case 4:
-      if (/[NSEW]{2}/i.test(coors[0]+coors[2])) {
-        lat = coors[1] + coors[0];
-        lon = coors[3] + coors[2];
-      }
-      break;
-  }
-  return [parseDms(lat), parseDms(lon)];
-
-  function parseDms(dmsInput) {
-    if (dmsInput === null || dmsInput === undefined) {
-      return NaN;
-    }
-    if (typeof dmsInput === 'number' && isFinite(dmsInput)) {
-      return Number(dmsInput);
-    }
-    var dms = String(dmsInput).trim()
-                .replace(/^-/, '')
-                .replace(/[NSEW]$/i, '')
-                .split(/[^\d.]+/);
-    if (dms[dms.length - 1] === '') {
-      dms.splice(dms.length - 1);
-    }
-    var deg = null;
-    switch (dms.length) {
-      case 3:
-        deg = dms[0]/1 + dms[1]/60 + dms[2]/3600;
-        break;
-      case 2:
-        deg = dms[0]/1 + dms[1]/60;
-        break;
-      case 1:
-        deg = dms[0];
-        break;
-      default:
-        return NaN;
-    }
-    if (/^-|[WS]$/i.test(dmsInput.trim())) {
-      deg = -deg;
-    }
-    return Number(deg);
-  }
 }
 
 //https://gist.github.com/kenkogi/35f518eab57aa544bf1ba5b0e506788b

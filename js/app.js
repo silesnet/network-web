@@ -421,6 +421,32 @@ App.ServiceIndexController = Ember.Controller.extend({
       };
       this.set('model.dhcp_wireless', newDhcpWireless);
       this.send('openModal', 'formEditDhcpWireless', model);
+    },
+    addressSelected(address) {
+      var isAddressPlace = this.get('model.service.address_place') === this.get('model.service.place');
+      if (address) {
+        this.set('model.service.address_id', address.externalId);
+        this.set('model.service.address_label', address.label);
+        this.set('model.service.address_place', (address.gps ? address.gps.join(' ') : ''));
+        if (isAddressPlace) {
+          this.set('model.service.place', (address.gps ? address.gps.join(' ') : ''));
+        }
+      }
+      else {
+        if (!isAddressPlace) {
+          this.set('model.service.address_id', null);
+          this.set('model.service.address_label', null);
+          this.set('model.service.address_place', null);
+        }
+      }
+    },
+    placeSelected(place) {
+      if (place) {
+        this.set('model.service.place', (place ? place.join(' ') : ''));
+      }
+      else {
+        this.set('model.service.place', this.get('model.service.address_place'));
+      }
     }
   }
 });

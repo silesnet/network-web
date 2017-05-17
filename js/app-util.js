@@ -1,3 +1,77 @@
+Ember.Handlebars.helper('gps', function(cord) {
+  if (!cord) {
+    return '';
+  }
+  pair = cord.constructor === Array ? cord : cord.replace(',', '').split(' ');
+  if (!pair[0] || !pair[1]) {
+    return '';
+  }
+  pair = normalizeGps(pair);
+  var lat = pair[0] < 0 ? (pair[0] * -1) + 'S' : pair[0] + 'N';
+  var lon = pair[1] < 0 ? (pair[1] * -1) + 'W' : pair[1] + 'E';
+  return new Ember.Handlebars.SafeString(lat + ' ' + lon);
+});
+
+function normalizeGps(gps) {
+  return (gps && gps.length === 2) ? [roundTo5Dec(gps[0]), roundTo5Dec(gps[1])] : [];
+}
+
+function roundTo5Dec(num) {
+  return Math.round(num * 100000) / 100000;
+}
+
+function parseDmsLocation(input) {
+  var coors = String(input).trim().split(/[^\dNSEW.'"°*-]+/i);
+  var lat, lon;
+  switch (coors.length) {
+    case 2:
+      lat = coors[0];
+      lon = coors[1];
+      break;
+    case 4:
+      if (/[NSEW]{2}/i.test(coors[0]+coors[2])) {
+        lat = coors[1] + coors[0];
+        lon = coors[3] + coors[2];
+      }
+      break;
+  }
+  return [parseDms(lat), parseDms(lon)];
+
+  function parseDms(dmsInput) {
+    if (dmsInput === null || dmsInput === undefined) {
+      return NaN;
+    }
+    if (typeof dmsInput === 'number' && isFinite(dmsInput)) {
+      return Number(dmsInput);
+    }
+    var dms = String(dmsInput).trim()
+                .replace(/^-/, '')
+                .replace(/[NSEW]$/i, '')
+                .split(/[^\d.]+/);
+    if (dms[dms.length - 1] === '') {
+      dms.splice(dms.length - 1);
+    }
+    var deg = null;
+    switch (dms.length) {
+      case 3:
+        deg = dms[0]/1 + dms[1]/60 + dms[2]/3600;
+        break;
+      case 2:
+        deg = dms[0]/1 + dms[1]/60;
+        break;
+      case 1:
+        deg = dms[0];
+        break;
+      default:
+        return NaN;
+    }
+    if (/^-|[WS]$/i.test(dmsInput.trim())) {
+      deg = -deg;
+    }
+    return Number(deg);
+  }
+}
+
 function applicationVersion(application, fullVersion) {
     var 
       separator = fullVersion.indexOf('+'),

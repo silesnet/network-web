@@ -79,7 +79,55 @@
       {{outlet}}
     </script>
 
+    <script type="text/x-handlebars" data-template-name="components/gps-link">
+      {{#if cord}}
+        <a href="http://www.google.com/maps?q={{cord}}&t=k" target="_blank">
+          {{#unless hideIcon}}
+            <i class="glyphicon glyphicon-map-marker"></i>
+          {{/unless}}
+          {{#unless hideLabel}}
+            {{gps cord}}
+          {{/unless}}
+        </a>
+      {{/if}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="components/place-editor">
+      <hr />
+      <p>
+        <label>Adresa:</label>
+        <input id="addressSelectorInput" placeholder="{{service.address_label}}" type="text" />
+        <!-- <a style="margin-left: -21px;"><i class="glyphicon glyphicon-remove tiny"></i></a> -->
+        <!-- {{service.address_label}} -->
+        {{#unless isAddressPlace}}
+          <a {{action "clearAddress"}}><i class="glyphicon glyphicon-remove"></i></a>
+        {{/unless}}
+        {{gps-link cord=service.address_place}}
+      </p>
+      <p>
+        <label>GPS:</label>
+        <input id="gpsInput" placeholder="{{gps service.place}}" />
+        {{#unless isAddressPlace}}
+          <a {{action "clearGps"}}><i class="glyphicon glyphicon-remove"></i></a>
+        {{/unless}}
+        {{gps-link cord=service.place hideLabel=true}}
+      </p>
+      <hr />
+      <div style="color: gray; font-size: small;">
+        <p>{{service.address_id}}</p>
+        <p>{{service.address_label}}</p>
+        <p>{{service.address_place}}</p>
+        <p>{{service.place}}</p>
+        <p>{{isAddressPlace}}</p>
+      </div>
+    </script>
+
     <script type="text/x-handlebars" id="service/index" data-template-name="service/index">
+      {{place-editor
+        service=model.service
+        onAddress=(action "addressSelected")
+        onPlace=(action "placeSelected")
+      }}
       <h2>{{customerName}} {{if isDraft '(DRAFT)'}}
         {{#unless isDraft}}
           <a href="https://sis.silesnet.net/account/customer/view.html?customerId={{model.customer.id}}&action=showDetail" target="_blank"><i class="glyphicon glyphicon-user tiny"></i></a>

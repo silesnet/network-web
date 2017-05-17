@@ -421,32 +421,6 @@ App.ServiceIndexController = Ember.Controller.extend({
       };
       this.set('model.dhcp_wireless', newDhcpWireless);
       this.send('openModal', 'formEditDhcpWireless', model);
-    },
-    addressSelected(address) {
-      var isAddressPlace = this.get('model.service.address_place') === this.get('model.service.place');
-      if (address) {
-        this.set('model.service.address_id', address.externalId);
-        this.set('model.service.address_label', address.label);
-        this.set('model.service.address_place', (address.gps ? address.gps.join(' ') : ''));
-        if (isAddressPlace) {
-          this.set('model.service.place', (address.gps ? address.gps.join(' ') : ''));
-        }
-      }
-      else {
-        if (!isAddressPlace) {
-          this.set('model.service.address_id', null);
-          this.set('model.service.address_label', null);
-          this.set('model.service.address_place', null);
-        }
-      }
-    },
-    placeSelected(place) {
-      if (place) {
-        this.set('model.service.place', (place ? place.join(' ') : ''));
-      }
-      else {
-        this.set('model.service.place', this.get('model.service.address_place'));
-      }
     }
   }
 });
@@ -520,14 +494,30 @@ App.FormEditServiceController = Ember.Controller.extend({
     { name: 'Dlužník', value: 'DEBTOR' }
   ],
   actions: {
-    addressSelected: function(address) {
-      this.set('model.form.service.address_id', address.externalId);
-      this.set('model.form.service.address_label', address.label);
-      if (address.gps) {
-        this.set('model.form.service.address_place', address.gps.join(' '));
+    addressSelected(address) {
+      var isAddressPlace = this.get('model.form.service.address_place') === this.get('model.form.service.place');
+      if (address) {
+        this.set('model.form.service.address_id', address.externalId);
+        this.set('model.form.service.address_label', address.label);
+        this.set('model.form.service.address_place', (address.gps ? address.gps.join(' ') : ''));
+        if (isAddressPlace) {
+          this.set('model.form.service.place', (address.gps ? address.gps.join(' ') : ''));
+        }
       }
       else {
-        this.set('model.form.service.address_place', null);
+        if (!isAddressPlace) {
+          this.set('model.form.service.address_id', null);
+          this.set('model.form.service.address_label', null);
+          this.set('model.form.service.address_place', null);
+        }
+      }
+    },
+    placeSelected(place) {
+      if (place) {
+        this.set('model.form.service.place', (place ? place.join(' ') : ''));
+      }
+      else {
+        this.set('model.form.service.place', this.get('model.form.service.address_place'));
       }
     },
     submit: function() {
@@ -545,8 +535,8 @@ App.FormEditServiceController = Ember.Controller.extend({
         serviceUpdate.info = updatedService.info;
         serviceUpdate.status = updatedService.status;
         serviceUpdate.address_id = updatedService.address_id;
-        serviceUpdate.address_place = updatedService.address_place.replace(',', '');
-        serviceUpdate.place = updatedService.place.replace(',', '');
+        serviceUpdate.address_place = updatedService.address_place;
+        serviceUpdate.place = updatedService.place;
         if (!serviceUpdate.place) {
           serviceUpdate.place = serviceUpdate.address_place;
         }

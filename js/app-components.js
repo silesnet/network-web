@@ -32,7 +32,7 @@ App.PlaceEditorComponent = Ember.Component.extend({
     gpsInput.addEventListener('change', function(evt) {
       var gpsValue = parseDmsLocation(gpsInput.value);
       if (gpsValue) {
-        self.get('onPlace')(gpsValue);
+        self.get('onPlace')(gpsValue.join(' '));
       }
       gpsInput.value = '';
     });
@@ -47,47 +47,6 @@ App.PlaceEditorComponent = Ember.Component.extend({
     clearGps: function() {
       this.get('onPlace')();
     }
-  }
-});
-
-App.AddressSelectorComponent = Ember.Component.extend({
-  addressSelector: null,
-  didInsertElement() {
-    var onAddress = this.get('onAddress');
-    var addressSelector = new AddressSelector('addressSelectorInput', {
-      maxItems: 25
-    })
-    .onSearch(function(query, cb) {
-      $.getJSON('http://localhost:8090/addresses?q=' + query)
-      .then(function(addresses) {
-        cb(null, addresses);
-      }, function(err) {
-        cb(err);
-      });
-    })
-    .onAddress(function(address) {
-      onAddress(address);
-    });
-    this.set('addressSelector', addressSelector);
-  },
-  willDestroyElement() {
-    this.get('addressSelector').destroy();
-  }
-});
-
-App.GpsCordComponent = Ember.Component.extend({
-  gpsInput: null,
-  value: null,
-  didInsertElement() {
-    var gpsInput = document.getElementById('gpsCordInput');
-    var self = this;
-    gpsInput.value = gpsToString(normalizeGps(this.get('value').split(' ')));
-    gpsInput.addEventListener('change', function(evt) {
-      var value = gpsToString(normalizeGps(parseDmsLocation(gpsInput.value)));
-      gpsInput.value = value;
-      self.set('value', value);
-    });
-    this.set('gpsInput', gpsInput);
   }
 });
 

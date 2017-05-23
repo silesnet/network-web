@@ -497,27 +497,34 @@ App.FormEditServiceController = Ember.Controller.extend({
     addressSelected(address) {
       var isAddressPlace = this.get('model.form.service.address_place') === this.get('model.form.service.place');
       if (address) {
-        this.set('model.form.service.address_fk', address.externalId);
+        this.set('model.form.service.address_id', address.address_id);
+        this.set('model.form.service.address_fk', address.address_fk);
         this.set('model.form.service.address_label', address.label);
-        this.set('model.form.service.address_place', (address.gps ? address.gps.join(' ') : ''));
+        this.set('model.form.service.address_place_id', address.place_id);
+        this.set('model.form.service.address_place', (address.gps_cord || ''));
         if (isAddressPlace) {
-          this.set('model.form.service.place', (address.gps ? address.gps.join(' ') : ''));
+          this.set('model.form.service.place', (address.gps_cord || ''));
+          this.set('model.form.service.place_id', address.place_id);
         }
       }
       else {
         if (!isAddressPlace) {
+          this.set('model.form.service.address_id', null);
           this.set('model.form.service.address_fk', null);
           this.set('model.form.service.address_label', null);
+          this.set('model.form.service.address_place_id', null);
           this.set('model.form.service.address_place', null);
         }
       }
     },
     placeSelected(place) {
       if (place) {
-        this.set('model.form.service.place', (place ? place.join(' ') : ''));
+        this.set('model.form.service.place', (place || ''));
+        this.set('model.form.service.place_id', null);
       }
       else {
         this.set('model.form.service.place', this.get('model.form.service.address_place'));
+        this.set('model.form.service.place_id', this.get('model.form.service.address_place_id'));
       }
     },
     submit: function() {
@@ -529,13 +536,14 @@ App.FormEditServiceController = Ember.Controller.extend({
       serviceUpdate = {};
       if (currentService.info !== updatedService.info ||
           currentService.status !== updatedService.status ||
-          currentService.address_fk !== updatedService.address_fk ||
+          currentService.address_id !== updatedService.address_id ||
           currentService.place !== updatedService.place ||
           JSON.stringify(currentService.data) !== JSON.stringify(updatedService.data)) {
         serviceUpdate.info = updatedService.info;
         serviceUpdate.status = updatedService.status;
-        serviceUpdate.address_fk = updatedService.address_fk;
+        serviceUpdate.address_id = updatedService.address_id;
         serviceUpdate.address_place = updatedService.address_place;
+        serviceUpdate.address_place_id = updatedService.address_place_id;
         serviceUpdate.place = updatedService.place;
         if (!serviceUpdate.place) {
           serviceUpdate.place = serviceUpdate.address_place;

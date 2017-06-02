@@ -239,16 +239,18 @@
                     {{else}}
                       {{model.dhcp_wireless.ip_class}}
                     {{/if}}
-                    {{#if model.pppoe.lastIp.isOnline}}
+<!-- 
+                    {{#if model.lastDhcpWirelessIp.isOnline}}
                       <i class="glyphicon glyphicon-cloud" style="color:green"></i>
                     {{else}}
                       <i class="glyphicon glyphicon-cloud" style="color:gray"></i>
                     {{/if}}
-                    {{#if model.lastIp.ip}}<br/>
+ -->
+                    {{#if model.lastDhcpWirelessIp.ip}}<br/>
                       <small>poslední IP:
-                      <a href="#" {{action 'openTabs' (concat 'http://' model.lastIp.ip ':65535') (concat 'http://' model.lastIp.ip)}}>{{model.lastIp.ip}}</a>
+                      <a href="#" {{action 'openTabs' (concat 'http://' model.lastDhcpWirelessIp.ip ':65535') (concat 'http://' model.lastDhcpWirelessIp.ip)}}>{{model.lastDhcpWirelessIp.ip}}</a>
                       <span class="glyphicon glyphicon-new-window"></span>
-                      {{#if model.lastIp.dateValue}}, {{model.lastIp.timestamp}}{{/if}}
+                      {{#if model.lastDhcpWirelessIp.dateValue}}, {{model.lastDhcpWirelessIp.timestamp}}{{/if}}
                       </small>
                     {{/if}}
                   </div>
@@ -297,16 +299,16 @@
                     {{else}}
                       {{model.pppoe.ip_class}}
                     {{/if}}
-                    {{#if model.lastIp.isOnline}}
+                    {{#if model.lastPppoeIp.isOnline}}
                       <i class="glyphicon glyphicon-cloud" style="color:green"></i>
                     {{else}}
                       <i class="glyphicon glyphicon-cloud" style="color:gray"></i>
                     {{/if}}
-                    {{#if model.lastIp.ip}}<br/>
+                    {{#if model.lastPppoeIp.ip}}<br/>
                       <small>poslední IP:
-                      <a href="#" {{action 'openTabs' (concat 'http://' model.lastIp.ip ':65535') (concat 'http://' model.lastIp.ip)}}>{{model.lastIp.ip}}</a>
+                      <a href="#" {{action 'openTabs' (concat 'http://' model.lastPppoeIp.ip ':65535') (concat 'http://' model.lastPppoeIp.ip)}}>{{model.lastPppoeIp.ip}}</a>
                       <span class="glyphicon glyphicon-new-window"></span>
-                      {{#if model.lastIp.dateValue}}, {{model.lastIp.timestamp}}{{/if}}
+                      {{#if model.lastPppoeIp.dateValue}}, {{model.lastPppoeIp.timestamp}}{{/if}}
                       </small>
                     {{/if}}
                   </div>

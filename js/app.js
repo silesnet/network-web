@@ -157,24 +157,51 @@ App.ServiceRoute = Ember.Route.extend({
   },
   setupController: function(controller, model) {
     var login = model.pppoe.login;
+    var hasPppoe = model.pppoe.service_id ? true : false;
+    var hasDhcpWireless = model.dhcp_wireless.service_id ? true : false;
     controller.set('model', model);
-    Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/last-ip')
-      .then(function(response) {
-          var ipResolved = false,
-            lastIp = {};
-          Ember.A(response.lastIp).forEach(function(auth, index) {
-            if (!ipResolved && auth.address) {
-              if (index === 0) {
-                lastIp.isOnline = true;
+    controller.set('model.lastPppoeIp', {});
+    controller.set('model.lastDhcpWirelessIp', {});
+    console.log('has pppoe, dhcp_wireless: ' + hasPppoe + ', ' + hasDhcpWireless);
+    if (hasPppoe) {
+      Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/last-ip')
+        .then(function(response) {
+            var ipResolved = false,
+              lastIp = {};
+            Ember.A(response.lastIp).forEach(function(auth, index) {
+              if (!ipResolved && auth.address) {
+                if (index === 0) {
+                  lastIp.isOnline = true;
+                }
+                lastIp.ip = auth.address;
+                lastIp.dateValue = auth.date || null;
+                lastIp.timestamp = toTimestamp(lastIp.dateValue);
+                ipResolved = true;
               }
-              lastIp.ip = auth.address;
-              lastIp.dateValue = auth.date || null;
-              lastIp.timestamp = toTimestamp(lastIp.dateValue);
-              ipResolved = true;
-            }
-          });
-          controller.set('model.lastIp', lastIp);
-        }, function(err) { controller.set('model.lastIp', {});} );
+            });
+            controller.set('model.lastPppoeIp', lastIp);
+          }, function(err) { controller.set('model.lastPppoeIp', {});} );
+    }
+    if (hasDhcpWireless) {
+      Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/last-ip')
+        .then(function(response) {
+            var ipResolved = false,
+              lastIp = {};
+            Ember.A(response.lastIp).forEach(function(auth, index) {
+              if (!ipResolved && auth.address) {
+                if (index === 0) {
+                  lastIp.isOnline = true;
+                }
+                lastIp.ip = auth.address;
+                lastIp.dateValue = auth.date || null;
+                lastIp.timestamp = toTimestamp(lastIp.dateValue);
+                ipResolved = true;
+              }
+            });
+            controller.set('model.lastDhcpWirelessIp', lastIp);
+          }, function(err) { controller.set('model.lastDhcpWirelessIp', {});} );
+    }
+
   },
   events: {
     reload: function() {

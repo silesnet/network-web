@@ -183,23 +183,10 @@ App.ServiceRoute = Ember.Route.extend({
           }, function(err) { controller.set('model.lastPppoeIp', {});} );
     }
     if (hasDhcpWireless) {
-      Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/last-ip')
+      Ember.$.getJSON('http://localhost:8090/networks/dhcp-wireless/' + model.dhcp_wireless.service_id + '/connection')
         .then(function(response) {
-            var ipResolved = false,
-              lastIp = {};
-            Ember.A(response.lastIp).forEach(function(auth, index) {
-              if (!ipResolved && auth.address) {
-                if (index === 0) {
-                  lastIp.isOnline = true;
-                }
-                lastIp.ip = auth.address;
-                lastIp.dateValue = auth.date || null;
-                lastIp.timestamp = toTimestamp(lastIp.dateValue);
-                ipResolved = true;
-              }
-            });
-            controller.set('model.lastDhcpWirelessIp', lastIp);
-          }, function(err) { controller.set('model.lastDhcpWirelessIp', {});} );
+            controller.set('model.dhcpWirelessConnection', response.connection || {});
+          }, function(err) { controller.set('model.dhcpWirelessConnection', {});} );
     }
 
   },
@@ -420,6 +407,9 @@ App.ServiceIndexController = Ember.Controller.extend({
   }),
   isPlService: Ember.computed('model.service.id', function() {
     return  serviceIdToCountry(this.get('model.service.id')) === "PL";
+  }),
+  isDhcpWirelessConnected: Ember.computed('model.dhcpWirelessConnection.status', function() {
+    return this.get('model.dhcpWirelessConnection.status') === 'bound';
   }),
   actions: {
     openTabs: function(url1, url2) {

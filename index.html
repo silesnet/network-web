@@ -239,18 +239,18 @@
                     {{else}}
                       {{model.dhcp_wireless.ip_class}}
                     {{/if}}
-<!-- 
-                    {{#if model.lastDhcpWirelessIp.isOnline}}
+
+                    {{#if isDhcpWirelessConnected}}
                       <i class="glyphicon glyphicon-cloud" style="color:green"></i>
                     {{else}}
                       <i class="glyphicon glyphicon-cloud" style="color:gray"></i>
                     {{/if}}
- -->
-                    {{#if model.lastDhcpWirelessIp.ip}}<br/>
+
+                    {{#if model.dhcpWirelessConnection.address}}<br/>
                       <small>poslední IP:
-                      <a href="#" {{action 'openTabs' (concat 'http://' model.lastDhcpWirelessIp.ip ':65535') (concat 'http://' model.lastDhcpWirelessIp.ip)}}>{{model.lastDhcpWirelessIp.ip}}</a>
+                      <a href="#" {{action 'openTabs' (concat 'http://' model.dhcpWirelessConnection.address ':65535') (concat 'http://' model.dhcpWirelessConnection.address)}}>{{model.dhcpWirelessConnection.address}}</a>
                       <span class="glyphicon glyphicon-new-window"></span>
-                      {{#if model.lastDhcpWirelessIp.dateValue}}, {{model.lastDhcpWirelessIp.timestamp}}{{/if}}
+                      {{#if model.dhcpWirelessConnection.lastSeen}}, {{model.dhcpWirelessConnection.lastSeen}}{{/if}}
                       </small>
                     {{/if}}
                   </div>

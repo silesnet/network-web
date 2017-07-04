@@ -238,23 +238,23 @@
                   <div class="col-sm-2"><p class="text-right"><strong>IP:</strong></p></div>
                   <div class="col-sm-10">
                     {{#if isDhcpWirelessStaticIp}}
-                      {{model.dhcp_wireless.ip.value}}
+                      <a href="#" {{action 'openTabs' (concat 'http://' model.dhcp_wireless.ip.value ':65535') (concat 'http://' model.dhcp_wireless.ip.value)}}>{{model.dhcp_wireless.ip.value}}</a>
+                      <span class="glyphicon glyphicon-new-window"></span>
                     {{else}}
                       {{model.dhcp_wireless.ip_class}}
-                    {{/if}}
 
-                    {{#if isDhcpWirelessConnected}}
-                      <i class="glyphicon glyphicon-cloud" style="color:green"></i>
-                    {{else}}
-                      <i class="glyphicon glyphicon-cloud" style="color:gray"></i>
-                    {{/if}}
-
-                    {{#if model.dhcpWirelessConnection.address}}<br/>
-                      <small>poslední IP:
-                      <a href="#" {{action 'openTabs' (concat 'http://' model.dhcpWirelessConnection.address ':65535') (concat 'http://' model.dhcpWirelessConnection.address)}}>{{model.dhcpWirelessConnection.address}}</a>
-                      <span class="glyphicon glyphicon-new-window"></span>
-                      {{#if model.dhcpWirelessConnection.lastSeen}}, {{model.dhcpWirelessConnection.lastSeen}}{{/if}}
-                      </small>
+                      {{#if isDhcpWirelessConnected}}
+                        <i class="glyphicon glyphicon-cloud" style="color:green"></i>
+                      {{else}}
+                        <i class="glyphicon glyphicon-cloud" style="color:gray"></i>
+                      {{/if}}
+                      {{#if model.dhcpWirelessConnection.address}}<br/>
+                        <small>poslední IP:
+                          <a href="#" {{action 'openTabs' (concat 'http://' model.dhcpWirelessConnection.address ':65535') (concat 'http://' model.dhcpWirelessConnection.address)}}>{{model.dhcpWirelessConnection.address}}</a>
+                          <span class="glyphicon glyphicon-new-window"></span>
+                          {{#if model.dhcpWirelessConnection.lastSeen}}, {{model.dhcpWirelessConnection.lastSeen}}{{/if}}
+                        </small>
+                      {{/if}}
                     {{/if}}
                   </div>
                 </div>

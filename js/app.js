@@ -222,13 +222,13 @@ App.ServicesController = Ember.Controller.extend({
   query: '',
   isActiveFilter: 1,
   services: [],
-  search: function() {
+  performSearch: function() {
     var services = this.get('services');
     var isActiveFilter = this.get('isActiveFilter') === 1 ? true : (this.get('isActiveFilter') === 2 ? false : null);
     var query = this.get('query');
     var country = this.get('session.hasNetworkAdminRole') || this.get('session.hasManagerRole') ?
       '' : this.get('session.userCountry');
-    if (query) {
+    if (query && query.length > 3) {
       Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country + "&isActive=" + isActiveFilter)
         .then(function(data) {
           services.setObjects(data.services);
@@ -237,6 +237,9 @@ App.ServicesController = Ember.Controller.extend({
     else {
       services.setObjects([]);
     }
+  },
+  search: function() {
+    Ember.run.debounce(this, this.performSearch, 100);
   }.observes('query', 'isActiveFilter'),
   actions: {
     editService: function(service) {

@@ -10,6 +10,7 @@ App.Status = Ember.Service.extend({
 });
 
 App.Session = Ember.Service.extend({
+  userId: null,
   user: null,
   userName: null,
   userCountry: null,
@@ -25,6 +26,7 @@ App.Session = Ember.Service.extend({
       (this.get('userRoles').indexOf('ROLE_NETWORK_ADMIN') > -1);
   }),
   configure: function(user) {
+    this.set('userId', user.id);
     this.set('user', user.user);
     this.set('userName', user.name);
     this.set('userCountry', user.operation_country);

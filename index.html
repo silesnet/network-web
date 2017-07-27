@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -97,8 +96,10 @@
         {{#if canAddPppoe}}
           <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'addPppoe' model}}><span class="glyphicon glyphicon-plus"></span>&#160;PPPoE</button></div>
         {{/if}}
-        {{#if canAddTodo}}
-          <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formAddTodo' model}}><span class="glyphicon glyphicon-plus"></span>&#160;TODO</button></div>
+        {{#if isPlService}}
+          <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formAddPlTodo' model}}><span class="glyphicon glyphicon-plus"></span>&#160;TODO PL</button></div>
+        {{else}}
+          <div class="btn-group pull-right service"><button class="btn btn-success" {{action 'openModal' 'formAddCzTodo' model}}><span class="glyphicon glyphicon-plus"></span>&#160;TODO CZ</button></div>
         {{/if}}
         <br />
         <span class="small">
@@ -464,7 +465,7 @@
       {{/modal-form}}
     </script>
 
-    <script type="text/x-handlebars" data-template-name="formAddTodo">
+    <script type="text/x-handlebars" data-template-name="formAddPlTodo">
       {{#modal-form title='Add TODO' ok='submit' close='closeModal'}}
         <h4>{{model.customer.name}}, {{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h4>
         {{#if model.service.address}}
@@ -497,6 +498,67 @@
           <div class="col-sm-12 form-group">
             <label>Comment:</label>
             {{textarea class="form-control autofocus" value=comment rows='5'}}
+          </div>
+        </div>
+      {{/modal-form}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="formAddCzTodo">
+      {{#modal-form title='Přidat servisní problém' ok='submit' close='closeModal'}}
+        <h4>{{model.service.id}} {{model.service.name}}</h4>
+        <h5>{{model.customer.name}}, {{model.service.address_label}}</h5>
+        {{assignee}}
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label>Termín nahlášení:</label>
+            {{input class="form-control autofocus" value=reportedAt}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label>Číslo smlouvy, kontakt:</label>
+            {{input class="form-control" value=contact}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label>Problém:</label>
+            {{textarea class="form-control autofocus" value=description rows='3'}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
+            <label>Diagnostika při převzetí servisu:</label>
+            {{textarea class="form-control" value=comment rows='2'}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4 form-group">
+            <label>Zapsal(a):</label>
+            {{view "select"
+               class="form-control"
+               content=users
+               optionValuePath="content.id"
+               optionLabelPath="content.name"
+               value=reportedBy}}
+          </div>
+          <div class="col-sm-3 form-group">
+            <label>Priorita:</label>
+            {{view "select"
+               class="form-control"
+               content=priorities
+               optionValuePath="content.id"
+               optionLabelPath="content.name"               
+               value=priority}}
+          </div>
+          <div class="col-sm-5 form-group">
+            <label>Oblast:</label>
+            {{view "select"
+               class="form-control"
+               content=serviceAreas
+               optionValuePath="content.id"
+               optionLabelPath="content.name"               
+               value=serviceArea}}
           </div>
         </div>
       {{/modal-form}}

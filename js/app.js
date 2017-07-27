@@ -162,7 +162,6 @@ App.ServiceRoute = Ember.Route.extend({
     controller.set('model', model);
     controller.set('model.lastPppoeIp', {});
     controller.set('model.lastDhcpWirelessIp', {});
-    console.log('has pppoe, dhcp_wireless: ' + hasPppoe + ', ' + hasDhcpWireless);
     if (hasPppoe) {
       Ember.$.getJSON('http://localhost:8090/networks/pppoe/' + login + '/last-ip')
         .then(function(response) {
@@ -393,7 +392,7 @@ App.ServiceIndexController = Ember.Controller.extend({
   canAddPppoe: Ember.computed('canEdit', 'hasPppoe', function() {
     return this.get('canEdit') && !this.get('hasPppoe');
   }),
-  canAddTodo: Ember.computed('serviceCountry', function() {
+  isPlService: Ember.computed('serviceCountry', function() {
     return this.get('serviceCountry') === 'PL';
   }),
   servicePeriod: Ember.computed('model.service.period_from', function () {
@@ -856,7 +855,7 @@ App.FormEditPppoeController = Ember.Controller.extend({
   }
 });
 
-App.FormAddTodoController = Ember.Controller.extend({
+App.FormAddPlTodoController = Ember.Controller.extend({
   category: 'Servis',
   categories: ['Servis', 'Moving', 'Modernization', 'Dismantling', 'Other'],
   priority: 'Normal',
@@ -891,6 +890,69 @@ App.FormAddTodoController = Ember.Controller.extend({
       comment += model.pppoe.interface + "\n";
     }
     this.set('comment', comment);
+  },
+  actions: {
+    submit: function() {
+      var self = this;
+      $.get('https://sis.silesnet.net/sisng/resource/systech/php/todo.php', {
+        task: 'ADDTODOFROMPPPOE',
+        category: this.get('category'),
+        priority: this.get('priority'),
+        customerId: this.get('model.customer.id'),
+        assignee: this.get('assignee'),
+        createdBy: this.get('session.userName'),
+        todotask: this.get('comment')
+      })
+        .done(function() {
+          self.get('flashes').success('OK', 1000);
+        })
+        .fail(function() {
+          self.get('flashes').danger('FAIL', 2000);
+        });
+    }
+  }
+});
+
+App.FormAddCzTodoController = Ember.Controller.extend({
+  reportedAt: '',
+  contact: '',
+  description: '',
+  comment: '',
+  reportedBy: null,
+  users: [],
+  priority: null,
+  priorities: [{ id: 1, name: 'Nízká' }, { id: 2, name: 'Normal' }, { id: 3, name: 'Vysoká' }],
+  serviceArea: null,
+  serviceAreas: [
+    { id: 1, name: 'F-M (Radek)' }, { id: 2, name: 'OVA, HAV, ORL, ALB (Pavel)' },
+    { id: 4, name: 'CTE lan (Mirek)' }, { id: 5, name: 'CTE, KA wire (Michal)' },
+    { id: 6, name: 'VEN, BYS, NAV, JAB (David)' }
+  ],
+  init: function() {
+    var self = this;
+    this._super(...arguments);
+    Ember.$.getJSON('http://localhost:8090/users')
+      .then((response) => {
+        self.set('users', Ember.A(response.users).filterBy('country', 'CZ'));
+      });
+  },
+  initModal: function(model) {
+    var now = new Date();
+    this.set('reportedAt', 
+      leftPadNum(now.getDate(), 2) + '.' +
+      leftPadNum((now.getMonth() + 1), 2) + '.' +
+      now.getFullYear() + ' (' +
+      leftPadNum(now.getHours(), 2) + ':' +
+      leftPadNum(now.getMinutes(), 2) + ')'
+    );
+    this.set('contact', [
+      model.service.id,
+      [model.customer.name, model.service.address_label].join(", "),
+      model.customer.phone
+    ].join(', '));
+    this.set('reportedBy', this.get('session.userId'));
+    this.set('priority', 2);
+    this.set('serviceArea', 4);
   },
   actions: {
     submit: function() {

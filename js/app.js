@@ -957,20 +957,22 @@ App.FormAddCzTodoController = Ember.Controller.extend({
   actions: {
     submit: function() {
       var self = this;
-      $.get('https://sis.silesnet.net/sisng/resource/systech/php/todo.php', {
-        task: 'ADDTODOFROMPPPOE',
-        category: this.get('category'),
-        priority: this.get('priority'),
-        customerId: this.get('model.customer.id'),
-        assignee: this.get('assignee'),
-        createdBy: this.get('session.userName'),
-        todotask: this.get('comment')
-      })
+      var body = {
+        akce: -1,
+        nahlaseni: this.get('reportedAt'),
+        kontakt: this.get('contact'),
+        text: this.get('description'),
+        diag: this.get('comment'),
+        jmeno: this.get('reportedBy'),
+        kat: this.get('priority'),
+        oblast: this.get('serviceArea')
+      };
+      $.get('https://sis.silesnet.net/problemy/index.php', body)
         .done(function() {
           self.get('flashes').success('OK', 1000);
         })
         .fail(function() {
-          self.get('flashes').danger('FAIL', 2000);
+          self.get('flashes').danger('Chyba', 2000);
         });
     }
   }

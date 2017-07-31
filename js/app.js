@@ -956,24 +956,7 @@ App.FormAddCzTodoController = Ember.Controller.extend({
   },
   actions: {
     submit: function() {
-      var self = this;
-      var body = {
-        akce: -1,
-        nahlaseni: this.get('reportedAt'),
-        kontakt: this.get('contact'),
-        text: this.get('description'),
-        diag: this.get('comment'),
-        jmeno: this.get('reportedBy'),
-        kat: this.get('priority'),
-        oblast: this.get('serviceArea')
-      };
-      $.get('https://sis.silesnet.net/problemy/index.php', body)
-        .done(function() {
-          self.get('flashes').success('OK', 1000);
-        })
-        .fail(function() {
-          self.get('flashes').danger('Chyba', 2000);
-        });
+      document.getElementById('addCzTodoForm').submit();
     }
   }
 });

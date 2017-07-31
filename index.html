@@ -507,60 +507,65 @@
       {{#modal-form title='Přidat servisní problém' ok='submit' close='closeModal'}}
         <h4>{{model.service.id}} {{model.service.name}}</h4>
         <h5>{{model.customer.name}}, {{model.service.address_label}}</h5>
-        {{assignee}}
-        <div class="row">
-          <div class="col-sm-6 form-group">
-            <label>Termín nahlášení:</label>
-            {{input class="form-control autofocus" value=reportedAt}}
+        <form method="POST" target="https://sis.silesnet.net/problemy/index.php" accept-charset="windows-1250" id="addCzTodoForm">
+          <input type="hidden" value="-1" name="akce">
+          <div class="row">
+            <div class="col-sm-6 form-group">
+              <label>Termín nahlášení:</label>
+              {{input class="form-control autofocus" value=reportedAt name="nahlaseni"}}
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12 form-group">
-            <label>Číslo smlouvy, kontakt:</label>
-            {{input class="form-control" value=contact}}
+          <div class="row">
+            <div class="col-sm-12 form-group">
+              <label>Číslo smlouvy, kontakt:</label>
+              {{input class="form-control" value=contact name="kontakt"}}
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12 form-group">
-            <label>Problém:</label>
-            {{textarea class="form-control autofocus" value=description rows='3'}}
+          <div class="row">
+            <div class="col-sm-12 form-group">
+              <label>Problém:</label>
+              {{textarea class="form-control autofocus" value=description rows='3' name="text"}}
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12 form-group">
-            <label>Diagnostika při převzetí servisu:</label>
-            {{textarea class="form-control" value=comment rows='2'}}
+          <div class="row">
+            <div class="col-sm-12 form-group">
+              <label>Diagnostika při převzetí servisu:</label>
+              {{textarea class="form-control" value=comment rows='2' name="diag"}}
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-4 form-group">
-            <label>Zapsal(a):</label>
-            {{view "select"
-               class="form-control"
-               content=users
-               optionValuePath="content.id"
-               optionLabelPath="content.name"
-               value=reportedBy}}
+          <div class="row">
+            <div class="col-sm-4 form-group">
+              <label>Zapsal(a):</label>
+              {{view "select"
+                 class="form-control"
+                 content=users
+                 optionValuePath="content.id"
+                 optionLabelPath="content.name"
+                 value=reportedBy
+                 name="jmeno"}}
+            </div>
+            <div class="col-sm-3 form-group">
+              <label>Priorita:</label>
+              {{view "select"
+                 class="form-control"
+                 content=priorities
+                 optionValuePath="content.id"
+                 optionLabelPath="content.name"               
+                 value=priority
+                 name="kat"}}
+            </div>
+            <div class="col-sm-5 form-group">
+              <label>Oblast:</label>
+              {{view "select"
+                 class="form-control"
+                 content=serviceAreas
+                 optionValuePath="content.id"
+                 optionLabelPath="content.name"               
+                 value=serviceArea
+                 name="oblast"}}
+            </div>
           </div>
-          <div class="col-sm-3 form-group">
-            <label>Priorita:</label>
-            {{view "select"
-               class="form-control"
-               content=priorities
-               optionValuePath="content.id"
-               optionLabelPath="content.name"               
-               value=priority}}
-          </div>
-          <div class="col-sm-5 form-group">
-            <label>Oblast:</label>
-            {{view "select"
-               class="form-control"
-               content=serviceAreas
-               optionValuePath="content.id"
-               optionLabelPath="content.name"               
-               value=serviceArea}}
-          </div>
-        </div>
+        </form>
       {{/modal-form}}
     </script>
 

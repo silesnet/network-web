@@ -919,26 +919,19 @@ App.FormAddCzTodoController = Ember.Controller.extend({
   description: '',
   comment: '',
   reportedBy: null,
-  users: [],
+  users: Ember.A([{ id: null, name: '<jméno>' }, { id: 5, name: 'David' }, { id: 11, name: 'Ela' }, { id: 9, name: 'Grazyna' }, { id: 16, name: 'Iwona' }, { id: 2, name: 'Kamil' }, { id: 3, name: 'Marcel' }, { id: 19, name: 'Marek' }, { id: 13, name: 'Michal' }, { id: 1, name: 'Mirek' }, { id: 15, name: 'Monika' }, { id: 14, name: 'Pavel' }, { id: 7, name: 'Petr' }, { id: 4, name: 'Radek' }, { id: 18, name: 'Robert' }, { id: 10, name: 'Roman' }]),
   priority: null,
-  priorities: [{ id: 1, name: 'Nízká' }, { id: 2, name: 'Normal' }, { id: 3, name: 'Vysoká' }],
+  priorities: Ember.A([{ id: 1, name: 'Nízká' }, { id: 2, name: 'Normal' }, { id: 3, name: 'Vysoká' }]),
   serviceArea: null,
-  serviceAreas: [
+  serviceAreas: Ember.A([
     { id: 1, name: 'F-M (Radek)' }, { id: 2, name: 'OVA, HAV, ORL, ALB (Pavel)' },
     { id: 4, name: 'CTE lan (Mirek)' }, { id: 5, name: 'CTE, KA wire (Michal)' },
     { id: 6, name: 'VEN, BYS, NAV, JAB (David)' }
-  ],
-  init: function() {
-    var self = this;
-    this._super(...arguments);
-    Ember.$.getJSON('http://localhost:8090/users')
-      .then((response) => {
-        self.set('users', Ember.A(response.users).filterBy('country', 'CZ'));
-      });
-  },
+  ]),
   initModal: function(model) {
     var now = new Date();
-    this.set('reportedAt', 
+    var reportedBy = this.get('users').findBy("name", this.get('session.userName'));
+    this.set('reportedAt',
       leftPadNum(now.getDate(), 2) + '.' +
       leftPadNum((now.getMonth() + 1), 2) + '.' +
       now.getFullYear() + ' (' +
@@ -947,10 +940,12 @@ App.FormAddCzTodoController = Ember.Controller.extend({
     );
     this.set('contact', [
       model.service.id,
-      [model.customer.name, model.service.address_label].join(", "),
+      [ model.customer.name, model.service.address_label ].join(", "),
       model.customer.phone
     ].join(', '));
-    this.set('reportedBy', this.get('session.userId'));
+    this.set('description', '');
+    this.set('comment', '');
+    this.set('reportedBy', reportedBy ? reportedBy.id : null);
     this.set('priority', 2);
     this.set('serviceArea', 4);
   },

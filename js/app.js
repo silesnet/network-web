@@ -951,7 +951,7 @@ App.FormAddCzTodoController = Ember.Controller.extend({
   },
   actions: {
     submit: function() {
-      document.getElementById('addCzTodoForm').submit();
+      $('#addCzTodoForm').submit();
     }
   }
 });

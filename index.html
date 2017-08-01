@@ -507,7 +507,7 @@
       {{#modal-form title='Přidat servisní problém' ok='submit' close='closeModal'}}
         <h4>{{model.service.id}} {{model.service.name}}</h4>
         <h5>{{model.customer.name}}, {{model.service.address_label}}</h5>
-        <form method="POST" target="https://sis.silesnet.net/problemy/index.php" accept-charset="windows-1250" id="addCzTodoForm">
+        <form method="POST" action="https://sis.silesnet.net/problemy/index.php" accept-charset="windows-1250" id="addCzTodoForm">
           <input type="hidden" value="-1" name="akce">
           <div class="row">
             <div class="col-sm-6 form-group">

@@ -940,7 +940,7 @@ App.FormAddCzTodoController = Ember.Controller.extend({
     );
     this.set('contact', [
       'tel. ' + model.customer.phone,
-      ', sml. ' + model.service.id,
+      'sml. ' + model.service.id,
       [ model.customer.name, model.service.address_label ].join(", ")
     ].join(', '));
     this.set('description', '');

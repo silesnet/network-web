@@ -939,8 +939,8 @@ App.FormAddCzTodoController = Ember.Controller.extend({
       leftPadNum(now.getMinutes(), 2) + ')'
     );
     this.set('contact', [
-      'tel. ' + model.customer.phone,
-      'sml. ' + model.service.id,
+      model.customer.phone,
+      model.service.id,
       [ model.customer.name, model.service.address_label ].join(", ")
     ].join(', '));
     this.set('description', '');

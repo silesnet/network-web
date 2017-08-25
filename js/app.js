@@ -218,26 +218,40 @@ App.ChangelogRoute = Ember.Route.extend({
 });
 
 App.ServicesController = Ember.Controller.extend({
+  latestQuery: '',
   query: '',
   isActiveFilter: 1,
   services: [],
   performSearch: function() {
+    var self = this;
     var services = this.get('services');
     var isActiveFilter = this.get('isActiveFilter') === 1 ? true : (this.get('isActiveFilter') === 2 ? false : null);
     var query = this.get('query');
     var country = this.get('session.hasNetworkAdminRole') || this.get('session.hasManagerRole') ?
       '' : this.get('session.userCountry');
     if (query && query.length >= 3) {
-      Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country + "&isActive=" + isActiveFilter)
+      var fullQuery = 'q=' + query + '&country=' + country + "&isActive=" + isActiveFilter;
+      Ember.$.getJSON('http://localhost:8090/services?' + fullQuery)
         .then(function(data) {
-          services.setObjects(data.services);
+          var originalQuery = data.query;
+          var latestQuery = self.get('latestQuery');
+          if (originalQuery === latestQuery) {
+            services.setObjects(data.services);
+          }
+          else {
+            console.log("original query '" + originalQuery + "' aborted");
+          }
         })
         .fail(function(reason) {
           console.error(reason);
           services.setObjects([]);
+        })
+        .always(function() {
         });
+      this.set('latestQuery', fullQuery);
     }
     else {
+      this.set('latestQuery', '');
       services.setObjects([]);
     }
   },

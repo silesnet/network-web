@@ -227,7 +227,7 @@ App.ServicesController = Ember.Controller.extend({
     var query = this.get('query');
     var country = this.get('session.hasNetworkAdminRole') || this.get('session.hasManagerRole') ?
       '' : this.get('session.userCountry');
-    if (query && query.length > 3) {
+    if (query && query.length >= 3) {
       Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country + "&isActive=" + isActiveFilter)
         .then(function(data) {
           services.setObjects(data.services);

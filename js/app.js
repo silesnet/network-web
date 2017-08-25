@@ -231,6 +231,10 @@ App.ServicesController = Ember.Controller.extend({
       Ember.$.getJSON('http://localhost:8090/services?q=' + query + '&country=' + country + "&isActive=" + isActiveFilter)
         .then(function(data) {
           services.setObjects(data.services);
+        })
+        .fail(function(reason) {
+          console.error(reason);
+          services.setObjects([]);
         });
     }
     else {

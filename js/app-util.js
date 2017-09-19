@@ -1,3 +1,7 @@
+function decodeInput(input) {
+  return Ember.$('<textarea />').html(input).text();
+}
+
 Ember.Handlebars.helper('gps', function(cord) {
   if (!cord) {
     return '';

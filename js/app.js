@@ -227,6 +227,7 @@ App.ServicesController = Ember.Controller.extend({
     var services = this.get('services');
     var isActiveFilter = this.get('isActiveFilter') === 1 ? true : (this.get('isActiveFilter') === 2 ? false : null);
     var query = this.get('query');
+    // var query = decodeInput(this.get('query'));
     var country = this.get('session.hasNetworkAdminRole') || this.get('session.hasManagerRole') ?
       '' : this.get('session.userCountry');
     if (query && query.length >= 3) {

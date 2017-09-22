@@ -63,10 +63,10 @@
           {{#each services as |service|}}
             <tr {{action 'editService' service}} class="clickable">
               <td>{{service.service_id}}</td>
-              <td>{{service.customer_name}}</td>
+              <td>{{truncate service.customer_name 20}}</td>
               <td>{{service.service_name}}</td>
               <td>{{service.download}}/{{service.upload}}</td>
-              <td>{{service.address_label}}</td>
+              <td>{{truncate service.address_label 40}}</td>
             </tr>
           {{/each}}
           </tbody>

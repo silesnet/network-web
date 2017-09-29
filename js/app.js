@@ -920,7 +920,9 @@ App.FormAddPlTodoController = Ember.Controller.extend({
         customerId: this.get('model.customer.id'),
         assignee: this.get('assignee'),
         createdBy: this.get('session.userName'),
-        todotask: this.get('comment')
+        todotask: this.get('comment'),
+        username: this.get('model.service.id'),
+        technic: this.get('session.userName')
       })
         .done(function() {
           self.get('flashes').success('OK', 1000);

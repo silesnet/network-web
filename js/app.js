@@ -278,7 +278,7 @@ App.ServicePrintController = Ember.Controller.extend({
     return address === '' ? '' : _join(', ', address, countryIdToName(this.get('model.customer.country')));
   }),
   connectionLocation: Ember.computed('model.service', function() {
-    return serviceAddress(this.get('model.service.address'));
+    return this.get('model.service.address_label');
   }),
   isPlService: Ember.computed('model.service.id', function() {
     return  serviceIdToCountry(this.get('model.service.id')) === "PL";

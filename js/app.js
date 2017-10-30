@@ -267,7 +267,7 @@ App.ServicesController = Ember.Controller.extend({
 });
 
 App.ServicePrintController = Ember.Controller.extend({
-  agreementNo: Ember.computed(function() {
+  agreementNo: Ember.computed('model.service', function() {
     return servcieIdToAgreement(this.get('model.service.id'));
   }),
   serviceName: Ember.computed('model.service', function() {

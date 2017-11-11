@@ -227,33 +227,44 @@ App.ServicesController = Ember.Controller.extend({
     var services = this.get('services');
     var isActiveFilter = this.get('isActiveFilter') === 1 ? true : (this.get('isActiveFilter') === 2 ? false : null);
     var query = this.get('query');
-    // var query = decodeInput(this.get('query'));
     var country = this.get('session.hasNetworkAdminRole') || this.get('session.hasManagerRole') ?
       '' : this.get('session.userCountry');
-    if (query && query.length >= 3) {
-      var fullQuery = 'q=' + query + '&country=' + country + "&isActive=" + isActiveFilter;
-      Ember.$.getJSON('http://localhost:8090/services?' + fullQuery)
-        .then(function(data) {
-          var originalQuery = data.query;
-          var latestQuery = self.get('latestQuery');
-          if (originalQuery === latestQuery) {
-            services.setObjects(data.services);
-          }
-          else {
-            console.log("original query '" + originalQuery + "' aborted");
-          }
-        })
-        .fail(function(reason) {
-          console.error(reason);
-          services.setObjects([]);
-        })
-        .always(function() {
-        });
-      this.set('latestQuery', fullQuery);
+    if (query && query.trim().length >= 3) {
+      var fullQuery = {
+        q: query.trim(),
+        country: country,
+        isActive: isActiveFilter
+      }
+      var fullQueryValue = serializeQuery(fullQuery);
+      var fullQueryUri = encodeURIQuery(fullQuery);
+      var displayingQuery = this.get('displayingQuery');
+      if (displayingQuery !== fullQueryValue) {
+        Ember.$.getJSON('http://localhost:8090/services?' + fullQueryUri)
+          .then(function(data) {
+            var originalQuery = data.query;
+            var latestQuery = self.get('latestQuery');
+            if (originalQuery === latestQuery) {
+              services.setObjects(data.services);
+              self.set('displayingQuery', latestQuery);
+            }
+            else {
+              console.log("original query '" + originalQuery + "' aborted");
+            }
+          })
+          .fail(function(reason) {
+            console.error(reason);
+            services.setObjects([]);
+            self.set('displayingQuery', '');
+          })
+          .always(function() {
+          });
+        this.set('latestQuery', fullQueryValue);
+      }
     }
     else {
       this.set('latestQuery', '');
       services.setObjects([]);
+      self.set('displayingQuery', '');
     }
   },
   search: function() {

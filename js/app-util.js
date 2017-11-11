@@ -1,3 +1,23 @@
+function serializeQuery(query) {
+  var components = [];
+  for (var key in query) {
+    if (query.hasOwnProperty(key)) {
+      components.push(key + '=' + query[key]);
+    }
+  }
+  return components.join('&');
+}
+
+function encodeURIQuery(query) {
+  var components = [];
+  for (var key in query) {
+    if (query.hasOwnProperty(key)) {
+      components.push(encodeURIComponent(key) + '=' + encodeURIComponent(query[key]));
+    }
+  }
+  return components.join('&');
+}
+
 Ember.Handlebars.helper ('truncate', function (str, len) {
   if (str && str.length > len && str.length > 0) {
       var new_str = str + " ";

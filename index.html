@@ -114,6 +114,9 @@
         <p>
           {{model.service.address_label}}
           {{gps-link cord=model.service.place}}
+          {{#if model.service.location}}
+            Byt č. {{model.service.location}}
+          {{/if}}
         </p>
       {{else}}
         {{#if model.customer.connection_spot}}
@@ -125,6 +128,9 @@
         {{/if}}
 
         {{gps-link cord=model.service.place}}
+        {{#if model.service.location}}
+          Byt č. {{model.service.location}}
+        {{/if}}
       {{/if}}
 
       <div class="row">

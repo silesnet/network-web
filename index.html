@@ -430,6 +430,14 @@
         </div>
         <div class="row">
           <div class="col-sm-12 form-group">
+            <label>Byt:</label>
+            <div>
+              {{input value=model.form.service.location class="form-controll"}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 form-group">
             <label>Zařízení:</label>
               {{#each model.form.service.data.devices as |device index|}}
                 <div class="form-group">

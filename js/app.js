@@ -587,6 +587,7 @@ App.FormEditServiceController = Ember.Controller.extend({
           currentService.status !== updatedService.status ||
           currentService.address_id !== updatedService.address_id ||
           currentService.place !== updatedService.place ||
+          currentService.location !== updatedService.location ||
           JSON.stringify(currentService.data) !== JSON.stringify(updatedService.data)) {
         serviceUpdate.info = updatedService.info;
         serviceUpdate.status = updatedService.status;
@@ -594,6 +595,7 @@ App.FormEditServiceController = Ember.Controller.extend({
         serviceUpdate.address_place = updatedService.address_place;
         serviceUpdate.address_place_id = updatedService.address_place_id;
         serviceUpdate.place = updatedService.place;
+        serviceUpdate.location = updatedService.location;
         if (!serviceUpdate.place) {
           serviceUpdate.place = serviceUpdate.address_place;
         }

@@ -12,11 +12,11 @@ body {
 }
 
 #protocol p.signature-place {
-  margin-top: 5em;
+  margin-top: 2em;
 }
 
 #protocol p.signature-name {
-  margin-top: 5em;
+  margin-top: 2em;
 }
 
 #protocol td span.connection-detail {
@@ -58,7 +58,7 @@ body {
 }
 
 #protocol h1 {
-  font-size: 130%;
+  font-size: 110%;
   font-weight: bold;
   text-align: center;
 }

@@ -329,7 +329,10 @@ App.ServicePrintController = Ember.Controller.extend({
 });
 
 App.ServiceIndexController = Ember.Controller.extend({
-  access: Ember.computed('model.service.name', 'model.pppoe.mode', 'hasDhcp', 'hasPppoe', function () {
+  access: Ember.computed('model.service.name', 'model.pppoe.mode', 'hasDhcp', 'hasPppoe', 'model.service.channel', function () {
+    if (this.get('model.service.channel') === 'none') {
+      return { channel: 'none', protocol: 'none' };
+    }
     var
       channel = serviceChannel(this.get('model.service.name'), this.get('model.pppoe.mode')),
       protocol = serviceProtocol(this.get('hasDhcp'), this.get('hasPppoe'), this.get('model.service.name'));
@@ -911,8 +914,7 @@ App.FormAddPlTodoController = Ember.Controller.extend({
     comment = [
       servcieIdToAgreement(model.service.id),
       model.customer.name,
-      model.service.name + ' ' +
-        model.service.download + '/' + model.service.upload + ' Mbs'
+      model.service.name
     ].join(", ");
     comment += "\n";
     if (model.customer.phone) {

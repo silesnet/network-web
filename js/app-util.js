@@ -124,7 +124,7 @@ function applicationVersion(application, fullVersion) {
 }
 
 function serviceName(service) {
-  return _join(' ', service.name, _join('/', service.download, service.upload), 'Mbps');
+  return service.name;
 }
 
 function countryCodeToName(code) {

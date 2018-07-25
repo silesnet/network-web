@@ -65,7 +65,6 @@
               <td>{{service.service_id}}</td>
               <td>{{truncate service.customer_name 30}}</td>
               <td>{{service.service_name}}</td>
-              <td>{{service.download}}/{{service.upload}}</td>
               <td>{{truncate service.address_label 40}}</td>
             </tr>
           {{/each}}
@@ -109,7 +108,7 @@
           <a href="#" {{action 'openModal' 'formEditSms' model}}><i class="glyphicon glyphicon-phone"></i></a>
         </span>
       </h2>
-      <h3>{{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs, {{model.service.price}} {{serviceCurrency}}</h3>
+      <h3>{{model.service.id}} {{model.service.name}}, {{model.service.price}} {{serviceCurrency}}</h3>
       {{#if model.service.address_label}}
         <p>
           {{model.service.address_label}}
@@ -407,7 +406,7 @@
 
     <script type="text/x-handlebars" data-template-name="formEditService">
       {{#modal-form title='Upravit' ok='submit' close='closeModal'}}
-        <h4>{{model.form.service.id}} {{model.form.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h4>
+        <h4>{{model.form.service.id}} {{model.form.service.name}}</h4>
         <div class="row">
           <div class="col-sm-6 form-group">
             <label>Status:</label>
@@ -481,7 +480,7 @@
 
     <script type="text/x-handlebars" data-template-name="formAddPlTodo">
       {{#modal-form title='Add TODO' ok='submit' close='closeModal'}}
-        <h4>{{model.customer.name}}, {{model.service.id}} {{model.service.name}} {{model.service.download}}/{{model.service.upload}} Mbs</h4>
+        <h4>{{model.customer.name}}, {{model.service.id}} {{model.service.name}}</h4>
         {{#if model.service.address}}
           <p>{{address model.service.address}}</p>
         {{/if}}
@@ -784,7 +783,6 @@
         <tr>
           <td>{{#link-to 'service' service.id}}{{service.id}}{{/link-to}}</td>
           <td>{{service.name}}</td>
-          <td>{{service.download}}/{{service.upload}} Mbs</td>
         </tr>
       {{/each}}
       </tbody>

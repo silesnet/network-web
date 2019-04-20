@@ -446,6 +446,20 @@ App.ServiceIndexController = Ember.Controller.extend({
   isDhcpWirelessConnected: Ember.computed('model.dhcpWirelessConnection.status', function() {
     return this.get('model.dhcpWirelessConnection.status') === 'bound';
   }),
+  lateInvoices: Ember.A(),
+  lateInvoicesResolver: Ember.computed('model.customer.symbol', function() {
+    const customer = this.get('model.customer');
+    if (customer.country !== 10) { return false; } 
+    const url = `http://192.168.194.2:3000/api/customers/${customer.symbol}/late-invoices`;
+    const self = this;
+    Ember.$.ajax(url, {
+      dataType: 'json',
+      success: function(result) { self.set('lateInvoices', Ember.A(result.items)); },
+      error: function(error) { self.set('lateInvoices', Ember.A()); },
+      timeout: 500
+    });
+    return true;
+  }),
   actions: {
     openTabs: function(url1, url2) {
       window.open(url1);

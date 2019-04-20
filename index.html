@@ -398,6 +398,27 @@
             </div>
           </div>
         {{/if}}
+        {{#if lateInvoicesResolver}}
+          {{#if lateInvoices}}
+            <div class="col-md-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title pull-left">Nezaplacené faktury</h3>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="panel-body">
+                  {{#each lateInvoices as |invoice|}}
+                    <div class="row">
+                      <div class="col-sm-3">{{invoice.number}}</div>
+                      <div class="col-sm-2">{{date invoice.dueDate}}</div>
+                      <div class="col-sm-7">{{invoice.dueAmount}} Kč</div>
+                    </div>
+                  {{/each}}
+                </div>
+              </div>
+            </div>
+          {{/if}}
+        {{/if}}
       </div>
       {{#link-to 'services'}}Zpět{{/link-to}}
     </script>

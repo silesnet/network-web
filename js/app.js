@@ -449,7 +449,10 @@ App.ServiceIndexController = Ember.Controller.extend({
   lateInvoices: Ember.A(),
   lateInvoicesResolver: Ember.computed('model.customer.symbol', function() {
     const customer = this.get('model.customer');
-    if (customer.country !== 10) { return false; } 
+    if (customer.country !== 10) {
+      this.set('lateInvoices', Ember.A());
+      return false; 
+    } 
     const url = `http://192.168.194.2:3000/api/customers/${customer.symbol}/late-invoices`;
     const self = this;
     Ember.$.ajax(url, {

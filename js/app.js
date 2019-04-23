@@ -457,7 +457,7 @@ App.ServiceIndexController = Ember.Controller.extend({
     const self = this;
     Ember.$.ajax(url, {
       dataType: 'json',
-      success: function(result) { self.set('lateInvoices', Ember.A(result.items)); },
+      success: function(result) { self.set('lateInvoices', Ember.A(result.collection.items)); },
       error: function(error) { self.set('lateInvoices', Ember.A()); },
       timeout: 500
     });

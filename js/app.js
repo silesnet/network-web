@@ -453,7 +453,7 @@ App.ServiceIndexController = Ember.Controller.extend({
       this.set('lateInvoices', Ember.A());
       return false; 
     } 
-    const url = `http://192.168.194.2:3000/api/customers/${customer.symbol}/late-invoices`;
+    const url = `https://localhost/api/v1/index.php/customers/${customer.symbol}/late-invoices`;
     const self = this;
     Ember.$.ajax(url, {
       dataType: 'json',

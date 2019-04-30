@@ -448,8 +448,8 @@ App.ServiceIndexController = Ember.Controller.extend({
   }),
   lateInvoices: Ember.A(),
   lateInvoicesResolver: Ember.computed('model.customer.symbol', function() {
-    const customer = this.get('model.customer');
-    if (customer.country && customer.country !== 10) {
+    const customer = this.get('model.customer') || {};
+    if (customer.country !== 10) {
       this.set('lateInvoices', Ember.A());
       return false; 
     } 

@@ -65,7 +65,7 @@
               <td>{{service.service_id}}</td>
               <td>{{truncate service.customer_name 30}}</td>
               <td>{{service.service_name}}</td>
-              <td>{{truncate service.address_label 40}}</td>
+              <td>{{location service.address_label service.location}}</td>
             </tr>
           {{/each}}
           </tbody>

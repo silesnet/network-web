@@ -1,3 +1,18 @@
+const ADDRESS_LABEL_REGEX = /^([^,]*), (\d+ \d+) ([^,]*), (CZ|PL)$/;
+
+Ember.Handlebars.helper ('location', function (addressLabel, location) {
+  let label = addressLabel;
+  const match = ADDRESS_LABEL_REGEX.exec(addressLabel);
+  if (match) {
+    if (location) {
+      label = `${match[1]}, byt č. ${location}, ${match[3]}`;
+    } else {
+      label = `${match[1]}, ${match[3]}`;
+    }
+  }
+  return new Ember.Handlebars.SafeString (truncate(label, 45)); 
+});
+
 function serializeQuery(query) {
   var components = [];
   for (var key in query) {
@@ -18,16 +33,19 @@ function encodeURIQuery(query) {
   return components.join('&');
 }
 
-Ember.Handlebars.helper ('truncate', function (str, len) {
+function truncate(str, len) {
   if (str && str.length > len && str.length > 0) {
       var new_str = str + " ";
       new_str = str.substr (0, len);
       new_str = str.substr (0, new_str.lastIndexOf(" "));
       new_str = (new_str.length > 0) ? new_str : str.substr (0, len);
-
-      return new Ember.Handlebars.SafeString ( new_str +'...' ); 
+      return new_str + '...';
   }
   return str;
+}
+
+Ember.Handlebars.helper ('truncate', function (str, len) {
+  return new Ember.Handlebars.SafeString (truncate(str, len)); 
 });
 
 function decodeInput(input) {

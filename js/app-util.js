@@ -1,4 +1,10 @@
-const ADDRESS_LABEL_REGEX = /^([^,]*), (\d+ \d+) ([^,]*), (CZ|PL)$/;
+var tzOffset = (new Date()).getTimezoneOffset() * 60000;
+
+function tzDate(utcDate) {
+  return (new Date(Date.parse(utcDate) - tzOffset)).toISOString().substr(0, 10);
+}
+
+var ADDRESS_LABEL_REGEX = /^([^,]*), (\d+ \d+) ([^,]*), (CZ|PL)$/;
 
 Ember.Handlebars.helper ('location', function (addressLabel, location) {
   let label = addressLabel;

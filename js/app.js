@@ -433,10 +433,10 @@ App.ServiceIndexController = Ember.Controller.extend({
       to = this.get('model.service.period_to'),
       period = { from: '...', to: '...' };
     if (from) {
-      period.from = from.substr(0, 10);
+      period.from = tzDate(from);
     }
     if (to) {
-      period.to = to.substr(0, 10);
+      period.to = tzDate(to);
     }
     return period;
   }),

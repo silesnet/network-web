@@ -136,8 +136,6 @@ App.ServiceRoute = Ember.Route.extend({
             }),
           dhcp_wireless: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/dhcp-wireless')
             .then(function(res) { return res.dhcp_wireless; }),
-          // dhcp_connection: Ember.$.getJSON('http://localhost:8090/networks/dhcp/' + params.service_id + '/connection')
-          //   .then(function(res) { return res.dhcp; }, function(error) { return {}; }),
           pppoe: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/pppoe')
             .then(function(pppoe) { return pppoe.pppoe; }),
           customer_draft: new Ember.RSVP.Promise(function(resolve, reject) {
@@ -161,6 +159,7 @@ App.ServiceRoute = Ember.Route.extend({
     var login = model.pppoe.login;
     var hasPppoe = model.pppoe.service_id ? true : false;
     var hasDhcpWireless = model.dhcp_wireless.service_id ? true : false;
+    var hasDhcp = model.dhcp.port ? true : false;
     controller.set('model', model);
     controller.set('model.lastPppoeIp', {});
     controller.set('model.lastDhcpWirelessIp', {});
@@ -189,7 +188,12 @@ App.ServiceRoute = Ember.Route.extend({
             controller.set('model.dhcpWirelessConnection', response.connection || {});
           }, function(err) { controller.set('model.dhcpWirelessConnection', {});} );
     }
-
+    if (hasDhcp) {
+      Ember.$.getJSON('http://localhost:8090/networks/dhcp/' + model.service.id + '/connection')
+        .then(function(response) {
+            controller.set('model.dhcp_connection', response.dhcp || {});
+          }, function(err) { controller.set('model.dhcp_connection', {});} );
+    }
   },
   events: {
     reload: function() {

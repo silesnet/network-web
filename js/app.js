@@ -136,8 +136,8 @@ App.ServiceRoute = Ember.Route.extend({
             }),
           dhcp_wireless: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/dhcp-wireless')
             .then(function(res) { return res.dhcp_wireless; }),
-          // dhcp_connection: Ember.$.getJSON('http://localhost:8090/networks/dhcp/' + params.service_id + '/connection')
-          //   .then(function(res) { return res.dhcp; }),
+          dhcp_connection: Ember.$.getJSON('http://localhost:8090/networks/dhcp/' + params.service_id + '/connection')
+            .then(function(res) { return res.dhcp; }, function(error) { return {}; }),
           pppoe: Ember.$.getJSON('http://localhost:8090/services/' + params.service_id + '/pppoe')
             .then(function(pppoe) { return pppoe.pppoe; }),
           customer_draft: new Ember.RSVP.Promise(function(resolve, reject) {

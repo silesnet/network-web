@@ -664,7 +664,7 @@ App.FormEditDhcpController = Ember.Controller.extend({
   }.observes('model.form'),
   init: function() {
     var self = this,
-    country = this.get('session.userCountry').toLowerCase();
+    country = this.model.service.id.substring(0, 1) === '1' ? 'cz' : 'pl';
     this._super(...arguments);
     Ember.$.getJSON('http://localhost:8090/networks/' + country + '/devices?deviceType=switch')
          .then(function(switches) {
